@@ -1,0 +1,53 @@
+<script>
+	import Button from '../global/Button.svelte';
+	import { sidebarOpen } from '$lib/stores';
+	import { fly, slide } from 'svelte/transition';
+	import { cubicInOut } from 'svelte/easing';
+	import SidebarItem from '$lib/sidebar/SidebarItem.svelte';
+	import Logo from '$lib/global/Logo.svelte';
+	import SidebarGroup from './SidebarGroup.svelte';
+
+</script>
+
+<!-- {#if $sidebarOpen} -->
+<!-- <div class="sidebar" transition:fly={{ x: -100, easing: cubicInOut }} class:close={!$sidebarOpen}> -->
+<div class="sidebar" class:close={!$sidebarOpen}>
+	<SidebarGroup title="Dashboard">
+		<SidebarItem href="/dashboard/home" icon="home" active>Home</SidebarItem>
+		<SidebarItem href="/dashboard/alert" icon="alert">Alerts</SidebarItem>
+		<SidebarItem href="/dashboard/feed" icon="feed">Feed</SidebarItem>
+	</SidebarGroup>
+	
+	<SidebarGroup title="learn">
+		<SidebarItem href="/dashboard/news" icon="news">News</SidebarItem>
+		<SidebarItem href="/dashboard/learn" icon="support">Learn</SidebarItem>
+	</SidebarGroup>
+	
+	
+	<SidebarGroup title="Account">
+		<SidebarItem href="/dashboard/profile" icon="profile">Profile</SidebarItem>
+		<SidebarItem href="/dashboard/notifcations" icon="notifcations">Notifcations</SidebarItem>
+		<SidebarItem href="/dashboard/support" icon="support">Support</SidebarItem>
+	</SidebarGroup>
+</div>
+
+<!-- {/if} -->
+<style>
+	.sidebar {
+		width: 200px;
+		padding: 2rem 1.2em;
+		height: 100%;
+		display: flex;
+		gap: 6em;
+		flex-direction: column;
+		background-color: var(--c-black-s2);
+		color: var(--c-gray-s1);
+		transition: transform 0.25s linear, width 0.2s linear;
+		border-right: 1px solid var(--tran-s1);
+		font-size: 14px;
+	}
+	.close {
+		width: 0;
+		transform: translateX(-200px);
+	}
+</style>
