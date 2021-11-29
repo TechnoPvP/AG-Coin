@@ -76,6 +76,13 @@ p.small {
 	line-height: auto;
 }
 
+/* Global Classes */
+.container {
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 0 1.5em;
+}
+
 /* Design System */
 :root {
 	/* Colors */
@@ -119,6 +126,15 @@ p.small {
 	--br-sm: 3px;
 	--br-md: 7px;
 	--br-lg: 12px;
+
+	--pd-xxs: 0.266rem;
+	--pd-xs: 0.43rem;
+	--pd-sm: 0.695rem;
+	--pd-md: 1.25rem;
+	--pd-lg: 1.82rem;
+	--pd-xl: 2.945rem;
+	--pd-xl2: 4.765rem;
+	--pd-xl3: 5.765rem;
 
 	/* Graidents */
 	--g-gray: linear-gradient(90deg, #f5f7fa 0%, #c3cfe2 100%);

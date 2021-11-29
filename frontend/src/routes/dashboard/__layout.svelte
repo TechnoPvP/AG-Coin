@@ -9,7 +9,8 @@
 	<div class="sidebar" class:close={!$sidebarOpen}>
 		<Sidebar />
 	</div>
-	<div class="content" class:noScroll={$overlay}>
+	
+	<div class="content">
 		<Toolbar user="Adam Ghowiba" />
 		<slot />
 		{#if $overlay}
@@ -32,12 +33,12 @@
 	}
 	.sidebar {
 		height: 100%;
+		width: 200px;
+
+		transition: width 0.2s linear;
 	}
 	.close {
-		width: 0;
-	}
-	.noScroll {
-		/* overflow: hidden; */
+		width: 0px;
 	}
 	.overlay {
 		position: absolute;
@@ -49,5 +50,14 @@
 		height: 100%;
 		background-color: rgba(46, 46, 46, 0.486);
 		backdrop-filter: blur(4px);
+	}
+
+	@media screen and (max-width: 768px) {
+		section {
+			grid-template-columns: 1fr;
+		}
+		.sidebar {
+			display: none;
+		}
 	}
 </style>

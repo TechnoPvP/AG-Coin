@@ -19,6 +19,7 @@
 </script>
 
 <script lang="ts">
+	import Header from '$lib/dashboard/PageHeader.svelte';
 	import NewsPopup from '$lib/dashboard/news/NewsPopup.svelte';
 	import Post from '$lib/dashboard/news/Post.svelte';
 	import Breadcrumbs from '$lib/global/Breadcrumbs.svelte';
@@ -43,16 +44,19 @@
 	// console.log(post);
 </script>
 
-<header>
-	<h1>Crypto News</h1>
-	<h3>Follow what’s happening with real-time updates from around the world</h3>
-	<Breadcrumbs />
-</header>
+<Header
+	title="Crypto News"
+	desc="Follow what’s happening with real-time updates from around the world"
+	large
+/>
 
-<div class="post-wrap">
+<div class="container">
 	<div class="post-grid">
-		{#each post.data as data}
+		<!-- {#each post.data as data}
 			<Post {data} on:click={openArticle} />
+		{/each} -->
+		{#each Array(10) as data}
+			<Post data={mockPost} on:click={openArticle} />
 		{/each}
 	</div>
 </div>
@@ -62,29 +66,11 @@
 {/if}
 
 <style>
-	h1 {
-		font-size: 50px;
-		font-weight: var(--fw-black);
-	}
-	h3 {
-		font-size: 24px;
-	}
-	header {
-		text-align: center;
-		max-width: 70ch;
-		margin: 4em auto;
-	}
-
 	.post-grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
 		justify-content: center;
 		margin: 0 auto;
 		gap: 3em;
-	}
-	.post-wrap {
-		max-width: 1100px;
-		margin: 0 auto;
-		padding: 0 1.5em;
 	}
 </style>

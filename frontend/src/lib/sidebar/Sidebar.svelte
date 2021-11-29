@@ -20,7 +20,7 @@
 	
 	<SidebarGroup title="learn">
 		<SidebarItem href="/dashboard/news" icon="news">News</SidebarItem>
-		<SidebarItem href="/dashboard/learn" icon="support">Learn</SidebarItem>
+		<SidebarItem href="/dashboard/blog" icon="support">Blog</SidebarItem>
 	</SidebarGroup>
 	
 	
@@ -34,17 +34,18 @@
 <!-- {/if} -->
 <style>
 	.sidebar {
-		width: 200px;
 		padding: 2rem 1.2em;
+		width: 100%;
 		height: 100%;
 		display: flex;
 		gap: 6em;
 		flex-direction: column;
 		background-color: var(--c-black-s2);
 		color: var(--c-gray-s1);
-		transition: transform 0.25s linear, width 0.2s linear;
 		border-right: 1px solid var(--tran-s1);
 		font-size: 14px;
+		
+		transition: transform 0.25s linear, width 0.2s linear;
 	}
 	.close {
 		width: 0;

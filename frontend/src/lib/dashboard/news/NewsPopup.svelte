@@ -1,7 +1,9 @@
 <script>
+	import { sidebarOpen } from '$lib/stores';
 </script>
 
-<div class="popup">
+<div class="popup" class:sidebar-open={$sidebarOpen}>
+	<img class="popup__x" src="/icons/x.svg" alt="Exit Icon" />
 	<h1 class="title">METALS-London copper eases on dollar strength, economic worries</h1>
 	<div class="content">
 		<p>
@@ -31,21 +33,30 @@
 	</div>
 </div>
 
-<style>
+<style lang="scss">
 	.popup {
 		background-color: var(--c-black-s2);
-		position: absolute;
 		border-radius: var(--br-sm);
-		max-width: 650px;
 		max-height: 700px;
-		overflow-y: auto;
 		padding: 3rem;
+		overflow-y: auto;
 
-		width: 100%;
-		top: 50%;
+		position: fixed;
 		left: 50%;
+		top: 50%;
 		transform: translate(-50%, -50%);
-        z-index: 100;
+		width: 600px;
+		z-index: 100;
+
+		&__x {
+			position: absolute;
+			right: 20px;
+			top: 20px;
+		}
+	}
+	.sidebar-open {
+		width: 550px;
+		margin-left: 100px;
 	}
 	::-webkit-scrollbar {
 		background-color: var(--tran-s2);
@@ -66,5 +77,17 @@
 	}
 	p {
 		line-height: 2.3;
+	}
+
+	@media screen and (max-width: 768px) {
+		.popup {
+			width: auto;
+			left: 0;
+			right: 0;
+			margin: 0;
+			transform: translateY(-50%);
+			padding: 1.5rem;
+			padding-top: 3.5em;
+		}
 	}
 </style>

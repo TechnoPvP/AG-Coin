@@ -17,7 +17,7 @@
 </script>
 
 {#if type === 'link'}
-	<a class="style--{style} size--{size}" style="--color:{COLORS[color]} " {href}>
+	<a on:click class="style--{style} size--{size}" style="--color:{COLORS[color]} " {href}>
 		<slot />
 	</a>
 {/if}

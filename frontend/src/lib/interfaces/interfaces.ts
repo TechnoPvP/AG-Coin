@@ -1,3 +1,5 @@
+import type {difficulty} from '$lib/interfaces/types';
+
 export interface SliderContent {
     imgSrc: string
     title: string
@@ -10,4 +12,13 @@ export interface PostData {
     source: string
     title: string
     body: string
+}
+
+export interface BlogPost {
+    title: string
+    imgUrl: string
+    difficulty: difficulty,
+    date: string,
+    body: string,
+    tags?: Array<string>
 }

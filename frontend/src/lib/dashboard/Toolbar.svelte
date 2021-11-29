@@ -66,4 +66,10 @@
 		width: 20px;
 		height: 20px;
 	}
+
+	@media screen and (max-width: 768px) {
+		.profile {
+			span {display: none}
+		}
+	}
 </style>
