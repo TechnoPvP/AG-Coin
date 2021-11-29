@@ -1,22 +1,18 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	export let options = ['Profile', 'Notifcations', 'Secuirty', 'Data'];
+	export let options;
+	let active = 'Profile';
 
 	let underlineElement: HTMLElement;
 	let lineElement: HTMLElement;
-	let active = 'Profile';
 
 	const moveUnderline = (element: HTMLElement) => {
 		const elementRect = element.getBoundingClientRect();
 		const lineRect = lineElement.getBoundingClientRect();
-		const elemStyle = getComputedStyle(element);
-        const paddingOffset = parseFloat(elemStyle.paddingRight) + parseFloat(elemStyle.paddingLeft);
 
-		underlineElement.style.width = `${
-			elementRect.width - paddingOffset
-		}px`;
-		underlineElement.style.left = `${(elementRect.left - lineRect.left) + paddingOffset/2}px`;
+		underlineElement.style.width = `${elementRect.width}px`;
+		underlineElement.style.left = `${elementRect.left - lineRect.left}px`;
 	};
 
 	const getActiveElement = (active: string): HTMLElement => {
@@ -26,15 +22,14 @@
 		return activeElem;
 	};
 
-	const returnUnderline = () => {
-		if (!getActiveElement(active)) return;
-		moveUnderline(getActiveElement(active));
-	};
-
 	const handleClickEvent = (event) => {
 		active = event.target.innerText;
 
 		moveUnderline(event.target);
+	};
+	const handleMouseLeave = () => {
+		if (!getActiveElement(active)) return;
+		moveUnderline(getActiveElement(active));
 	};
 	const handleHoverEvent = (event) => {
 		moveUnderline(event.target);
@@ -42,18 +37,17 @@
 </script>
 
 <nav>
-	<div class="options">
+	<div class="options" on:mouseleave={handleMouseLeave}>
 		{#each options as navItem}
-			<h4
-				id="option--{navItem.toString().toLowerCase()}"
-				href="/"
+			<a
+				id="option--{navItem.toLowerCase()}"
+				href={navItem.toLowerCase()}
 				class:active={navItem.toLowerCase() == active.toLowerCase()}
 				on:click={handleClickEvent}
 				on:mouseenter={handleHoverEvent}
-				on:mouseleave={returnUnderline}
 			>
 				{navItem}
-			</h4>
+			</a>
 		{/each}
 	</div>
 	<div class="line" bind:this={lineElement}>
@@ -64,12 +58,13 @@
 <style lang="scss">
 	nav {
 		display: flex;
+		align-items: flex-start;
 		flex-direction: column;
 		gap: var(--pd-xs);
 	}
 	.options {
 		display: flex;
-		// gap: var(--pd-xl);
+		gap: var(--pd-xl);
 	}
 	.line {
 		width: 100%;
@@ -88,7 +83,7 @@
 		}
 	}
 
-	h4 {
+	a {
 		color: var(--c-gray-s3);
 		font-weight: 600;
 		font-size: var(--fs-h4);
@@ -97,12 +92,6 @@
 		&:hover {
 			cursor: pointer;
 		}
-	}
-	h4:not(:first-of-type) {
-		padding: 0 25px;
-	}
-	h4:first-child {
-		padding-right: 12.5px;
 	}
 	.active {
 		color: white;

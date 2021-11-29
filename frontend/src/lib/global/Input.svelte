@@ -51,7 +51,8 @@
 		width: 100%;
 	}
 	label {
-		color: var(--c-gray-s1);
+		color: var(--c-gray-s2);
+		text-transform: capitalize;
 	}
 	input::placeholder {
 		text-transform: capitalize;

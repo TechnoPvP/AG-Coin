@@ -1,6 +1,8 @@
 <script>
 	import AccountBio from '$lib/dashboard/settings/AccountBio.svelte';
 	import SettingNav from '$lib/dashboard/settings/SettingNav.svelte';
+
+	const options = ['Profile', 'Notifications', 'Security', 'Data'];
 </script>
 
 <div class="container">
@@ -11,7 +13,7 @@
 		joined="1 year"
 	/>
 
-	<SettingNav />
+	<SettingNav {options} />
 
 	<slot />
 </div>

@@ -4,34 +4,24 @@
 	export let desc = null;
 	export let large = false;
 	export let spaced = false;
+	export let breadcrumps = true;
 </script>
 
-<header class:large={!large} class:spaced>
+<header class:large class:spaced>
 	<h1>{title}</h1>
 	{#if desc}
-		<h3>{desc}</h3>
+		<p>{desc}</p>
 	{/if}
-	<Breadcrumbs />
+	{#if breadcrumps}
+		<Breadcrumbs />
+	{/if}
 </header>
 
 <style lang="scss">
-	.large {
+	header {
 		text-align: left;
 		max-width: 30ch;
 		margin: 0;
-
-		h1 {
-			font-size: var(--fs-h1);
-		}
-		h3 {
-			font-size: var(--fs-body);
-			color: var(--c-gray-s1);
-		}
-	}
-	header {
-		text-align: center;
-		max-width: 70ch;
-		margin: 4em auto;
 
 		&.spaced {
 			padding-top: var(--pd-lg);
@@ -39,11 +29,26 @@
 		}
 
 		h1 {
-			font-size: 50px;
-			font-weight: var(--fw-black);
+			font-size: var(--fs-h1);
 		}
-		h3 {
-			font-weight: 400;
+		p {
+			font-size: var(--fs-body);
+			font-weight: 300;
+			color: var(--c-gray-s3);
+		}
+	}
+	.large {
+		text-align: center;
+		max-width: 70ch;
+		margin: 4em auto;
+
+		h1 {
+			font-size: 50px;
+			font-weight: var(--fw-bold);
+		}
+		p {
+			font-weight: 300;
+			font-size: var(--fs-body);
 		}
 	}
 </style>
