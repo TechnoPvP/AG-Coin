@@ -2,31 +2,31 @@
 	import Button from '$lib/global/Button.svelte';
 	// import Quill from 'quill';
 	import { onMount } from 'svelte';
-	let quill = null;
-	let content = '';
-	let toolbarOptions = [
-		[{ header: [1, 2, 3, false] }],
+	// let quill = null;
+	// let content = '';
+	// let toolbarOptions = [
+	// 	[{ header: [1, 2, 3, false] }],
 
-		['bold', 'italic', 'underline', 'blockquote', { align: [] }],
+	// 	['bold', 'italic', 'underline', 'blockquote', { align: [] }],
 
-		[{ list: 'ordered' }, { list: 'bullet' }],
+	// 	[{ list: 'ordered' }, { list: 'bullet' }],
 
-		['image']
-	];
-	function updatePreview() {
-		content = quill.root.innerHTML;
-		console.log(content);
-	}
-	onMount(async () => {
-		const Quill = (await import('quill'))?.default;
-		quill = new Quill('#editor', {
-			theme: 'snow',
-			placeholder: 'Type your content here....',
-			modules: {
-				toolbar: toolbarOptions
-			}
-		});
-	});
+	// 	['image']
+	// ];
+	// function updatePreview() {
+	// 	content = quill.root.innerHTML;
+	// 	console.log(content);
+	// }
+	// onMount(async () => {
+	// 	const Quill = (await import('quill'))?.default;
+	// 	quill = new Quill('#editor', {
+	// 		theme: 'snow',
+	// 		placeholder: 'Type your content here....',
+	// 		modules: {
+	// 			toolbar: toolbarOptions
+	// 		}
+	// 	});
+	// });
 </script>
 
 <svelte:head>
@@ -36,7 +36,7 @@
 <form class="container">
 	<div class="toolbar">
 		<h4>Pin to top for 1 day</h4>
-		<Button type="button" on:click={updatePreview}>Upload Cover Image</Button>
+		<!-- <Button type="button" on:click={updatePreview}>Upload Cover Image</Button> -->
 	</div>
 
 	<div class="heading">
@@ -49,7 +49,7 @@
 	</div>
 
 	<div class="result">
-		{@html content}
+		<!-- {@html content} -->
 	</div>
 </form>
 
