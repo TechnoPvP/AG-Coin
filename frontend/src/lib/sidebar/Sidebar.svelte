@@ -14,7 +14,7 @@
 <div class="sidebar" class:close={!$sidebarOpen}>
 	<SidebarGroup title="Dashboard">
 		<SidebarItem href="/dashboard/home" icon="home" active>Home</SidebarItem>
-		<SidebarItem href="/dashboard/alert" icon="alert">Alerts</SidebarItem>
+		<SidebarItem href="/dashboard/home" icon="alert">Alerts</SidebarItem>
 		<SidebarItem href="/dashboard/feed" icon="feed">Feed</SidebarItem>
 	</SidebarGroup>
 	
@@ -26,7 +26,7 @@
 	
 	<SidebarGroup title="Account">
 		<SidebarItem href="/dashboard/settings/profile" icon="profile">Settings</SidebarItem>
-		<SidebarItem href="/dashboard/notifcations" icon="notifcations">Notifcations</SidebarItem>
+		<SidebarItem href="/dashboard/home" icon="notifcations">Notifcations</SidebarItem>
 		<SidebarItem href="/dashboard/support" icon="support">Support</SidebarItem>
 	</SidebarGroup>
 </div>

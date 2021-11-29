@@ -17,8 +17,8 @@
 	<Input type="password" name="password" placeholder="password" label="Password" />
 
 	<div class="submit">
-		<Button href="/login" size="stretch">Sign In</Button>
-		<span>Forgot your password? <a href="Reset Password">Reset password</a></span>
+		<Button href="/auth/login" size="stretch">Sign In</Button>
+		<span>Forgot your password? <a href="/">Reset password</a></span>
 	</div>
 </form>
 

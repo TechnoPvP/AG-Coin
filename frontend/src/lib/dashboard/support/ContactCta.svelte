@@ -6,7 +6,7 @@
 	<div class="line" />
 	<h2>Didn't find what you're looking for?</h2>
 	<p>Please reach out to us, we will be glad to answer any of questions.</p>
-	<Button href="/dashboard/contact" size="large">Contact Us</Button>
+	<Button href="/dashboard/home" size="large">Contact Us</Button>
 </header>
 
 <style lang="scss">

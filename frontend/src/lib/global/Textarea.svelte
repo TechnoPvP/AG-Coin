@@ -20,7 +20,7 @@
 		aria-hidden="true"
 		style="min-height: {minHeight}; max-height: {maxHeight}">{value + '\n'}</pre>
 
-	<textarea name="comment" placeholder="Add to the discussion" bind:this={textAreaElement} />
+	<textarea name="comment" placeholder="Add to the discussion" bind:value bind:this={textAreaElement} />
 </div>
 
 <style lang="scss">

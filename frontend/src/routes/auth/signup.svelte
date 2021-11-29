@@ -23,7 +23,7 @@
 	<PassStrength pass={value} />
 
 	<div class="submit">
-		<Button href="/login" size="stretch">Sign In</Button>
+		<Button href="/auth/login" size="stretch">Sign In</Button>
 	</div>
 </form>
 
