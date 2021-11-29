@@ -1,4 +1,7 @@
 <script lang="ts">
+import { fade } from "svelte/transition";
+
+
 	type Size = 'small' | 'regular' | 'large' | 'stretch';
 	type Style = 'filled' | 'outlined' | 'none';
 	type Type = 'button' | 'link';
@@ -23,7 +26,7 @@
 {/if}
 
 {#if type == 'button'}
-	<button on:click class="style--{style} size--{size}" style="--color:{COLORS[color]}">
+	<button on:click transition:fade={{duration: 250}} class="style--{style} size--{size}" style="--color:{COLORS[color]}">
 		<slot />
 	</button>
 {/if}
@@ -57,10 +60,11 @@
 	}
 	.size {
 		&--small {
-			padding: 5px 5px;
+			padding: 7px 5px;
 		}
 		&--regular {
 			padding: 10px 16px;
+			width: max-content;
 		}
 		&--large {
 			padding: 10px 40px;

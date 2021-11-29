@@ -25,7 +25,7 @@
 	
 	
 	<SidebarGroup title="Account">
-		<SidebarItem href="/dashboard/profile" icon="profile">Profile</SidebarItem>
+		<SidebarItem href="/dashboard/settings/profile" icon="profile">Settings</SidebarItem>
 		<SidebarItem href="/dashboard/notifcations" icon="notifcations">Notifcations</SidebarItem>
 		<SidebarItem href="/dashboard/support" icon="support">Support</SidebarItem>
 	</SidebarGroup>

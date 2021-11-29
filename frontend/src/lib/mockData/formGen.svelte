@@ -10,7 +10,7 @@
 	let f: Array<Form> = [
 		{
 			title: 'Personal',
-			items: [['first_name', 'last_name'], { birthday: 'calendar' }]
+			items: [['first_name', 'last_name'], { birthday: 'calendar' }, 'username', {username: }]
 		},
 		{
 			title: 'Contact',

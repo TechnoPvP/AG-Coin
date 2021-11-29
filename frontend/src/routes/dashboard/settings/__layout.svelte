@@ -2,7 +2,7 @@
 	import AccountBio from '$lib/dashboard/settings/AccountBio.svelte';
 	import SettingNav from '$lib/dashboard/settings/SettingNav.svelte';
 
-	const options = ['Profile', 'Notifications', 'Security', 'Data'];
+	const options = ['Profile', 'Notifications', 'Security'];
 </script>
 
 <div class="container">

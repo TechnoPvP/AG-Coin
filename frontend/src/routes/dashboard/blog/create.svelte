@@ -4,7 +4,7 @@
 	import { onMount } from 'svelte';
 	let quill = null;
 	let content = '';
-	var toolbarOptions = [
+	let toolbarOptions = [
 		[{ header: [1, 2, 3, false] }],
 
 		['bold', 'italic', 'underline', 'blockquote', { align: [] }],

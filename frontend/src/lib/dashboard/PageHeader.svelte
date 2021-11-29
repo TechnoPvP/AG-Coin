@@ -38,6 +38,9 @@
 		}
 	}
 	.large {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 		text-align: center;
 		max-width: 70ch;
 		margin: 4em auto;

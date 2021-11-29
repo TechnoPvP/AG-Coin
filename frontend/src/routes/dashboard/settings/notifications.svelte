@@ -1,5 +1,30 @@
 <script>
 	import PageHeader from '$lib/dashboard/PageHeader.svelte';
+	import Table from '$lib/dashboard/settings/Table.svelte';
+
+	const notficationData = {
+		headers: ['profile', 'email', 'browser', 'sms'],
+		items: [
+			'When someone follows you',
+			'When someone follows you',
+			'When someone follows you',
+			'When someone follows you',
+			'When someone follows you',
+			'When someone follows you'
+		]
+	};
+
+	const emailData = {
+		headers: ['Select which emails you want to receive', ''],
+		items: [
+			'When someone follows you',
+			'When someone follows you',
+			'When someone follows you',
+			'When someone follows you',
+			'When someone follows you',
+			'When someone follows you'
+		]
+	};
 </script>
 
 <PageHeader
@@ -21,79 +46,18 @@
 		{/each}
 	</div>
 
-	<table class="table" cellspacing={0}>
-		<thead>
-			<tr>
-				<th>Profile</th>
-				<th>Email</th>
-				<th>Browser</th>
-				<th>SMS</th>
-			</tr>
-		</thead>
-
-		<tbody>
-			{#each Array(5) as _}
-				<tr>
-					<td>When someone follows you</td>
-					<td><input type="checkbox" name="" /></td>
-					<td><input type="checkbox" name="" /></td>
-					<td><input type="checkbox" name="" /></td>
-				</tr>
-			{/each}
-		</tbody>
-	</table>
+	<Table headers={notficationData.headers} items={notficationData.items} />
 </div>
 
 <div class="card">
 	<h3>Email Prefrences</h3>
-
-	<table class="table" cellspacing={0}>
-		<thead>
-			<tr>
-				<th>Select which emails you want to receive</th>
-				<th />
-			</tr>
-		</thead>
-
-		<tbody>
-			{#each Array(5) as _}
-				<tr>
-					<td>When someone follows you</td>
-					<td><input type="checkbox" name="" /></td>
-				</tr>
-			{/each}
-		</tbody>
-	</table>
+	<Table headers={emailData.headers} items={emailData.items} />
 </div>
 
 <style lang="scss">
 	input {
 		width: 15px;
 		height: 15px;
-	}
-	.table {
-		width: 100%;
-
-		th {
-			padding: 0;
-			text-align: left;
-			border-bottom: 1px solid var(--tran-s1);
-		}
-		th:not(:first-of-type) {
-			text-align: center;
-		}
-
-		tr td:not(:first-of-type) {
-			text-align: center;
-		}
-		td {
-			padding: var(--pd-sm) 0;
-			color: var(--c-gray-s2);
-		}
-		th {
-			padding: var(--pd-xs) 0;
-			color: var(--c-gray-s1);
-		}
 	}
 	.option {
 		display: flex;
