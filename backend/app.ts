@@ -4,7 +4,7 @@ import path from "path"
 import cookieParser from "cookie-parser"
 import logger from "morgan"
 import dbController from "./controller/DbController"
-import Router from "./routes/router"
+import Router from "./routes/routes"
 const app = express();
 
 // view engine setup
@@ -17,7 +17,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', Router.Index);
 app.use('/blog', Router.Blog);
 app.use('/user', Router.User);
 
