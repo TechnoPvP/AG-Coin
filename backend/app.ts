@@ -17,8 +17,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/blog', Router.Blog);
-app.use('/user', Router.User);
+app.use('/api/blog', Router.Blog);
+app.use('/api/user', Router.User);
+app.use('/api/support', Router.Support);
 
 dbController();
 

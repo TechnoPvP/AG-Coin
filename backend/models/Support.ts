@@ -11,8 +11,12 @@ const supportSchema = new Schema({
       required: true,
       min: 2
     },
+    content: {
+      type: String,
+      required: true,
+      min: 10,
+    },
     topics: [String],
-    content: String,
     views: Number
 });
 
