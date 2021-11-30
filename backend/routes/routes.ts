@@ -1,6 +1,5 @@
 import Blog from "./blog"
-import User from "./user"
+import Auth from "./auth"
 import Support from "./support"
 
-
-export default {Blog, User, Support};
+export default {Blog, Auth, Support};
