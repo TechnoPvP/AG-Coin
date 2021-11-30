@@ -16,7 +16,11 @@ const supportSchema = new Schema({
       required: true,
       min: 10,
     },
-    topics: [String],
+    topics: {
+      type: [String],
+      required: false,
+      default: () => {return null}
+    },
     views: Number
 });
 
