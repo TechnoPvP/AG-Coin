@@ -1,10 +1,10 @@
 const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const dbController = require('./controller/DbController');
-const mongoose = require('mongoose');
+import express from 'express';
+import path from 'path';
+import dbController from './controller/DbController';
+import mongoose from 'mongoose';
 
 
 const app = express();
@@ -28,7 +28,7 @@ app.use(function (req: any, res: any, next: Function) {
   next(createError(404));
 });
 
-app.use(function (err: any, req: any, res: any, next: string) {
+app.use(function (err: any, req: any, res: any, next: Function) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
