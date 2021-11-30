@@ -5,7 +5,8 @@ import express from 'express';
 import path from 'path';
 import dbController from './controller/DbController';
 import mongoose from 'mongoose';
-
+import indexRouter from './routes/index';
+import blogRouter from './routes/blog';
 
 const app = express();
 
@@ -19,8 +20,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', require('./routes/index'));
-app.use('/blog', require('./routes/blog'));
+app.use('/', indexRouter);
+app.use('/blog', blogRouter);
 
 dbController();
 
