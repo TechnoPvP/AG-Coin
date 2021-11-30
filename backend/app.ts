@@ -1,12 +1,10 @@
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const dbController = require('./controller/DbController');
-const mongoose = require('mongoose');
-
-
+import createError from "http-errors"
+import express, { Request, Response, NextFunction } from "express"
+import path from "path"
+import cookieParser from "cookie-parser"
+import logger from "morgan"
+import dbController from "./controller/DbController"
+import Router from "./routes/router"
 const app = express();
 
 // view engine setup
@@ -19,16 +17,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', require('./routes/index'));
-app.use('/blog', require('./routes/blog'));
+app.use('/', Router.Index);
+app.use('/blog', Router.Blog);
+app.use('/user', Router.User);
 
 dbController();
 
-app.use(function (req: any, res: any, next: Function) {
+app.use(function (req: Request, res: Response, next: NextFunction) {
   next(createError(404));
 });
 
-app.use(function (err: any, req: any, res: any, next: string) {
+app.use(function (err: any, req: Request, res: Response) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 

@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
-require('dotenv').config();
+import mongoose from "mongoose"
+import dotenv from "dotenv"
+dotenv.config()
 
 const db = async () => {
     try {
         await mongoose.connect(
             `${process.env.MONGO}`,
-            { useNewUrlParser: true, useUnifiedTopology: true },
         );
         console.log('Connted to MongoDB Database')
     } catch( err) {
@@ -13,4 +13,4 @@ const db = async () => {
     }
 };
 
-module.exports = db;
+export default db;
