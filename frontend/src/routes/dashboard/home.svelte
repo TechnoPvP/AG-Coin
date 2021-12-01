@@ -1,4 +1,5 @@
 <script>
+	import { goto } from '$app/navigation';
 	import { session } from '$app/stores';
 	import Button from '$lib/global/Button.svelte';
 	import { sidebarOpen } from '$lib/stores';
@@ -15,6 +16,7 @@
 		})
 
 		$session.user = null
+		goto("/")
 	}
 </script>
 

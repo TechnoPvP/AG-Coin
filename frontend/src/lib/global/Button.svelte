@@ -26,7 +26,7 @@ import { fade } from "svelte/transition";
 {/if}
 
 {#if type == 'button'}
-	<button on:click transition:fade={{duration: 250}} class="style--{style} size--{size}" style="--color:{COLORS[color]}">
+	<button on:click transition:fade|local={{duration: 250}} class="style--{style} size--{size}" style="--color:{COLORS[color]}">
 		<slot />
 	</button>
 {/if}

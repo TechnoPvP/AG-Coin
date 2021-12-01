@@ -16,7 +16,7 @@ export default (mongoError: BaseMongoError): string => {
         if (!key) return `Server Error, Cannot Proccess Error code ${mongoError.code}`
         const value = mongoError.keyValue?.[key]
         if (!value) return `Server Error, Cannot Proccess Error code ${mongoError.code}`
-        return `${value} is an already taken ${key}`
+        return `${value} is a already taken ${key}`
     }
 
     return `Unknown Error - ${mongoError.code}`
