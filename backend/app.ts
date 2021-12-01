@@ -8,6 +8,8 @@ import Router from "./routes/routes"
 import express_session from "express-session"
 import mongo_session from "connect-mongodb-session"
 import dotenv from "dotenv"
+import cors from "cors"
+
 dotenv.config()
 
 const app = express();
@@ -23,13 +25,18 @@ app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(express.json());
+app.use(cors({
+  credentials: true,
+  origin: "http://localhost:3000"
+}))
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use( express_session({
   secret: "CAL8z2J3de",
   cookie: {
-    maxAge: 1000 * 60 * 60 * 24 * 7 * 4 * 6 // 6 months
+    path: "/",
+    maxAge: 1000 * 60 * 60 * 24 * 7 * 4 * 6, // 6 months
   },
   store,
   resave: true,

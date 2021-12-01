@@ -95,5 +95,10 @@ router.get("/logout", (req: Request, res: Response) => {
     })
 })
 
+// /auth/me
+router.get("/me", (req: Request, res: Response) => {
+    if ( req.session.user ) return res.status(200).json( req.session.user )
+    return onErr( res, "unauthorized", 401 )
+})
 
 export default router

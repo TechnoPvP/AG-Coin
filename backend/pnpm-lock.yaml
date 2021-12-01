@@ -3,6 +3,7 @@ lockfileVersion: 5.3
 specifiers:
   '@types/connect-mongodb-session': ^2.4.2
   '@types/cookie-parser': ^1.4.2
+  '@types/cors': ^2.8.12
   '@types/express': ^4.17.13
   '@types/express-session': ^1.17.4
   '@types/http-errors': ^1.8.1
@@ -12,6 +13,7 @@ specifiers:
   argon2: ^0.28.3
   connect-mongodb-session: ^3.1.1
   cookie-parser: ~1.4.4
+  cors: ^2.8.5
   debug: ~2.6.9
   dotenv: ^10.0.0
   express: ~4.16.1
@@ -28,12 +30,14 @@ specifiers:
 dependencies:
   '@types/connect-mongodb-session': 2.4.2
   '@types/cookie-parser': 1.4.2
+  '@types/cors': 2.8.12
   '@types/express-session': 1.17.4
   '@types/http-errors': 1.8.1
   '@types/morgan': 1.9.3
   argon2: 0.28.3
   connect-mongodb-session: 3.1.1
   cookie-parser: 1.4.6
+  cors: 2.8.5
   debug: 2.6.9
   dotenv: 10.0.0
   express: 4.16.4
@@ -164,6 +168,10 @@ packages:
     resolution: {integrity: sha512-uwcY8m6SDQqciHsqcKDGbo10GdasYsPCYkH3hVegj9qAah6pX5HivOnOuI3WYmyQMnOATV39zv/Ybs0bC/6iVg==}
     dependencies:
       '@types/express': 4.17.13
+    dev: false
+
+  /@types/cors/2.8.12:
+    resolution: {integrity: sha512-vt+kDhq/M2ayberEtJcIN/hxXy1Pk+59g2FV/ZQceeaTyCtCucjL2Q7FXlFjtWn4n15KCr1NE2lNNFhp0lEThw==}
     dev: false
 
   /@types/express-serve-static-core/4.17.26:
@@ -641,6 +649,14 @@ packages:
   /cookie/0.4.1:
     resolution: {integrity: sha512-ZwrFkGJxUR3EIoXtO+yVE69Eb7KlixbaeAWfBQB9vVsNn/o+Yw69gBWSSDK825hQNdN+wF8zELf3dFNl/kxkUA==}
     engines: {node: '>= 0.6'}
+    dev: false
+
+  /cors/2.8.5:
+    resolution: {integrity: sha512-KIHbLJqu73RGr/hnbrO9uBeixNGuvSQjul/jdFvS/KFSIH1hWVd1ng7zOHx+YrEfInLG7q4n6GHQ9cDtxv/P6g==}
+    engines: {node: '>= 0.10'}
+    dependencies:
+      object-assign: 4.1.1
+      vary: 1.1.2
     dev: false
 
   /create-require/1.1.1:
@@ -1466,6 +1482,11 @@ packages:
       console-control-strings: 1.1.0
       gauge: 4.0.0
       set-blocking: 2.0.0
+    dev: false
+
+  /object-assign/4.1.1:
+    resolution: {integrity: sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=}
+    engines: {node: '>=0.10.0'}
     dev: false
 
   /on-finished/2.3.0:

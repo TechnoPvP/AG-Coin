@@ -1,6 +1,17 @@
+<script lang="ts" context="module">
+	import type { Load } from '@sveltejs/kit';
+	export const load: Load = ({ session }) => {
+		if (!session.user) return {
+			status: 401,
+			error: "401 UnAuthorized"
+		}
+
+		return {}
+	}
+</script>
+
 <script>
 	import Toolbar from '$lib/dashboard/Toolbar.svelte';
-
 	import Sidebar from '$lib/sidebar/Sidebar.svelte';
 	import { overlay, sidebarOpen } from '$lib/stores';
 </script>

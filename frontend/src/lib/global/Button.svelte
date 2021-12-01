@@ -42,6 +42,7 @@ import { fade } from "svelte/transition";
 		border-radius: var(--br-sm);
 		color: white;
 		white-space: nowrap;
+		cursor: pointer;
 	}
 	button {
 		appearance: none;

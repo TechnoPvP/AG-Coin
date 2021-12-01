@@ -1,3 +1,15 @@
+<script lang="ts" context="module">
+	import type { Load } from '@sveltejs/kit';
+	export const load: Load = ({ session }) => {
+		if (session.user) return {
+			status: 300,
+			redirect: "/dashboard/home",
+		}
+
+		return {}
+	}
+</script>
+
 <script lang="ts">
 	import ImageSlider from '$lib/auth/ImageSlider.svelte';
 	import type { SliderContent } from '$lib/interfaces/interfaces';
