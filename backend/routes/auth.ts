@@ -2,6 +2,7 @@ import { Router, Request, Response } from "express"
 import User from "../models/User"
 import { Register, Login } from "../validation/Auth"
 import { hash, verify } from "argon2"
+import MongoError, { BaseMongoError } from "../validation/Mongo"
 const router = Router()
 
 const onErr = (res: Response, error: string, status = 400) => res
@@ -11,8 +12,8 @@ const onErr = (res: Response, error: string, status = 400) => res
 interface registerBody {
     email: string,
     password: string,
-    first: string,
-    last: string,    
+    first_name: string,
+    last_name: string,    
 }
 
 interface loginBody {
@@ -25,8 +26,8 @@ declare module 'express-session' {
       user: {
           id: any;
           email: string;
-          first: string;
-          last: string;
+          first_name: string;
+          last_name: string;
       };
     }
 }
@@ -34,8 +35,8 @@ declare module 'express-session' {
 const getSessionUser = (user: any) => ({
     id: user._id,
     email: user.email,
-    first: user.first_name,
-    last: user.last_name,
+    first_name: user.first_name,
+    last_name: user.last_name,
 })
 
 // /auth/register
@@ -43,26 +44,27 @@ router.post("/register", async (req: Request<any, any, registerBody>, res: Respo
     let validation = Register.validate( req.body )
     if ( validation.error ) return onErr( res, validation.error.message )
     
-    const { email, password, first, last } = req.body
+    const { email, password, first_name, last_name } = req.body
     const hashPassword = await hash(password);
 
     try {
         const user = await User.create({
             email,
             password: hashPassword,
-            first_name: first,
-            last_name: last,
+            first_name: first_name,
+            last_name: last_name,
         });
 
         req.session.user = getSessionUser(user)
         return res.status(201).json(req.session.user)
     } catch (err) {
-        return onErr( res, err as string )
+        const message = MongoError( err as BaseMongoError )
+        return onErr(res, message)
     }
 } )
 
 // /auth/login
-router.get("/login", async (req: Request<any, any, loginBody>, res: Response) => {
+router.post("/login", async (req: Request<any, any, loginBody>, res: Response) => {
     if ( req.session?.user ?? false ) return res.status(201).json(req.session.user)
 
     let validation = Login.validate( req.body )
@@ -78,17 +80,16 @@ router.get("/login", async (req: Request<any, any, loginBody>, res: Response) =>
         req.session.user = getSessionUser( user )
         return res.status(200).json( req.session.user )
     } catch (err) {
-        return onErr(res, err as string)
+        const message = MongoError( err as BaseMongoError )
+        return onErr(res, message)
     }
 })
 
 // /auth/logout
 router.get("/logout", (req: Request, res: Response) => {
     req.session.destroy(console.log)
-    res.cookie("connect.sid", "destroyed", {
-        expires: new Date(Date.now())
-    })
-    
+    res.clearCookie("connect.sid")
+
     return res.status(200).json({
         ok: "User Logged out"
     })
