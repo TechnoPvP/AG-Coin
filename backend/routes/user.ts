@@ -4,6 +4,8 @@ import { UserUpdate } from "../validation/User"
 import MongoError, { BaseMongoError } from "../validation/Mongo"
 import { hash } from "argon2"
 import { Router, Request, Response } from "express"
+import store from "../utils/store"
+import { SessionData } from "express-session"
 const router = Router()
 
 const onErr = (res: Response, message: string, status = 400) => res.status(status).json({
@@ -45,10 +47,16 @@ router.delete("/:id", async (req: Request, res: Response) => {
         if ( `${req.session.user?.id}` !== user.id ) return onErr(res, "unauthorized", 401)
         
         await user.delete()
-        // TODO: Work out a legitmate way to destroy all the user active sessions
-        req.session.destroy( console.error )
-    
         res.clearCookie("connect.sid")
+        store.all( (err, sessions) => {
+            type sessionType = { _id: string; expires: Date; session: SessionData }
+            const all = (sessions as unknown) as sessionType[]
+            all.forEach( ({ session, _id }) => {
+                if ( `${session.user?.id}` === user.id ) store.destroy( _id ) 
+            } )
+        } )
+
+        req.session?.destroy( console.error )
         return res.status(200).json({
             ok: `User ${user.id} deleted`
         })
