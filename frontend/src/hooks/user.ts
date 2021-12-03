@@ -2,7 +2,7 @@ import host from "$lib/utils/host";
 import type { Handle } from "@sveltejs/kit";
 
 const User: Handle = async ({ request, resolve }) => {
-    request.locals.user = await fetch(`${host}/auth/me`, {
+    request.locals.user = await fetch(`${host}/user/me`, {
         headers: {
             "cookie": request.headers["cookie"],
         },
