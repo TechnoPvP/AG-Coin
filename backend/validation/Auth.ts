@@ -12,11 +12,11 @@ export const Register = Joi.object({
         .pattern(/.*[0-9].*/, { name: "min number characters" })
         .pattern(/.*[!@#$%^&*(),.?":{}|<>].*/, { name: "min amount special characters" })
         .pattern(/\s/, { name: "contains spaces", invert: true }),
-    first: Joi
+    first_name: Joi
         .string()
         .min(2)
         .required(),
-    last: Joi
+    last_name: Joi
         .string()
         .required()
         .min(2),

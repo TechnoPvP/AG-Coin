@@ -1,15 +1,11 @@
 <script lang="ts">
-import { fade } from "svelte/transition";
-
-
 	type Size = 'small' | 'regular' | 'large' | 'stretch';
 	type Style = 'filled' | 'outlined' | 'none';
 	type Type = 'button' | 'link';
 
 	const COLORS = {
 		blue: 'var(--c-blue)',
-		red: 'var(--c-red)',
-		green: 'var(--c-green)'
+		red: 'var(--c-red)'
 	};
 
 	export let size: Size = 'regular';
@@ -17,6 +13,7 @@ import { fade } from "svelte/transition";
 	export let type: Type = 'link';
 	export let color: keyof typeof COLORS = 'blue';
 	export let href: null | string = null;
+	export let disabled = false;
 </script>
 
 {#if type === 'link'}
@@ -26,7 +23,7 @@ import { fade } from "svelte/transition";
 {/if}
 
 {#if type == 'button'}
-	<button on:click transition:fade={{duration: 250}} class="style--{style} size--{size}" style="--color:{COLORS[color]}">
+	<button on:click class="style--{style} size--{size}" style="--color:{COLORS[color]}" {disabled}>
 		<slot />
 	</button>
 {/if}
@@ -42,6 +39,10 @@ import { fade } from "svelte/transition";
 		border-radius: var(--br-sm);
 		color: white;
 		white-space: nowrap;
+		min-height: 37px;
+	}
+	button:disabled {
+		opacity: 0.5;
 	}
 	button {
 		appearance: none;

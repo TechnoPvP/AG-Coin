@@ -8,6 +8,7 @@ import Router from "./routes/routes"
 import express_session from "express-session"
 import mongo_session from "connect-mongodb-session"
 import dotenv from "dotenv"
+import cors from 'cors';
 dotenv.config()
 
 const app = express();
@@ -26,7 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use( express_session({
+app.use(express_session({
   secret: "CAL8z2J3de",
   cookie: {
     maxAge: 1000 * 60 * 60 * 24 * 7 * 4 * 6 // 6 months
@@ -34,7 +35,11 @@ app.use( express_session({
   store,
   resave: true,
   saveUninitialized: false,
-}) )
+}))
+
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));
 
 app.use('/api/blog', Router.Blog);
 app.use('/api/auth', Router.Auth);

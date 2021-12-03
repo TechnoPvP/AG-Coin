@@ -1,29 +1,71 @@
 <script>
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
+
 	import PassStrength from '$lib/auth/PassStrength.svelte';
 	import TopBar from '$lib/auth/TopBar.svelte';
+	import Loader from '$lib/dashboard/Loader.svelte';
 	import Button from '$lib/global/Button.svelte';
 	import Input from '$lib/global/Input.svelte';
+	import InputError from '$lib/global/InputError.svelte';
 
-	let value;
+	let first_name, last_name, email, password;
+	let querying, error;
 
+	async function signupRequest() {
+		// querying = true;
+		const response = await fetch('http://localhost:5000/api/auth/register', {
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			mode: 'cors',
+			method: 'POST',
+			body: JSON.stringify({ first_name, last_name, email, password })
+		});
+		const result = await response.json();
+
+		if (response.ok) {
+			goto(`login?email=${email}`);
+		} else {
+			error = result?.error;
+		}
+	}
+	function handleSubmit() {
+		querying = signupRequest();
+	}
 </script>
 
 <TopBar type="signup" />
-
-<form>
+<form on:submit|preventDefault={handleSubmit}>
 	<header>
 		<span>Create an account to contiue</span>
 		<h1>Getting Started</h1>
 	</header>
+	<InputError {error} />
+	<div class="grouped">
+		<Input name="first_name" placeholder="Full name" label="First name" bind:value={first_name} />
+		<Input name="last_name" placeholder="Full name" label="Last name" bind:value={last_name} />
+	</div>
+	<Input type="email" name="email" placeholder="Email" label="Email address" bind:value={email} />
+	<Input
+		type="password"
+		name="password"
+		placeholder="Password"
+		label="Password"
+		bind:value={password}
+	/>
 
-	<Input name="name" placeholder="Full name" label="Full name" />
-	<Input type="email"name="email" placeholder="Email" label="Email address" />
-	<Input type="password" name="password" placeholder="Password" label="Password" bind:value={value} />
-
-	<PassStrength pass={value} />
+	<PassStrength pass={password} />
 
 	<div class="submit">
-		<Button href="/auth/login" size="stretch">Sign In</Button>
+		<Button type="button" size="stretch">
+			{#await querying}
+				<Loader />
+			{:then result}
+				Create Account
+			{/await}
+		</Button>
 	</div>
 </form>
 
@@ -33,6 +75,12 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.4em;
+	}
+	.grouped {
+		display: flex;
+		justify-content: space-between;
+		gap: var(--pd-md);
+		width: 100%;
 	}
 	form {
 		display: flex;
@@ -45,10 +93,6 @@
 	}
 	.submit {
 		width: 100%;
-
-		span {
-			margin-top: 10px;
-		}
 	}
 	span {
 		display: block;

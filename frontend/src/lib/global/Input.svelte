@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { text } from 'svelte/internal';
-
 	type Type = 'text' | 'textarea' | 'email' | 'password';
 	type Size = 'small' | 'regular' | 'stretch';
 
@@ -10,27 +8,47 @@
 	export let value = null;
 	export let size = 'regular';
 	export let label = null;
+
+	let errorMessage;
+	export let validation: Function = null;
+
+	const handleValidation = () => {
+		if (!validation) return;
+
+		errorMessage = validation();
+	};
+	$: if (value) errorMessage = false;
 </script>
 
 <div>
+	<!-- Input Label -->
 	{#if label}
 		<label for={name}>{label}</label>
 	{/if}
 
+	<!-- Input Types -->
 	{#if type == 'text'}
 		<input type="text" {name} {placeholder} bind:value />
 	{/if}
 
 	{#if type == 'email'}
-		<input type="email" {name} {placeholder} bind:value />
+		<input
+			type="email"
+			{name}
+			{placeholder}
+			bind:value
+			on:blur={handleValidation}
+		/>
+		{#if errorMessage}
+			<span>{errorMessage}</span>
+		{/if}
 	{/if}
 
 	{#if type == 'password'}
-		<input type="password" {name} {placeholder} bind:value />
-	{/if}
-
-	{#if type == 'textarea'}
-		<textarea />
+		<input type="password" {name} {placeholder} bind:value on:blur={handleValidation} />
+		{#if errorMessage}
+			<span>{errorMessage}</span>
+		{/if}
 	{/if}
 </div>
 
@@ -43,6 +61,9 @@
 		color: var(--c-gray-s1);
 		outline: none;
 		appearance: none;
+	}
+	span {
+		color: var(--c-red);
 	}
 	div {
 		display: flex;
