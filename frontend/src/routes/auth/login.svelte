@@ -10,8 +10,8 @@
 	import { onMount } from 'svelte';
 
 	let querying, error;
-	let email = $page.query.get('email'),
-		password;
+	let email = $page.query.get('email')
+	let password;
 
 	async function handleFormSubmit(event) {
 		querying = true;
@@ -24,16 +24,14 @@
 			},
 			mode: 'cors',
 			body: JSON.stringify({ email, password })
-		});
-		const result = await response.json();
+		}).then((result) => result.json().catch(() => undefined));
 		querying = false;
-		if (response.ok) {
-			goto(`${result.redirect}`);
-		} else {
-			/* TODO: Does svelte not update comp when value is the */
-			error = null;
-			error = result?.error;
-		}
+
+		if (!response) return (error = 'Unexpected error, please try again later.');
+		if (!response.error) return (error = response.error);
+
+		$session.user = response;
+		goto(`${response.redirect}`);
 	}
 
 	$: validate = {
