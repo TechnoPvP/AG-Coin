@@ -102,4 +102,16 @@
 	a {
 		color: var(--c-blue);
 	}
+
+	.error {
+		width: 100%;
+		display: flex;
+		gap: 10px;
+		color: var(--c-red);
+		
+		:global(svg) {
+			width: 17px;
+			height: 17px;
+		}
+	}
 </style>

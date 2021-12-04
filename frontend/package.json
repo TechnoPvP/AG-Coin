@@ -30,10 +30,11 @@
   },
   "type": "module",
   "dependencies": {
-    "cookie": "^0.4.1",
+    "@sideway/address": "^4.1.2",
     "fuse.js": "^6.4.6",
     "joi": "^17.4.2",
     "luxon": "^2.1.1",
-    "pnpm": "^6.23.2"
+    "pnpm": "^6.23.2",
+    "sass": "^1.44.0"
   }
 }

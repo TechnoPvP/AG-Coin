@@ -10,6 +10,7 @@
   "dependencies": {
     "@types/connect-mongodb-session": "^2.4.2",
     "@types/cookie-parser": "^1.4.2",
+    "@types/cors": "^2.8.12",
     "@types/express-session": "^1.17.4",
     "@types/http-errors": "^1.8.1",
     "@types/morgan": "^1.9.3",

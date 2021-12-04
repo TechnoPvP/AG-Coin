@@ -18,7 +18,6 @@
 			<HomeButton trans color="black" href="/" size="large">Contact Us</HomeButton>
 		</div>
 	</div>
-
 </section>
 
 <style lang="scss">

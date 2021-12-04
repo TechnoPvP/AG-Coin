@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-
-	export let options;
+	export let options: { [key: string]: string };
 	let active = 'Profile';
 
 	let underlineElement: HTMLElement;
@@ -38,15 +36,15 @@
 
 <nav>
 	<div class="options" on:mouseleave={handleMouseLeave}>
-		{#each options as navItem}
+		{#each Object.entries(options) as [key, href]}
 			<a
-				id="option--{navItem.toLowerCase()}"
-				href={navItem.toLowerCase()}
-				class:active={navItem.toLowerCase() == active.toLowerCase()}
+				id="option--{key}"
+				{href}
+				class:active={key == active.toLowerCase()}
 				on:click={handleClickEvent}
 				on:mouseenter={handleHoverEvent}
 			>
-				{navItem}
+				{key}
 			</a>
 		{/each}
 	</div>
@@ -88,6 +86,7 @@
 		font-weight: 600;
 		font-size: var(--fs-h4);
 		transition: color 0.25s linear;
+		text-transform: capitalize;
 
 		&:hover {
 			cursor: pointer;

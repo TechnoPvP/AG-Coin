@@ -1,14 +1,8 @@
 import Joi from "joi"
 
-export const Register = Joi.object({
-    email: Joi
-        .string()
-        .required()
-        .email()
-        .message("Email is invalid"),
+export const UserUpdate = Joi.object({
     password: Joi
         .string()
-        .required()
         .min(5)
         .message("Password must be 5 characters or more")
         .pattern(/.*[0-9].*/, { name: "min-number" })
@@ -19,26 +13,14 @@ export const Register = Joi.object({
         .message("Password cannot contain any whitespaces"),
     first_name: Joi
         .string()
-        .required()
         .min(2)
         .message("first name must be 2 characters or more")
         .pattern(/\s/, { name: "spaces", invert: true })
         .message("first name cannot contain any whitespaces"),
     last_name: Joi
         .string()
-        .required()
         .min(2)
         .message("last name must be 2 characters or more")
         .pattern(/\s/, { name: "spaces", invert: true })
         .message("last name cannot contain any whitespaces"),
-})
-
-export const Login = Joi.object({
-    email: Joi
-        .string()
-        .required()
-        .email(),
-    password: Joi
-        .string()
-        .required(),
 })

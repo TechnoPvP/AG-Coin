@@ -1,18 +1,17 @@
-<!-- <script context="module" lang="ts">
+<script lang="ts" context="module">
 	import type { Load } from '@sveltejs/kit';
+	export const load: Load = ({ session }) => {
+		if (!session.user) return {
+			status: 401,
+			error: "401 UnAuthorized"
+		}
 
-	export const load: Load = async ({ fetch, page, session }) => {
-		const user = session.user;
-
-		return {
-			status: 200
-		};
-	};
-</script> -->
+		return {}
+	}
+</script>
 
 <script>
 	import Toolbar from '$lib/dashboard/Toolbar.svelte';
-
 	import Sidebar from '$lib/sidebar/Sidebar.svelte';
 	import { overlay, sidebarOpen } from '$lib/stores';
 	import { session } from '$app/stores';

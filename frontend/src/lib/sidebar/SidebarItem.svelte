@@ -1,9 +1,10 @@
 <script lang="ts">
 	import Icon from '$lib/global/Icon.svelte';
 	import type { Icons } from '$lib/interfaces/types';
+	import { page } from "$app/stores"
 
 	export let icon: Icons;
-	export let active = false;
+	$: active = $page.path.includes(href);
 	export let href;
 </script>
 
