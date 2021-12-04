@@ -3,7 +3,7 @@
 	export const load: Load = ({ session }) => {
 		if (!session.user) return {
 			status: 401,
-			error: "401 UnAuthorized"
+			error: "401 Unauthorized. Please login",
 		}
 
 		return {}
@@ -23,7 +23,7 @@
 	</div>
 
 	<div class="content">
-		<Toolbar user={$session?.user?.name} />
+		<Toolbar user={`${$session.user.first_name} ${$session.user.last_name}`} />
 		<slot />
 		{#if $overlay}
 			<div class="overlay" on:click={() => ($overlay = !$overlay)} />

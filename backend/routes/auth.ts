@@ -11,9 +11,9 @@ const onErr = (res: Response, error: string, status = 400) => res
 
 // /auth/register
 router.post("/register", async (req: Request<any, any, Omit<UserType, '_id'>>, res: Response) => {
-    let validation = Register.validate( req.body )
-    if ( validation.error ) return onErr( res, validation.error.message )
-    
+    let validation = Register.validate(req.body)
+    if (validation.error) return onErr(res, validation.error.message)
+
     const { email, password, first_name, last_name } = req.body
     const hashPassword = await hash(password);
 
@@ -28,29 +28,30 @@ router.post("/register", async (req: Request<any, any, Omit<UserType, '_id'>>, r
         req.session.user = sanitizeUser(user)
         return res.status(201).json(req.session.user)
     } catch (err) {
-        const message = MongoError( err as BaseMongoError )
+        const message = MongoError(err as BaseMongoError)
         return onErr(res, message)
     }
 })
 
-type loginBody = Omit<UserType, '_id'|'first_name'|'last_name'>
+type loginBody = Omit<UserType, '_id' | 'first_name' | 'last_name'>;
 // /auth/login
 router.post("/login", async (req: Request<any, any, loginBody>, res: Response) => {
-    if ( req.session?.user ?? false ) return res.status(201).json(req.session.user)
-    let validation = Login.validate( req.body )
-    if ( validation.error ) return onErr( res, validation.error.message )
+    if (req.session?.user ?? false) return res.status(201).json(req.session.user)
+
+    let validation = Login.validate(req.body)
+    if (validation.error) return onErr(res, validation.error.message)
 
     try {
         const user = await User.findOne({ email: req.body.email }).exec()
-        if ( !user ) return onErr(res, `User not found by ${req.body.email}`, 401)
-        
-        const result = await verify( user.password, req.body.password )
-        if ( !result ) return onErr(res, "Incorrect Password", 401)
+        if (!user) return onErr(res, `User not found by ${req.body.email}`, 401);
 
-        req.session.user = sanitizeUser( user )
-        return res.status(200).json( req.session.user )
+        const result = await verify(user.password, req.body.password);
+        if (!result) return onErr(res, "Incorrect Password", 401);
+
+        req.session.user = sanitizeUser(user);
+        return res.status(200).json(req.session.user)
     } catch (err) {
-        const message = MongoError( err as BaseMongoError )
+        const message = MongoError(err as BaseMongoError)
         return onErr(res, message)
     }
 })

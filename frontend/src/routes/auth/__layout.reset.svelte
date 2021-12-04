@@ -1,18 +1,26 @@
 <script lang="ts" context="module">
 	import type { Load } from '@sveltejs/kit';
-	export const load: Load = ({ session }) => {
-		if (session.user) return {
-			status: 300,
-			redirect: "/dashboard/home",
+	export const load: Load = async ({ session }) => {
+		if (session.user) {
+			return {
+				status: 300,
+				redirect: '/dashboard/home',
+				headers: {
+					london: '/dashboard/home'
+				}
+			};
 		}
 
-		return {}
-	}
+		return {};
+	};
 </script>
 
 <script lang="ts">
 	import ImageSlider from '$lib/auth/ImageSlider.svelte';
 	import type { SliderContent } from '$lib/interfaces/interfaces';
+	
+	export let location;
+	console.log(location)
 
 	const content: Array<SliderContent> = [
 		{
@@ -67,7 +75,7 @@
 				padding: 27px 30px;
 			}
 		}
-        @media only screen and (max-width: 375px) {
+		@media only screen and (max-width: 375px) {
 			.right-side {
 				padding: 27px 20px;
 			}

@@ -1,5 +1,6 @@
 <script context="module" lang="ts">
-	export async function load({ page, fetch }) {
+	// Commented out due to rate limiting
+	/* 	export async function load({ page, fetch }) {
 		const url =
 			'https://cryptonews-api.com/api/v1/category?section=general&items=10&token=shihyfpjdyzk5ixpwcq0m67x43ruypyewdqva28l';
 		const result = await fetch(url);
@@ -15,7 +16,7 @@
 			status: result.status,
 			error: `Could not load ${url}`
 		};
-	}
+	} */
 </script>
 
 <script lang="ts">

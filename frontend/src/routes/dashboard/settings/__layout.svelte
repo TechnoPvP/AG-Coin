@@ -1,4 +1,6 @@
 <script lang="ts">
+import { session } from '$app/stores';
+
 	import AccountBio from '$lib/dashboard/settings/AccountBio.svelte';
 	import SettingNav from '$lib/dashboard/settings/SettingNav.svelte';
 
@@ -13,7 +15,7 @@
 <div class="container">
 	<AccountBio
 		src="/images/profile_adam.jpg"
-		name="Adam Ghowiba"
+		name='{$session.user.first_name} {$session.user.last_name}'
 		lastVisit="5 hours"
 		joined="1 year"
 	/>

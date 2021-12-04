@@ -8,31 +8,34 @@
 	import { emailValidation, passwordValidation } from '$lib/validation/loginV';
 	import { page, session } from '$app/stores';
 	import { goto } from '$app/navigation';
-	import { onMount } from 'svelte';
 
 	let querying, error;
-	let email = $page.query.get('email')
+	let email = $page.query.get('email');
 	let password;
 
 	async function handleFormSubmit(event) {
+		error = '';
 		querying = true;
 
 		const response = await fetch('http://localhost:5000/api/auth/login', {
 			method: 'POST',
 			headers: {
-				Accept: 'application/json',
 				'Content-Type': 'application/json'
 			},
-			mode: 'cors',
-			body: JSON.stringify({ email, password })
-		}).then((result) => result.json().catch(() => undefined));
-		querying = false;
+			body: JSON.stringify({ email, password }),
+			credentials: 'include'
+		})
+			.then((result) => result.json())
+			.catch(() => undefined);
 
+		querying = false;
 		if (!response) return (error = 'Unexpected error, please try again later.');
-		if (!response.error) return (error = response.error);
+		if (response.error) return (error = response.error);
+
+		console.log(response);
 
 		$session.user = response;
-		goto(`${response.redirect}`);
+		goto(`/dashboard/home`);
 	}
 
 	$: validate = {
