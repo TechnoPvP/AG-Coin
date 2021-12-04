@@ -1,8 +1,13 @@
-<script>
+<script lang="ts">
 	import AccountBio from '$lib/dashboard/settings/AccountBio.svelte';
 	import SettingNav from '$lib/dashboard/settings/SettingNav.svelte';
 
-	const options = ['Profile', 'Notifications', 'Security'];
+	// const options = ['Profile', 'Notifications', 'Security'];
+	const options: { [key: string]: string } = {
+		profile: '/dashboard/settings',
+		notifications: '/dashboard/settings/notifications',
+		security: "/dashboard/settings/security"
+	}
 </script>
 
 <div class="container">
