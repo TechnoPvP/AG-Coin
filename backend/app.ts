@@ -6,41 +6,42 @@ import logger from "morgan"
 import dbController from "./controller/DbController"
 import Router from "./routes/routes"
 import express_session from "express-session"
-import store from "./utils/store"
+import mongo_session from "connect-mongodb-session"
 import dotenv from "dotenv"
-import cors from "cors"
-
+import cors from 'cors';
 dotenv.config()
 
 const app = express();
+const MongoDBStore = mongo_session(express_session)
+const store = new MongoDBStore({
+  uri: `${process.env.MONGO}`,
+  collection: "sessions",
+})
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(logger('dev'));
-app.use(express.json());
+/* Setup CORS */
 app.use(cors({
   credentials: true,
   origin: "http://localhost:3000"
 }))
+
+app.use(logger('dev'));
+app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express_session({
   secret: "CAL8z2J3de",
   cookie: {
-    path: "/",
-    maxAge: 1000 * 60 * 60 * 24 * 7 * 4 * 6, // 6 months
+    maxAge: 1000 * 60 * 60 * 24 * 7 * 4 * 6 // 6 months
   },
   store,
   resave: true,
   saveUninitialized: false,
 }))
-
-app.use(cors({
-  origin: 'http://localhost:3000'
-}));
 
 app.use('/api/blog', Router.Blog);
 app.use('/api/auth', Router.Auth);
