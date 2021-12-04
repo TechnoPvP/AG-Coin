@@ -1,12 +1,5 @@
 import mongoose from "mongoose"
-
-export interface User {
-    _id: mongoose.Types.ObjectId;
-    email: string;
-    password: string;
-    first_name: string;
-    last_name: string;
-}
+import { User } from 'shared/user';
 
 const UsersSchema = new mongoose.Schema<User>({
     email: { type: String, required: true, unique: true },
@@ -24,9 +17,9 @@ export const sanitize = (user: User) => ({
 
 declare module 'express-session' {
     interface SessionData {
-      user?: ReturnType<typeof sanitize>
+        user?: Omit<User, 'password' | '_id'> & { id: mongoose.Types.ObjectId }
     }
 }
 
 
-export default mongoose.model( "user", UsersSchema )
+export default mongoose.model("user", UsersSchema)

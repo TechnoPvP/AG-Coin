@@ -1,5 +1,6 @@
 import { Router, Request, Response } from "express"
-import User, { sanitize as sanitizeUser, User as UserType } from "../models/User"
+import User, { sanitize as sanitizeUser } from "../models/User"
+import { User as UserType } from "../../shared/user"
 import { Register, Login } from "../validation/Auth"
 import { hash, verify } from "argon2"
 import MongoError, { BaseMongoError } from "../validation/Mongo"

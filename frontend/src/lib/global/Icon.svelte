@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Icons } from '$lib/interfaces/types';
+	import type { Icons } from '$lib/types/types';
 
 	export let icon: Icons;
 	export let active = false;

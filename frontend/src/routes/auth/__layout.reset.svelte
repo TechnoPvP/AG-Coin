@@ -17,7 +17,7 @@
 
 <script lang="ts">
 	import ImageSlider from '$lib/auth/ImageSlider.svelte';
-	import type { SliderContent } from '$lib/interfaces/interfaces';
+	import type { SliderContent } from '$lib/types/interfaces';
 	
 	export let location;
 	console.log(location)

@@ -24,7 +24,6 @@
 	import NewsPopup from '$lib/dashboard/news/NewsPopup.svelte';
 	import Post from '$lib/dashboard/news/Post.svelte';
 	import Breadcrumbs from '$lib/global/Breadcrumbs.svelte';
-	import type { PostData } from '$lib/interfaces/interfaces';
 	import { overlay } from '$lib/stores';
 
 	export let post;
@@ -35,7 +34,7 @@
 		$overlay = true;
 		popup = !popup;
 	};
-	const mockPost: PostData = {
+	const mockPost = {
 		date: 'Nov 21',
 		time: '2:30',
 		source: 'Ruters',

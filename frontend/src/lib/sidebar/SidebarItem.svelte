@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Icon from '$lib/global/Icon.svelte';
-	import type { Icons } from '$lib/interfaces/types';
+	import type { Icons } from '$lib/types/types';
 	import { page } from "$app/stores"
 
 	export let icon: Icons;

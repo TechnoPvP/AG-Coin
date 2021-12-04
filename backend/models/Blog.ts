@@ -1,10 +1,12 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
+import { BlogPost } from 'shared/blog';
 
-const BlogSchema = new mongoose.Schema({
-    title: String,
-    difficulty: String,
+const BlogSchema = new mongoose.Schema<BlogPost>({
+    title: { type: String, required: true },
     date: String,
     body: String,
+    imgUrl: String,
+    difficulty: String,
     tags: Array
 });
 
