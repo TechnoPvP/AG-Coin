@@ -3,54 +3,85 @@
 	import AlertIcon from '$lib/global/Alert-Icon.svelte';
 	import Button from '$lib/global/Button.svelte';
 	import Input from '$lib/global/Input.svelte';
-	import { session } from "$app/stores"
+	import InputError from '$lib/global/InputError.svelte';
+	import Loader from '$lib/dashboard/Loader.svelte';
+	import { emailValidation, passwordValidation } from '$lib/validation/loginV';
+	import { page, session } from '$app/stores';
 	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 
-	const inputs = {
-		email: "",
-		password: ""
-	}
+	let querying, error;
+	let email = $page.query.get('email'),
+		password;
 
-	let error = ""
-	const onSubmit = async () => {
-		const result = await fetch("http://localhost:5000/api/auth/login",{
-			method: "POST",
+	async function handleFormSubmit(event) {
+		querying = true;
+
+		const response = await fetch('http://localhost:5000/api/auth/login', {
+			method: 'POST',
 			headers: {
-				"Content-Type": "application/json",
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify( inputs ),
-			credentials: 'include',
-		}).then( res => res.json() )
-		  .catch( () => undefined )
-
-		if (!result) return error = "Unexpected error, Please try again later."
-		if (result.error) return error = result.error
-
-		$session.user = result
-		goto("/dashboard/home")
+			mode: 'cors',
+			body: JSON.stringify({ email, password })
+		});
+		const result = await response.json();
+		querying = false;
+		if (response.ok) {
+			goto(`${result.redirect}`);
+		} else {
+			/* TODO: Does svelte not update comp when value is the */
+			error = null;
+			error = result?.error;
+		}
 	}
+
+	$: validate = {
+		email: () => {
+			return emailValidation.validate({ email }).error?.message;
+		},
+		password: () => {
+			return passwordValidation.validate({ password }).error?.message;
+		}
+	};
+	$: canSubmit = !Object.values(validate).every((val) => !val());
 </script>
 
-<TopBar type='login' />
-
-<form on:submit|preventDefault={onSubmit}>
+<TopBar type="login" />
+<form on:submit|preventDefault={handleFormSubmit}>
 	<header>
 		<span>Weclome back, Adam</span>
 		<h1>Sign In Below</h1>
 	</header>
-
-	<Input type="email" name="email" placeholder="Email" label="Email" bind:value={ inputs.email } />
-	<Input type="password" name="password" placeholder="password" label="Password" bind:value={ inputs.password } />
-
-	{#if error.length > 0}
-		<div class="error">
-			<AlertIcon />
-			<p>{error}</p>
-		</div>
-	{/if}
+	{#key error}
+		<InputError {error} />
+	{/key}
+	<Input
+		type="email"
+		name="email"
+		placeholder="Email"
+		label="Email"
+		bind:value={email}
+		validation={validate.email}
+	/>
+	<Input
+		type="password"
+		name="password"
+		placeholder="password"
+		label="Password"
+		bind:value={password}
+		validation={validate.password}
+	/>
 
 	<div class="submit">
-		<Button type="button" size="stretch">Sign In</Button>
+		<Button type="button" size="stretch" disabled={canSubmit}>
+			{#if querying}
+				<Loader />
+			{:else}
+				Sign In
+			{/if}
+		</Button>
 		<span>Forgot your password? <a href="/">Reset password</a></span>
 	</div>
 </form>

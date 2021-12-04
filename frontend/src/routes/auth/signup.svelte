@@ -1,90 +1,71 @@
 <script>
 	import { goto } from '$app/navigation';
-	import { session } from '$app/stores';
+	import { page } from '$app/stores';
+
 	import PassStrength from '$lib/auth/PassStrength.svelte';
 	import TopBar from '$lib/auth/TopBar.svelte';
-	import AlertIcon from '$lib/global/Alert-Icon.svelte';
+	import Loader from '$lib/dashboard/Loader.svelte';
 	import Button from '$lib/global/Button.svelte';
 	import Input from '$lib/global/Input.svelte';
-	import host from '$lib/utils/host';
-	import { Register } from "$lib/utils/validation"
+	import InputError from '$lib/global/InputError.svelte';
 
-	const inputs = {
-		full_name: "",
-		first_name: "",
-		last_name: "",
-		email: "",
-		password: "",
-	}
+	let first_name, last_name, email, password;
+	let querying, error;
 
-	let error = ""
-	$: inputs.first_name = inputs.full_name.split(" ")[0] ?? ""
-	$: inputs.last_name = inputs.full_name.split(" ")[1] ?? ""
-
-	$: {
-		const result = Register.validate( {
-			first_name: inputs.first_name,
-			last_name: inputs.last_name,
-			email: inputs.email,
-			password: inputs.password,
-		} )
-
-		if (result.error) {
-			error = result.error.message
-		} else {
-			error = ""
-		}
-	}
-
-	const onSubmit = async () => {
-		let body = {
-			first_name: inputs.first_name,
-			last_name: inputs.last_name,
-			email: inputs.email,
-			password: inputs.password,
-		}
-
-		const response = await fetch(`${host}/auth/register/`, {
-			method: "POST",
-			credentials: "include",
+	async function signupRequest() {
+		// querying = true;
+		const response = await fetch('http://localhost:5000/api/auth/register', {
 			headers: {
-				"Content-Type": "application/json",
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify( body )
-		}).then( res => res.json() )
-		  .catch( () => undefined )
+			mode: 'cors',
+			method: 'POST',
+			body: JSON.stringify({ first_name, last_name, email, password })
+		});
+		const result = await response.json();
 
-		if ( !response ) return error = "Unexpected error, Please try again later."
-		if ( response.error ) return error = response.error
-
-		$session.user = response
-		goto("/dashboard/home")
+		if (response.ok) {
+			goto(`login?email=${email}`);
+		} else {
+			error = result?.error;
+		}
+	}
+	function handleSubmit() {
+		querying = signupRequest();
 	}
 </script>
 
 <TopBar type="signup" />
-
-<form on:submit|preventDefault={ onSubmit }>
+<form on:submit|preventDefault={handleSubmit}>
 	<header>
 		<span>Create an account to contiue</span>
 		<h1>Getting Started</h1>
 	</header>
+	<InputError {error} />
+	<div class="grouped">
+		<Input name="first_name" placeholder="Full name" label="First name" bind:value={first_name} />
+		<Input name="last_name" placeholder="Full name" label="Last name" bind:value={last_name} />
+	</div>
+	<Input type="email" name="email" placeholder="Email" label="Email address" bind:value={email} />
+	<Input
+		type="password"
+		name="password"
+		placeholder="Password"
+		label="Password"
+		bind:value={password}
+	/>
 
-	<Input name="name" placeholder="Full name" label="Full name" bind:value={inputs.full_name} />
-	<Input type="email"name="email" placeholder="Email" label="Email address" bind:value={inputs.email} />
-	<Input type="password" name="password" placeholder="Password" label="Password" bind:value={inputs.password} />
-
-	{#if error.length > 0}
-		<div class="error">
-			<AlertIcon />
-			<p>{error}</p>
-		</div>
-	{/if}
-
-	<PassStrength pass={inputs.password} />
+	<PassStrength pass={password} />
 
 	<div class="submit">
-		<Button type="button" size="stretch">Sign In</Button>
+		<Button type="button" size="stretch">
+			{#await querying}
+				<Loader />
+			{:then result}
+				Create Account
+			{/await}
+		</Button>
 	</div>
 </form>
 
@@ -94,6 +75,12 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.4em;
+	}
+	.grouped {
+		display: flex;
+		justify-content: space-between;
+		gap: var(--pd-md);
+		width: 100%;
 	}
 	form {
 		display: flex;
@@ -106,10 +93,6 @@
 	}
 	.submit {
 		width: 100%;
-
-		span {
-			margin-top: 10px;
-		}
 	}
 	span {
 		display: block;

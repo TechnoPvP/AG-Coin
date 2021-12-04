@@ -14,15 +14,16 @@
 	import Toolbar from '$lib/dashboard/Toolbar.svelte';
 	import Sidebar from '$lib/sidebar/Sidebar.svelte';
 	import { overlay, sidebarOpen } from '$lib/stores';
+	import { session } from '$app/stores';
 </script>
 
 <section>
 	<div class="sidebar" class:close={!$sidebarOpen}>
 		<Sidebar />
 	</div>
-	
+
 	<div class="content">
-		<Toolbar user="Adam Ghowiba" />
+		<Toolbar user={$session?.user?.name} />
 		<slot />
 		{#if $overlay}
 			<div class="overlay" on:click={() => ($overlay = !$overlay)} />

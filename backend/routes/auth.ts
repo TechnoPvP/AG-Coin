@@ -31,7 +31,7 @@ router.post("/register", async (req: Request<any, any, Omit<UserType, '_id'>>, r
         const message = MongoError( err as BaseMongoError )
         return onErr(res, message)
     }
-} )
+})
 
 type loginBody = Omit<UserType, '_id'|'first_name'|'last_name'>
 // /auth/login

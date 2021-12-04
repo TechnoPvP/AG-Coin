@@ -27,7 +27,7 @@ app.use(cors({
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use( express_session({
+app.use(express_session({
   secret: "CAL8z2J3de",
   cookie: {
     path: "/",
@@ -36,7 +36,11 @@ app.use( express_session({
   store,
   resave: true,
   saveUninitialized: false,
-}) )
+}))
+
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));
 
 app.use('/api/blog', Router.Blog);
 app.use('/api/auth', Router.Auth);
