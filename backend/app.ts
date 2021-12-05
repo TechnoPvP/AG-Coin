@@ -47,6 +47,7 @@ app.use('/api/blog', Router.Blog);
 app.use('/api/auth', Router.Auth);
 app.use('/api/support', Router.Support);
 app.use('/api/user', Router.User);
+app.use('/api/feed', Router.Feed);
 
 dbController();
 
