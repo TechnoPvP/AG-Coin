@@ -6,18 +6,12 @@ import logger from "morgan"
 import dbController from "./controller/DbController"
 import Router from "./routes/routes"
 import express_session from "express-session"
-import mongo_session from "connect-mongodb-session"
+import store from "./utils/store"
 import dotenv from "dotenv"
 import cors from 'cors';
 dotenv.config()
 
 const app = express();
-const MongoDBStore = mongo_session(express_session)
-const store = new MongoDBStore({
-  uri: `${process.env.MONGO}`,
-  collection: "sessions",
-})
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -44,6 +38,7 @@ app.use(express_session({
 }))
 
 app.use('/api/blog', Router.Blog);
+app.use('/api/tags', Router.Tag);
 app.use('/api/auth', Router.Auth);
 app.use('/api/support', Router.Support);
 app.use('/api/user', Router.User);
