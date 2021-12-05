@@ -9,7 +9,6 @@ export interface BaseMongoError {
 const getFirstKey = (value: object) => Object.keys( value )[0]
 
 export default (mongoError: BaseMongoError): string => {
-
     // Duplicate unique key value
     if (mongoError.code === 11000) {
         const key = getFirstKey( mongoError.keyPattern ?? {} )

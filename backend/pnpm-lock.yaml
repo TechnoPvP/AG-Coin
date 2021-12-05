@@ -9,6 +9,7 @@ specifiers:
   '@types/express-session': ^1.17.4
   '@types/http-errors': ^1.8.1
   '@types/joi': ^17.2.3
+  '@types/mongoose-id-validator': ^0.6.2
   '@types/morgan': ^1.9.3
   '@types/node': ^16.11.10
   argon2: ^0.28.3
@@ -24,6 +25,7 @@ specifiers:
   jade: ^1.11.0
   joi: ^17.4.2
   mongoose: ^6.0.13
+  mongoose-id-validator: ^0.6.0
   morgan: ~1.9.1
   nodemon: ^2.0.15
   ts-node: ^10.4.0
@@ -35,6 +37,7 @@ dependencies:
   '@types/cors': 2.8.12
   '@types/express-session': 1.17.4
   '@types/http-errors': 1.8.1
+  '@types/mongoose-id-validator': 0.6.2
   '@types/morgan': 1.9.3
   argon2: 0.28.3
   connect-mongodb-session: 3.1.1
@@ -49,6 +52,7 @@ dependencies:
   jade: 1.11.0
   joi: 17.4.2
   mongoose: 6.0.14
+  mongoose-id-validator: 0.6.0
   morgan: 1.9.1
 
 devDependencies:
@@ -221,6 +225,19 @@ packages:
     resolution: {integrity: sha512-WcdpPJCakFzcWWD9juKoZbRtQxKIMYF/JIAM4JrNHrMcnJL6/a2NWjXxW7fo9hxboxxkg+icff8d7+WIEvKgYQ==}
     dependencies:
       '@types/bson': 4.2.0
+      '@types/node': 16.11.10
+    dev: false
+
+  /@types/mongoose-id-validator/0.6.2:
+    resolution: {integrity: sha512-O0Yw+byIhuCBSw/XiE62VOshSI/XBCf2lqa5emL6qEwIVwjghQOJuxex332VWUaB/c1Gtwngh5ChYgOi1OD8uA==}
+    dependencies:
+      '@types/mongoose': 5.10.5
+    dev: false
+
+  /@types/mongoose/5.10.5:
+    resolution: {integrity: sha512-37QMIA954T3n+HSksSNLlxZsqF8fMJu5S4dyPBod6gRxGtsXlQ9jUtL8BE8Seimv99u79eLXI3bggoCnSQ/fxQ==}
+    dependencies:
+      '@types/mongodb': 3.6.20
       '@types/node': 16.11.10
     dev: false
 
@@ -565,6 +582,11 @@ packages:
     dependencies:
       mimic-response: 1.0.1
     dev: true
+
+  /clone/1.0.4:
+    resolution: {integrity: sha1-2jCcwmPfFZlMaIypAheco8fNfH4=}
+    engines: {node: '>=0.8'}
+    dev: false
 
   /color-convert/2.0.1:
     resolution: {integrity: sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==}
@@ -1367,6 +1389,13 @@ packages:
       saslprep: 1.0.3
     dev: false
 
+  /mongoose-id-validator/0.6.0:
+    resolution: {integrity: sha512-y3b3/PkmaiMKSbKB8tsEEGUjgCgKQGpD2Ood7jaVEob3V2HWgnmNKCgiSQUpEtQuDU0lUnLJQ5JE9PH1Bytziw==}
+    dependencies:
+      clone: 1.0.4
+      traverse: 0.6.6
+    dev: false
+
   /mongoose/6.0.14:
     resolution: {integrity: sha512-SZ0kBlHrz/G70yWdVXLfM/gH4NsY85+as4MZRdtWxBTDEcmoE3rCFAz1/Ho2ycg5mJAeOBwdGZw4a5sn/WrwUA==}
     engines: {node: '>=12.0.0'}
@@ -1917,6 +1946,10 @@ packages:
       css: 1.0.8
       promise: 2.0.0
       uglify-js: 2.2.5
+    dev: false
+
+  /traverse/0.6.6:
+    resolution: {integrity: sha1-y99WD9e5r2MlAv7UD5GMFX6pcTc=}
     dev: false
 
   /ts-node/10.4.0_36929cccfdb926da0bb85cc291f27124:

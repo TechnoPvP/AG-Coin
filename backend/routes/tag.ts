@@ -1,4 +1,5 @@
 import { Router, Request, Response } from "express"
+import isUser from "../middleware/isUser"
 const router = Router()
 import Tag from "../models/Tag"
 import MongoError, { BaseMongoError } from "../validation/Mongo"
@@ -13,25 +14,25 @@ router.get('/', async (req: Request, res: Response) => {
         const response = await Tag.find().exec()
         return res
             .status(200)
-            .json( response.map( tag => tag.name ) )
+            .json( response )
     } catch (error) {
         const message = MongoError( error as BaseMongoError )
         return onErr( res, message )
     }
 })
 
-router.post( '/:name', async (req: Request, res: Response) => {
+router.post( '/:name', isUser, async (req: Request, res: Response) => {
     const input = { name: req.params.name }
     const validation = TagValidation.validate( input )
     if ( validation.error ) return onErr(res, validation.error.message)
 
     try {
-        await Tag.create( input )
+        const tag = await Tag.create( input )
         return res
             .status(200)
             .json( { 
                 ok: `Created ${input.name}`,
-                value: input.name
+                value: { id: tag.id, name: input.name }
             } )
     } catch (error) {
         const message = MongoError( error as BaseMongoError )
@@ -39,7 +40,7 @@ router.post( '/:name', async (req: Request, res: Response) => {
     }
 } )
 
-router.delete( '/:name', async (req: Request, res: Response) => {
+router.delete( '/:name', isUser, async (req: Request, res: Response) => {
     const input = { name: req.params.name }
     const validation = TagValidation.validate( input )
     if ( validation.error ) return onErr(res, validation.error.message)
@@ -66,7 +67,7 @@ interface PutBody {
     after: string;
 }
 
-router.put( '/', async (req: Request<any, any, PutBody>, res: Response) => {
+router.put( '/', isUser, async (req: Request<any, any, PutBody>, res: Response) => {
     const input = req.body
     const validation = TagUpdateValidation.validate( input )
     if ( validation.error ) return onErr(res, validation.error.message)
@@ -81,7 +82,10 @@ router.put( '/', async (req: Request<any, any, PutBody>, res: Response) => {
             .status(200)
             .json( {
                 ok: `Updated ${input.before} to ${input.after}`,
-                value: input.after
+                value: {
+                    id: tag.id,
+                    value: input.after
+                }
             } )
     } catch (error) {
         const message = MongoError( error as BaseMongoError )

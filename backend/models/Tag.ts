@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 
-interface Tag {
+export interface Tag {
     name: string;
 }
 
