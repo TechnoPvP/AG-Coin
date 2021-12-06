@@ -50,6 +50,7 @@ router.get('/:slug', async (req: Request, res: Response) => {
 router.post('/', isUser, async (req: Request, res: Response) => {
     const validate = BlogValidation.validate( req.body )
     if ( validate.error ) return onErr( res, validate.error.message ) 
+    req.body.author = `${req.session.user?.id}`
 
     try {
         const blog = await Blogs.create( req.body )
@@ -79,10 +80,10 @@ router.put('/:slug', isUser, async (req: Request, res: Response) => {
         if (!blog) return onErr(res, `No blog was found by the id of ${req.params.slug}`)
 
         blog.title = req.body.title ?? blog.title
-        blog.author = req.body.author ?? blog.author
         blog.difficulty = req.body.difficulty ?? blog.difficulty
         blog.body = req.body.body ?? blog.body
         blog.tags = req.body.tags ?? blog.tags
+        blog.status = req.body.status ?? blog.status
 
         await blog.save()
 
@@ -94,5 +95,24 @@ router.put('/:slug', isUser, async (req: Request, res: Response) => {
         return onErr( res, message )
     }
 });
+
+router.delete('/:slug', isUser, async (req: Request, res: Response) => {
+    if (!req.params.slug) return onErr(res, "No blog id provided")
+
+    try {
+        const blog = await Blogs.findById( req.params.slug ).exec()
+        if (!blog) return onErr(res, `No Blog found by the id of ${req.params.slug}`)
+        await blog.delete()
+
+        return res
+            .status(200)
+            .json({
+                ok: `${req.params.slug} deleted.`
+            })
+    } catch (error) {
+        const message = MongoError( error as BaseMongoError )
+        return onErr( res, message )
+    }
+})
 
 export default router

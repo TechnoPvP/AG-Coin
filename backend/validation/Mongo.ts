@@ -8,15 +8,17 @@ export interface BaseMongoError {
 
 const getFirstKey = (value: object) => Object.keys( value )[0]
 
-export default (mongoError: BaseMongoError): string => {
+export default (error: BaseMongoError | Error): string => {
+    if (error instanceof Error) return error.message
+    const mongooseError = error as BaseMongoError
     // Duplicate unique key value
-    if (mongoError.code === 11000) {
-        const key = getFirstKey( mongoError.keyPattern ?? {} )
-        if (!key) return `Server Error, Cannot Proccess Error code ${mongoError.code}`
-        const value = mongoError.keyValue?.[key]
-        if (!value) return `Server Error, Cannot Proccess Error code ${mongoError.code}`
+    if (mongooseError.code === 11000) {
+        const key = getFirstKey( mongooseError.keyPattern ?? {} )
+        if (!key) return `Server Error, Cannot Proccess Error code ${mongooseError.code}`
+        const value = mongooseError.keyValue?.[key]
+        if (!value) return `Server Error, Cannot Proccess Error code ${mongooseError.code}`
         return `${value} is a already taken ${key}`
     }
 
-    return `Unknown Error - ${mongoError.code}`
+    return `Unknown Error - ${mongooseError.code}`
 }

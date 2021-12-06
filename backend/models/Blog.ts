@@ -10,6 +10,11 @@ enum Difficulty {
     "HARD",
 }
 
+enum Status {
+    "PUBLISH",
+    "DRAFT"
+}
+
 export interface Blog {
     title: string;
     body: string;
@@ -17,6 +22,7 @@ export interface Blog {
     author: User;
     difficulty: Difficulty;
     created_at: Date;
+    status: Status;
 }
 
 const BlogSchema = new mongoose.Schema<SchemaDefinition<Blog>>({
@@ -33,7 +39,8 @@ const BlogSchema = new mongoose.Schema<SchemaDefinition<Blog>>({
         type: [mongoose.Types.ObjectId],
         ref: "tag",
     },
-    created_at: { type: Date, required: true, default: Date.now }
+    created_at: { type: Date, required: true, default: Date.now },
+    status: { type: String, enum: ["DRAFT", "PUBLISH"], uppercase: true }
 });
 
 BlogSchema.plugin( idValidtor )
