@@ -1,12 +1,9 @@
 <script>
 	import Action from './Action.svelte';
 
-	export let data = {
-		user: 'Zsolt Dudinszky',
-		time: '6h',
-		content: 'Love to see the work youre doing! Keep it up.',
-		replies: '4'
-	};
+	export let data;
+
+	console.log('COMMENT', data);
 </script>
 
 <div class="comment">

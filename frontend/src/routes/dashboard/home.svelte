@@ -1,8 +1,9 @@
 <script>
 	import { goto } from '$app/navigation';
 	import { session } from '$app/stores';
+	import ProfilePopup from '$lib/dashboard/settings/ProfilePopup.svelte';
 	import Button from '$lib/global/Button.svelte';
-	import { sidebarOpen } from '$lib/stores';
+	import {sidebarOpen } from '$lib/stores';
 	import host from '$lib/utils/host';
 
 	function sidebarClose() {
@@ -12,13 +13,16 @@
 
 	async function signout() {
 		await fetch(`${host}/auth/logout`, {
-			credentials: "include",
-		})
+			credentials: 'include'
+		});
 
-		$session.user = null
-		goto("/")
+		$session.user = null;
+		goto('/');
 	}
 </script>
 
 <Button type="button" on:click={sidebarClose}>Change</Button>
 <Button color="red" type="button" on:click={signout}>Signout</Button>
+
+<style lang="scss">
+</style>

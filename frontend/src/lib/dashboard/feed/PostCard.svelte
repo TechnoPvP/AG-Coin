@@ -9,17 +9,6 @@
 	let commentFocused;
 
 	const addComment = () => {
-		data.comments = [
-			...data.comments,
-			{
-				user: 'Zsolt Dudinszky',
-				time: '6h',
-				content: value,
-				replies: '4'
-			}
-		];
-
-		value = '';
 	};
 
 	const handlePostLike = () => {
@@ -62,19 +51,20 @@
 	</div>
 
 	<div class="comments-wrap">
-		{#if !data?.commentsDisabled}
-			<div class="add-comment">
-				<img class="img-sm" src={data.profileSrc} alt="Person profile" />
-				<Textarea bind:value focused={commentFocused} />
-				{#if value}
-					<Button type="button" size="small" on:click={addComment}>Submit</Button>
-				{/if}
-			</div>
-		{/if}
+		<div class="add-comment">
+			<img class="img-sm" src={data.profileSrc} alt="Person profile" />
+			<Textarea bind:value focused={commentFocused} />
+			{#if value}
+				<Button type="button" size="small" on:click={addComment}>Submit</Button>
+			{/if}
+		</div>
 
-		{#each data.comments as comment}
-			<Comment data={comment} />
-		{/each}
+		<!-- TODO: Bring in comments -->
+		<!-- {#if data?.comments}
+			{#each data.comments as comment}
+				<Comment data={comment} />
+			{/each}
+		{/if} -->
 	</div>
 </div>
 

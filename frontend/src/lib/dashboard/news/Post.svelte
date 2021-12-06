@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { overlay } from '$lib/stores';
-	import { onMount } from 'svelte';
 	import { parseDate } from '$lib/utils/dateUtils';
 
 	export let data;

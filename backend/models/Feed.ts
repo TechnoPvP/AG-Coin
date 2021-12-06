@@ -1,9 +1,10 @@
 import { Schema, model } from 'mongoose';
-import { FeedPost } from 'shared/feed';
+import { FeedPost, FeedComment } from 'shared/feed';
 
 const feedSchema = new Schema<FeedPost>({
     user: {
-        type: [{ type: Schema.Types.ObjectId, ref: 'user' }],
+        type: Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
     caption: {
@@ -12,12 +13,9 @@ const feedSchema = new Schema<FeedPost>({
     },
     thumbnail: String,
     comments: [{
-        user: {
-            type: Schema.Types.ObjectId,
-            required: true
-        },
-        content: String,
-    }],
+        type: Schema.Types.ObjectId,
+        ref: 'Comment'
+    }]
 })
 
-export default model('feed', feedSchema);
+export default model<FeedPost>('feed', feedSchema);
