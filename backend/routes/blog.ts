@@ -15,10 +15,11 @@ router.get('/', async (req: Request, res: Response) => {
             .find()
             .populate('author')
             .populate('tags')
-            .exec()
+            .lean()
+            .exec() as Blog[]
 
         if (!blogs) return onErr(res, "Blogs Model don't exist", 500)
-        return res.status(200).json( (blogs as any).map( (item: any) => sanitize( item["_doc"] as Blog ) ) )
+        return res.status(200).json( blogs.map( sanitize ) )
     } catch (error) {
         const message = MongoError( error as BaseMongoError )
         return onErr( res, message )
@@ -32,13 +33,14 @@ router.get('/:slug', async (req: Request, res: Response) => {
             .findOne({ _id: slug})
             .populate('author')
             .populate('tags')
-            .exec();
+            .lean()
+            .exec() as Blog;
         
         if (!blog) onErr(res, `No Blog found by the id of ${slug}`)
 
         return res
             .status(200)
-            .json( sanitize( ((blog as any)["_doc"] as Blog) ) )
+            .json( sanitize( blog ) )
     } catch (error) {
         const message = MongoError(error as BaseMongoError)
         return onErr( res, message )
