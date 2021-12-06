@@ -3,11 +3,8 @@
 	export const load: Load = async ({ session }) => {
 		if (session.user) {
 			return {
-				status: 300,
+				status: 302,
 				redirect: '/dashboard/home',
-				headers: {
-					london: '/dashboard/home'
-				}
 			};
 		}
 
@@ -19,9 +16,6 @@
 	import ImageSlider from '$lib/auth/ImageSlider.svelte';
 	import type { SliderContent } from '$lib/types/interfaces';
 	
-	export let location;
-	console.log(location)
-
 	const content: Array<SliderContent> = [
 		{
 			imgSrc: '/images/token_shadow.png',

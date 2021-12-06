@@ -1,7 +1,8 @@
 import { Types } from 'mongoose';
 
 export interface FeedComment {
-    id: Types.ObjectId
+    id: Types.ObjectId;
+    postId: Types.ObjectId
     user: Types.ObjectId
     content: string
     replies: FeedComment
@@ -12,5 +13,5 @@ export interface FeedPost {
     user: Types.ObjectId
     caption: string
     thumbnail?: string;
-    comments?: Array<FeedComment>
+    comments?: Array<Types.ObjectId>
 }
