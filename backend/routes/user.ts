@@ -37,15 +37,13 @@ router.get('/:id', async (req: Request, res: Response) => {
 })
 
 // /user/:id
-router.delete("/:id", isSelfOrAdmin, async (req: Request, res: Response) => {
+router.delete("/:id", isSelfOrAdmin(), async (req: Request, res: Response) => {
     if (!req.params.id || !mongoose.isValidObjectId(req.params.id)) return onErr(res, "No user ID provided")
     const _id = new mongoose.Types.ObjectId( req.params.id )
     
     try {
         const user = await User.findOne({ _id }).exec()
         if (!user) return onErr(res, `No User by the id of ${req.params.id}`)
-    
-        if ( `${req.session.user?.id}` !== user.id ) return onErr(res, "unauthorized", 401)
         
         await user.delete()
         res.clearCookie("connect.sid")
@@ -57,7 +55,7 @@ router.delete("/:id", isSelfOrAdmin, async (req: Request, res: Response) => {
             } )
         } )
 
-        req.session?.destroy( console.error )
+        if ( `${req.session.user?.id}` === req.params.id ) req.session?.destroy( console.error )
         return res.status(200).json({
             ok: `User ${user.id} deleted`
         })
@@ -68,7 +66,7 @@ router.delete("/:id", isSelfOrAdmin, async (req: Request, res: Response) => {
 })
 
 // /user/:id
-router.put("/:id", isSelfOrAdmin, async (req: Request<any, any, Partial<Omit<UserType, '_id'|'email'>>>, res: Response) => {
+router.put("/:id", isSelfOrAdmin(), async (req: Request<any, any, Partial<Omit<UserType, '_id'|'email'>>>, res: Response) => {
     if (!req.params.id || !mongoose.isValidObjectId(req.params.id)) return onErr(res, "No user ID provided")
     const _id = new mongoose.Types.ObjectId( req.params.id )
 

@@ -22,6 +22,7 @@ router.get('/', async (req: Request, res: Response) => {
         if (!blogs) return onErr(res, "Blogs Model don't exist", 500)
         return res.status(200).json( blogs.map( sanitize ) )
     } catch (error) {
+        console.log(error);
         const message = MongoError( error as BaseMongoError )
         return onErr( res, message )
     }
@@ -31,13 +32,13 @@ router.get('/:slug', async (req: Request, res: Response) => {
     const slug = req.params.slug;
     try {
         const blog = await Blogs
-            .findOne({ _id: slug})
+            .findOne({ _id: slug })
             .populate('author')
             .populate('tags')
             .lean()
             .exec() as Blog;
         
-        if (!blog) onErr(res, `No Blog found by the id of ${slug}`)
+        if (!blog) onErr(res, `No Blog found by the id of ${slug}` )
 
         return res
             .status(200)

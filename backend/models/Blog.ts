@@ -1,4 +1,4 @@
-import mongoose, { PopulatedDoc, SchemaDefinition } from "mongoose"
+import mongoose, { SchemaDefinition } from "mongoose"
 import idValidtor from "mongoose-id-validator"
 import { sanitize as sanitizeUser } from "./User";
 import { Tag } from "./Tag";
@@ -16,6 +16,7 @@ enum Status {
 }
 
 export interface Blog {
+    _id: mongoose.Types.ObjectId;
     title: string;
     body: string;
     tags: Tag[];

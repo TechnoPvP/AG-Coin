@@ -1,6 +1,5 @@
 import { Router, Request, Response } from "express"
 import isAdmin from "../middleware/isAdmin"
-import isUser from "../middleware/isUser"
 const router = Router()
 import Tag from "../models/Tag"
 import MongoError, { BaseMongoError } from "../validation/Mongo"
