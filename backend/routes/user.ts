@@ -7,6 +7,7 @@ import { Router, Request, Response } from "express"
 import store from "../utils/store"
 import isUser from "../middleware/isUser"
 import { SessionData } from "express-session"
+import isSelfOrAdmin from "../middleware/isSelfOrAdmin"
 const router = Router()
 
 const onErr = (res: Response, message: string, status = 400) => res.status(status).json({
@@ -25,10 +26,10 @@ router.get('/:id', async (req: Request, res: Response) => {
     const _id = new mongoose.Types.ObjectId( req.params.id )
 
     try {
-        const user = await User.findOne({ _id }).exec()
+        const user = await User.findOne({ _id }).lean().exec()
         if (!user) return onErr(res, `No User by the id of ${req.params.id}`)
     
-        return res.status(200).json( santizeUser( user ) )
+        return res.status(200).json( santizeUser( user as UserType ) )
     } catch (error) {
         const message = MongoError( error as BaseMongoError )
         return onErr(res, message)
@@ -36,7 +37,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 })
 
 // /user/:id
-router.delete("/:id", isUser, async (req: Request, res: Response) => {
+router.delete("/:id", isSelfOrAdmin, async (req: Request, res: Response) => {
     if (!req.params.id || !mongoose.isValidObjectId(req.params.id)) return onErr(res, "No user ID provided")
     const _id = new mongoose.Types.ObjectId( req.params.id )
     
@@ -67,7 +68,7 @@ router.delete("/:id", isUser, async (req: Request, res: Response) => {
 })
 
 // /user/:id
-router.put("/:id", isUser, async (req: Request<any, any, Partial<Omit<UserType, '_id'|'email'>>>, res: Response) => {
+router.put("/:id", isSelfOrAdmin, async (req: Request<any, any, Partial<Omit<UserType, '_id'|'email'>>>, res: Response) => {
     if (!req.params.id || !mongoose.isValidObjectId(req.params.id)) return onErr(res, "No user ID provided")
     const _id = new mongoose.Types.ObjectId( req.params.id )
 
@@ -86,7 +87,7 @@ router.put("/:id", isUser, async (req: Request<any, any, Partial<Omit<UserType, 
         user.last_name = req.body.last_name ?? user.last_name
     
         await user.save()
-        req.session.user = santizeUser( user )
+        req.session.user = santizeUser( user as UserType )
         
         return res.status(200).json({
             ok: `Succesfully updated User ${user.id}`

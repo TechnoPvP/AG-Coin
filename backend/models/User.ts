@@ -1,4 +1,9 @@
-import mongoose from "mongoose"
+import mongoose, { SchemaDefinition } from "mongoose"
+
+export enum Role {
+    "ADMIN" = "ADMIN",
+    "DEFAULT" = "DEFAULT"
+}
 
 export interface User {
     _id: mongoose.Types.ObjectId;
@@ -6,13 +11,15 @@ export interface User {
     password: string;
     first_name: string;
     last_name: string;
+    role: Role;
 }
 
-const UsersSchema = new mongoose.Schema<User>({
+const UsersSchema = new mongoose.Schema<SchemaDefinition<User>>({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, },
     first_name: { type: String, required: true, },
     last_name: { type: String, required: true, },
+    role: { type: String, enum: ["ADMIN", "DEFAULT"], default: "DEFAULT" },
 })
 
 export const sanitize = (user: User) => ({
@@ -20,6 +27,7 @@ export const sanitize = (user: User) => ({
     email: user.email,
     first_name: user.first_name,
     last_name: user.last_name,
+    role: user.role
 })
 
 declare module 'express-session' {
@@ -27,6 +35,5 @@ declare module 'express-session' {
       user?: ReturnType<typeof sanitize>
     }
 }
-
 
 export default mongoose.model( "user", UsersSchema )

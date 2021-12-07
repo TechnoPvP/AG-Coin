@@ -3,6 +3,7 @@ import MongoError, { BaseMongoError } from "../validation/Mongo";
 import { Blog as BlogValidation } from "../validation/Blog"
 import isUser from "../middleware/isUser";
 import Blogs, { sanitize, Blog } from "../models/Blog"
+import isAdmin from "../middleware/isAdmin";
 const router = Router();
 
 const onErr = (res: Response, message: string, status = 400) => res
@@ -47,7 +48,7 @@ router.get('/:slug', async (req: Request, res: Response) => {
     }
 });
 
-router.post('/', isUser, async (req: Request, res: Response) => {
+router.post('/', isAdmin, async (req: Request, res: Response) => {
     const validate = BlogValidation.validate( req.body )
     if ( validate.error ) return onErr( res, validate.error.message ) 
     req.body.author = `${req.session.user?.id}`
@@ -66,7 +67,7 @@ router.post('/', isUser, async (req: Request, res: Response) => {
     }
 });
 
-router.put('/:slug', isUser, async (req: Request, res: Response) => {
+router.put('/:slug', isAdmin, async (req: Request, res: Response) => {
     if (!req.params.slug) return onErr(res, "No blog id provided")
 
     const validate = BlogValidation.validate( { ...req.body, difficulty: req.body.difficulty.toUpperCase() ?? undefined } )
@@ -96,7 +97,7 @@ router.put('/:slug', isUser, async (req: Request, res: Response) => {
     }
 });
 
-router.delete('/:slug', isUser, async (req: Request, res: Response) => {
+router.delete('/:slug', isAdmin, async (req: Request, res: Response) => {
     if (!req.params.slug) return onErr(res, "No blog id provided")
 
     try {
