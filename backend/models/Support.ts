@@ -1,6 +1,14 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, SchemaDefinition } from 'mongoose';
 
-const supportSchema = new Schema({
+interface Support {
+  slug: string;
+  title: string;
+  content: string;
+  topics: string[];
+  views: number;
+}
+
+const supportSchema = new Schema<SchemaDefinition<Support>>({
     slug: {
         type: String,
         required: true,

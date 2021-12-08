@@ -4,5 +4,6 @@ import Support from "./support"
 import User from "./user"
 import Feed from "./feed"
 import Comment from "./comment";
+import Tag from "./tag"
 
-export default {Blog, Auth, Support, User, Feed, Comment};
+export default { Blog, Auth, Support, User, Tag, Feed, Comment };

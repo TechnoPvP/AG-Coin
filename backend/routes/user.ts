@@ -5,6 +5,7 @@ import MongoError, { BaseMongoError } from "../validation/Mongo"
 import { hash } from "argon2"
 import { Router, Request, Response } from "express"
 import store from "../utils/store"
+import isUser from "../middleware/isUser"
 import { SessionData } from "express-session"
 import { User as UserType } from 'shared/user'
 import { upload } from "../controller/FileController";
@@ -76,8 +77,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 })
 
 // /user/:id
-router.delete("/:id", async (req: Request, res: Response) => {
-    if (!req.session.user) return onErr(res, "unauthorized", 401)
+router.delete("/:id", isUser, async (req: Request, res: Response) => {
     if (!req.params.id || !mongoose.isValidObjectId(req.params.id)) return onErr(res, "No user ID provided")
     const _id = new mongoose.Types.ObjectId(req.params.id)
 
@@ -108,8 +108,7 @@ router.delete("/:id", async (req: Request, res: Response) => {
 })
 
 // /user/:id
-router.put("/:id", async (req: Request<any, any, Partial<Omit<UserType, '_id' | 'email'>>>, res: Response) => {
-    if (!req.session.user) return onErr(res, "unauthorized", 401)
+router.put("/:id", isUser, async (req: Request<any, any, Partial<Omit<UserType, '_id'|'email'>>>, res: Response) => {
     if (!req.params.id || !mongoose.isValidObjectId(req.params.id)) return onErr(res, "No user ID provided")
     const _id = new mongoose.Types.ObjectId(req.params.id)
 
@@ -138,7 +137,5 @@ router.put("/:id", async (req: Request<any, any, Partial<Omit<UserType, '_id' | 
         return onErr(res, message)
     }
 })
-
-
 
 export default router
