@@ -2,7 +2,8 @@ import { Router, Request, Response } from "express"
 import MongoError, { BaseMongoError } from "../validation/Mongo";
 import { Blog as BlogValidation } from "../validation/Blog"
 import isUser from "../middleware/isUser";
-import Blogs, { sanitize, Blog } from "../models/Blog"
+import Blogs, { sanitize } from "../models/Blog"
+import { Blog } from "shared/blog" 
 const router = Router();
 
 const onErr = (res: Response, message: string, status = 400) => res
