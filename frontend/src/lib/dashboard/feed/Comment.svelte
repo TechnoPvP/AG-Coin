@@ -2,16 +2,14 @@
 	import Action from './Action.svelte';
 
 	export let data;
-
-	console.log('COMMENT', data);
 </script>
 
 <div class="comment">
-	<img class="img-sm" src="/images/profile_icon.png" alt="Person profile" />
+	<img class="img-sm" src="{data.user.avatar}" alt="Person profile" />
 
 	<div class="data">
 		<div class="data__heading">
-			<h4>{data.user}</h4>
+			<h4>{data.user.first_name} {data.user.last_name}</h4>
 			<div class="circle" />
 			<span>{data.time}</span>
 		</div>
@@ -22,7 +20,6 @@
 	<!-- Comment Actions -->
 	<div class="comment__actions">
 		<Action src="/icons/heart.svg" name="like" --size="15px" />
-		<Action src="/icons/comment.svg" name="140" --size="15px" />
 	</div>
 </div>
 

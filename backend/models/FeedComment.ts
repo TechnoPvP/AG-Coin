@@ -17,4 +17,4 @@ const feedComment = new Schema<FeedComment>({
     },
 })
 
-export default model<FeedComment>('feed', feedComment);
+export default model<FeedComment>('comment', feedComment);

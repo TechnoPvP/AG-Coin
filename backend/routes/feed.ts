@@ -1,25 +1,30 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { FeedPost, FeedComment } from "shared/feed";
+import { User as UserType } from "shared/user";
 import Feed from "../models/Feed";
 import FeedValidation from "../validation/FeedV";
 import { onErr } from "../utils/error";
 import { isValidObjectId } from "mongoose";
 import MongoError, { BaseMongoError } from "../validation/Mongo";
-import { upload } from "../controller/FileController";
-import multer from 'multer';
-import User from '../models/User';
-
+import { sanatizedFeed } from '../models/Feed';
 const router = Router();
 
 type FeedRequest<V extends keyof FeedPost> = Request<any, any, Pick<FeedPost, V>>;
 
+/* TODO: When the user is deleted it can't get the post. */
 /* Get All Feed Post */
 router.get('/', async (req: FeedRequest<'id'>, res: Response<FeedPost | object>) => {
     const limit = Number(req.query.limit);
 
-    const result = await Feed.find().limit(limit ? limit : 0).exec();
+    const result = await Feed.find().populate('user').populate({
+        path: 'comments', 
+        populate: {
+            path: 'user',
+            select: 'first_name last_name avatar'
+        }
+    }).limit(limit ? limit : 0).lean().exec();
 
-    return res.json(result);
+    return res.json(((result as unknown) as FeedPost<UserType>[]).map(sanatizedFeed))
 })
 
 /* TODO: Implement */
@@ -48,18 +53,6 @@ router.post('/', async (req: Request<any, any, FeedPost>, res: Response<Partial<
     }
 
 })
-
-router.post('/avatar', upload.single('avatar'), async (req: Request, res: Response) => {
-    if (!req.file) return onErr(res, 'No file was uploaded.');
-
-    if (!req.session?.user) return onErr(res, 'You mst be logged in to do this.');
-
-    const file = req.file as Express.MulterS3.File;
-
-    const user = await User.findByIdAndUpdate(req.session.user?.id, { avatar: file.location }).exec();
-
-    res.status(200).json({ result: user })
-});
 
 /* Update Exsiting Feed Post */
 router.put('/:id', async (req: Request<any, any, FeedPost>, res: Response) => {

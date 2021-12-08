@@ -30,8 +30,6 @@
 
 	export let user: User;
 
-	console.log(user);
-
 	const options: { [key: string]: string } = {
 		profile: '/dashboard/settings',
 		notifications: '/dashboard/settings/notifications',

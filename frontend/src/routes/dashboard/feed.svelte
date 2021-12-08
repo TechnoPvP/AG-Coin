@@ -22,6 +22,7 @@
 			error: response.status.toString()
 		};
 	};
+
 </script>
 
 <script lang="ts">

@@ -1,11 +1,8 @@
 import multer, { FileFilterCallback } from 'multer';
 import multerS3 from 'multer-s3';
 import { Request } from 'express';
-import S3 from 'aws-sdk/clients/s3';
-import { SharedIniFileCredentials } from 'aws-sdk';
+import { s3 } from './AwsController';
 
-const credentials = new SharedIniFileCredentials({ profile: 'agcoin' });
-const s3 = new S3({ credentials })
 
 const allowedImageTypes = ['image/png', 'image/jpeg', 'image/webp'];
 
@@ -29,8 +26,12 @@ const storage = multerS3({
         cb(null, { metaName: 'meta is this', other: 'Othern meta stuff' });
     },
     key: async function (req, file, cb) {
-        const fileName = avatarFolder + file.originalname;
-        
+        const fileType = file.mimetype.split('/')[1];
+        // const parsedUsername = `${new Date().toISOString()}-${req.session.user?.first_name}_${req.session.user?.last_name}`;
+        const avatarName = `${req.session.user?.id}`;
+
+        const fileName = avatarFolder + avatarName;
+
         cb(null, fileName)
     }
 })

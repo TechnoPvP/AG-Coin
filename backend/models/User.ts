@@ -7,15 +7,16 @@ const UsersSchema = new mongoose.Schema<User>({
     password: { type: String, required: true, },
     first_name: { type: String, required: true, },
     last_name: { type: String, required: true, },
-    avatar: {type: String, required: false}
+    avatar: { type: String, required: false }
 })
 
-export const sanitize = (user: User) => ({
+export const sanitize = (user: User) => (
+    {
     id: user._id,
     email: user.email,
     first_name: user.first_name,
     last_name: user.last_name,
-    avatar: user.avatar
+    avatar: `https://agcoin.s3.amazonaws.com/user-avatars/${user.avatar ?? 'default_profile_400x400.png'}`
 })
 
 declare module 'express-session' {

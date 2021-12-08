@@ -1,4 +1,4 @@
-import User, { sanitize as santizeUser } from "../models/User"
+import User, { sanitize, sanitize as santizeUser } from "../models/User"
 import mongoose from "mongoose"
 import { UserUpdate } from "../validation/User"
 import MongoError, { BaseMongoError } from "../validation/Mongo"
@@ -7,6 +7,8 @@ import { Router, Request, Response } from "express"
 import store from "../utils/store"
 import { SessionData } from "express-session"
 import { User as UserType } from 'shared/user'
+import { upload } from "../controller/FileController";
+import { deleteObject } from "../controller/AwsController"
 const router = Router()
 
 const onErr = (res: Response, message: string, status = 400) => res.status(status).json({
@@ -16,8 +18,46 @@ const onErr = (res: Response, message: string, status = 400) => res.status(statu
 // /user/me
 router.get("/me", (req: Request, res: Response) => {
     if (req.session.user) return res.status(200).json(req.session.user)
+
     return onErr(res, "unauthorized", 401)
 })
+
+/* Upload User Avatar */
+router.post('/avatar', upload.single('avatar'), async (req: Request, res: Response) => {
+    if (!req.file) return onErr(res, 'No file was uploaded.');
+
+    if (!req.session?.user) return onErr(res, 'You mst be logged in to do this.');
+
+    const file = req.file as Express.MulterS3.File;
+    const filePath = file.key.split('/');
+    const fileName = filePath[filePath.length - 1];
+    try {
+        const user = await User.findByIdAndUpdate(req.session.user?.id, { avatar: fileName }, { returnOriginal: false }).exec();
+        
+        if (!user) return onErr(res, 'User not found');
+        
+        req.session.user = sanitize(user);
+        return res.status(200).json(user)
+    } catch (err) {
+
+        return onErr(res, 'Server error occured. Please try again later', 500)
+    }
+
+});
+
+/* TODO: Use new middlewear */
+/* Delete user avatar */
+router.delete('/avatar', async (req: Request, res, Response) => {
+    if (!req.session?.user) return onErr(res, 'You mst be logged in to do this.');
+
+    deleteObject(`${req.session.user?.avatar}`, (err, data) => {
+        if (err) {
+            return res.status(500).json({ error: err })
+        }
+
+        return res.status(200).json(req.session.user)
+    });
+});
 
 // /user/:id
 router.get('/:id', async (req: Request, res: Response) => {

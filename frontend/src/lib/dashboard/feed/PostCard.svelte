@@ -1,6 +1,9 @@
 <script lang="ts">
+	import { session } from '$app/stores';
+
 	import Button from '$lib/global/Button.svelte';
 	import Textarea from '$lib/global/Textarea.svelte';
+	import host from '$lib/utils/host';
 	import Action from './Action.svelte';
 	import Comment from './Comment.svelte';
 
@@ -9,6 +12,35 @@
 	let commentFocused;
 
 	const addComment = () => {
+		if (!value) return;
+
+		fetch(`${host}/comment/${data._id}`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			credentials: 'include',
+			body: JSON.stringify({
+				content: value
+			})
+		})
+			.then((res) => res.json())
+			.then((response) => {
+				console.log(response);
+				data.comments = [
+					...data.comments,
+					{
+						content: value,
+						user: {
+							first_name: $session.user.first_name,
+							last_name: $session.user.last_name,
+							avatar: $session.user.avatar
+						}
+					}
+				];
+				value = '';
+			})
+			.catch((err) => console.log(err));
 	};
 
 	const handlePostLike = () => {
@@ -27,9 +59,9 @@
 
 <div class="card">
 	<header>
-		<img src={data.profileSrc} alt="Person profile" />
+		<img src={data.user.avatar} alt="Person profile" />
 		<div class="profile-info">
-			<h4>Adam Ghowiba</h4>
+			<h4>{`${data.user.first_name}  ${data.user.last_name}`}</h4>
 			<span>{data.role}</span>
 		</div>
 		<span>{data.date}</span>
@@ -43,7 +75,6 @@
 		<div class="line" />
 	</div>
 
-	<!-- TODO: This whole data flow just doesn't make sense -->
 	<div class="actions">
 		<Action on:click={handlePostLike} src="/icons/heart.svg" name="like" liked={data?.liked} />
 		<Action src="/icons/comment.svg" name="140" on:click={handleCommentAction} />
@@ -52,19 +83,18 @@
 
 	<div class="comments-wrap">
 		<div class="add-comment">
-			<img class="img-sm" src={data.profileSrc} alt="Person profile" />
+			<img class="img-sm" src={data.user.avatar} alt="Person profile" />
 			<Textarea bind:value focused={commentFocused} />
 			{#if value}
 				<Button type="button" size="small" on:click={addComment}>Submit</Button>
 			{/if}
 		</div>
 
-		<!-- TODO: Bring in comments -->
-		<!-- {#if data?.comments}
+		{#if data?.comments?.length > 0}
 			{#each data.comments as comment}
 				<Comment data={comment} />
 			{/each}
-		{/if} -->
+		{/if}
 	</div>
 </div>
 
@@ -81,7 +111,8 @@
 		align-items: center;
 		gap: var(--pd-md);
 		img {
-			max-width: 68px;
+			width: 48px;
+			height: 48px;
 			border-radius: 50%;
 		}
 		span {

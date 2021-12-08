@@ -1,7 +1,8 @@
 <script lang="ts">
-	import host from '$lib/utils/host';
+	import { session } from '$app/stores';
 
-	import { valid } from 'joi';
+	import host from '$lib/utils/host';
+import { valid } from 'joi';
 
 	let fileFormElement: HTMLFormElement;
 	let fileName;
@@ -27,46 +28,44 @@
 			return;
 		}
 
-		fileName = name;
+		handleFileUpload(fileFormElement);
 	}
 
-	function handleFileUpload(event: Event) {
-		const target = event.target as HTMLFormElement;
-		if (target?.files?.length < 1) return;
+	function handleFileUpload(target: HTMLFormElement) {
+		if (target?.files?.length <= 0) return;
 
 		const formData = new FormData(target);
-		fetch(`${host}/feed/avatar`, {
+		fetch(`${host}/user/avatar`, {
 			method: 'POST',
 			body: formData,
 			credentials: 'include'
 		})
 			.then((response) => response.json())
-			.then((result) => console.log(result))
+			.then((result) => ($session.user.avatar = result.avatar))
 			.catch((err) => console.log(err));
 	}
 
-	function submitFile() {
-		fileFormElement.submit();
-	}
-
-	function cancelFileUpload() {
-		fileFormElement.reset();
-		fileName = null;
-
-		console.log('Cleared file');
+	function deleteUserAvatar() {
+		fetch(`${host}/user/avatar`, {
+			method: 'POST',
+			credentials: 'include'
+		})
+			.then((response) => response.json())
+			.then((result) => ($session.user.avatar = result.avatar))
+			.catch((err) => console.log(err));
 	}
 </script>
 
 <form
 	class="popup"
-	on:submit|preventDefault={handleFileUpload}
+	on:submit|preventDefault
 	on:change={handleFileChange}
 	bind:this={fileFormElement}
 >
 	<div class="avatar">
 		<h3>Change Profile Photo</h3>
 		<label for="avatar">
-			<img src="/images/profile_adam.jpg" alt="Profile" />
+			<img src={$session.user.avatar} alt="Profile" />
 		</label>
 		<span class:red={fileWarning} class:gray={fileName && !fileWarning}>
 			{fileWarning ?? fileName ?? 'No file currently selected'}
@@ -75,12 +74,12 @@
 
 	<div class="buttons">
 		<button class="blue">
-			Upload Profile Photo
+			Upload Photo
 			<input type="file" name="avatar" id="avatar" accept="image/png, image/jpeg" />
 		</button>
-		<button class="red" on:click={submitFile}>Submit File</button>
+		<button class="red" on:click={deleteUserAvatar}>Remove Current Photo</button>
 		<!-- <button class="red" on:click={submitFile}>Remove Current Photo</button> -->
-		<button class="gray" type="button" on:click={cancelFileUpload}>Cancel</button>
+		<button class="gray" type="button">Cancel</button>
 	</div>
 </form>
 

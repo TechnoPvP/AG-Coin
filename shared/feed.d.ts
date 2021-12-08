@@ -1,4 +1,5 @@
 import { Types } from 'mongoose';
+import { User } from './user';
 
 export interface FeedComment {
     id: Types.ObjectId;
@@ -8,9 +9,9 @@ export interface FeedComment {
     replies: FeedComment
 }
 
-export interface FeedPost {
+export interface FeedPost<T = Types.ObjectId> {
     id: Types.ObjectId
-    user: Types.ObjectId
+    user: T;
     caption: string
     thumbnail?: string;
     comments?: Array<Types.ObjectId>
