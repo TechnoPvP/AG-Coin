@@ -18,7 +18,7 @@ router.get('/:slug', async (req: Request, res: Response, next: NextFunction) => 
     const slug = req.params.slug;
     const result = await Support.findOne({ slug }).exec();
 
-    if (!result || result.length == 0) {
+    if (!result) {
         res.status(404).json({ error: `${slug} does not exsist.` })
         return;
     }
