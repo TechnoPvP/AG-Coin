@@ -5,11 +5,12 @@ import MongoError, { BaseMongoError } from "../validation/Mongo"
 import { hash } from "argon2"
 import { Router, Request, Response } from "express"
 import store from "../utils/store"
-import isUser from "../middleware/isUser"
 import { SessionData } from "express-session"
 import { User as UserType } from 'shared/user'
 import { upload } from "../controller/FileController";
 import { deleteObject } from "../controller/AwsController"
+import isSelfOrAdmin from "../middleware/isSelfOrAdmin"
+import isUser from "../middleware/isUser"
 const router = Router()
 
 const onErr = (res: Response, message: string, status = 400) => res.status(status).json({
@@ -35,7 +36,7 @@ router.post('/avatar', isUser, upload.single('avatar'), async (req: Request, res
         
         if (!user) return onErr(res, 'User not found');
         
-        req.session.user = sanitize(user);
+        req.session.user = sanitize( user as UserType );
         return res.status(200).json(user)
     } catch (err) {
 
@@ -61,10 +62,9 @@ router.get('/:id', async (req: Request, res: Response) => {
     const _id = new mongoose.Types.ObjectId(req.params.id)
 
     try {
-        const user = await User.findOne({ _id }).exec()
+        const user = await User.findOne({ _id }).lean().exec()
         if (!user) return onErr(res, `No User by the id of ${req.params.id}`)
-
-        return res.status(200).json(santizeUser(user))
+        return res.status(200).json( santizeUser( user as UserType ) )
     } catch (error) {
         const message = MongoError(error as BaseMongoError)
         return onErr(res, message)
@@ -72,16 +72,14 @@ router.get('/:id', async (req: Request, res: Response) => {
 })
 
 // /user/:id
-router.delete("/:id", isUser, async (req: Request, res: Response) => {
+router.delete("/:id", isSelfOrAdmin(), async (req: Request, res: Response) => {
     if (!req.params.id || !mongoose.isValidObjectId(req.params.id)) return onErr(res, "No user ID provided")
     const _id = new mongoose.Types.ObjectId(req.params.id)
 
     try {
         const user = await User.findOne({ _id }).exec()
         if (!user) return onErr(res, `No User by the id of ${req.params.id}`)
-
-        if (`${req.session.user?.id}` !== user.id) return onErr(res, "unauthorized", 401)
-
+        
         await user.delete()
         res.clearCookie("connect.sid")
         store.all((err, sessions) => {
@@ -92,7 +90,7 @@ router.delete("/:id", isUser, async (req: Request, res: Response) => {
             })
         })
 
-        req.session?.destroy(console.error)
+        if ( `${req.session.user?.id}` === req.params.id ) req.session?.destroy( console.error )
         return res.status(200).json({
             ok: `User ${user.id} deleted`
         })
@@ -103,7 +101,7 @@ router.delete("/:id", isUser, async (req: Request, res: Response) => {
 })
 
 // /user/:id
-router.put("/:id", isUser, async (req: Request<any, any, Partial<Omit<UserType, '_id'|'email'>>>, res: Response) => {
+router.put("/:id", isSelfOrAdmin(), async (req: Request<any, any, Partial<Omit<UserType, '_id'|'email'>>>, res: Response) => {
     if (!req.params.id || !mongoose.isValidObjectId(req.params.id)) return onErr(res, "No user ID provided")
     const _id = new mongoose.Types.ObjectId(req.params.id)
 
@@ -122,8 +120,8 @@ router.put("/:id", isUser, async (req: Request<any, any, Partial<Omit<UserType, 
         user.last_name = req.body.last_name ?? user.last_name
 
         await user.save()
-        req.session.user = santizeUser(user)
-
+        req.session.user = santizeUser( user as UserType )
+        
         return res.status(200).json({
             ok: `Succesfully updated User ${user.id}`
         })

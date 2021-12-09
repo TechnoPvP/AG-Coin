@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express"
-import isUser from "../middleware/isUser"
+import isAdmin from "../middleware/isAdmin"
 const router = Router()
 import Tag from "../models/Tag"
 import MongoError, { BaseMongoError } from "../validation/Mongo"
@@ -21,7 +21,7 @@ router.get('/', async (req: Request, res: Response) => {
     }
 })
 
-router.post( '/:name', isUser, async (req: Request, res: Response) => {
+router.post( '/:name', isAdmin, async (req: Request, res: Response) => {
     const input = { name: req.params.name }
     const validation = TagValidation.validate( input )
     if ( validation.error ) return onErr(res, validation.error.message)
@@ -40,7 +40,7 @@ router.post( '/:name', isUser, async (req: Request, res: Response) => {
     }
 } )
 
-router.delete( '/:name', isUser, async (req: Request, res: Response) => {
+router.delete( '/:name', isAdmin, async (req: Request, res: Response) => {
     const input = { name: req.params.name }
     const validation = TagValidation.validate( input )
     if ( validation.error ) return onErr(res, validation.error.message)
@@ -67,7 +67,7 @@ interface PutBody {
     after: string;
 }
 
-router.put( '/', isUser, async (req: Request<any, any, PutBody>, res: Response) => {
+router.put( '/', isAdmin, async (req: Request<any, any, PutBody>, res: Response) => {
     const input = req.body
     const validation = TagUpdateValidation.validate( input )
     if ( validation.error ) return onErr(res, validation.error.message)

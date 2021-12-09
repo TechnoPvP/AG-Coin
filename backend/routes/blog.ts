@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express"
 import MongoError, { BaseMongoError } from "../validation/Mongo";
 import { Blog as BlogValidation } from "../validation/Blog"
-import isUser from "../middleware/isUser";
+import isAdmin from "../middleware/isAdmin";
 import Blogs, { sanitize } from "../models/Blog"
 import { Blog } from "shared/blog" 
 const router = Router();
@@ -22,6 +22,7 @@ router.get('/', async (req: Request, res: Response) => {
         if (!blogs) return onErr(res, "Blogs Model don't exist", 500)
         return res.status(200).json( blogs.map( sanitize ) )
     } catch (error) {
+        console.log(error);
         const message = MongoError( error as BaseMongoError )
         return onErr( res, message )
     }
@@ -31,13 +32,13 @@ router.get('/:slug', async (req: Request, res: Response) => {
     const slug = req.params.slug;
     try {
         const blog = await Blogs
-            .findOne({ _id: slug})
+            .findOne({ _id: slug })
             .populate('author')
             .populate('tags')
             .lean()
             .exec() as Blog;
         
-        if (!blog) onErr(res, `No Blog found by the id of ${slug}`)
+        if (!blog) onErr(res, `No Blog found by the id of ${slug}` )
 
         return res
             .status(200)
@@ -48,7 +49,7 @@ router.get('/:slug', async (req: Request, res: Response) => {
     }
 });
 
-router.post('/', isUser, async (req: Request, res: Response) => {
+router.post('/', isAdmin, async (req: Request, res: Response) => {
     const validate = BlogValidation.validate( req.body )
     if ( validate.error ) return onErr( res, validate.error.message ) 
     req.body.author = `${req.session.user?.id}`
@@ -67,7 +68,7 @@ router.post('/', isUser, async (req: Request, res: Response) => {
     }
 });
 
-router.put('/:slug', isUser, async (req: Request, res: Response) => {
+router.put('/:slug', isAdmin, async (req: Request, res: Response) => {
     if (!req.params.slug) return onErr(res, "No blog id provided")
 
     const validate = BlogValidation.validate( { ...req.body, difficulty: req.body.difficulty.toUpperCase() ?? undefined } )
@@ -97,7 +98,7 @@ router.put('/:slug', isUser, async (req: Request, res: Response) => {
     }
 });
 
-router.delete('/:slug', isUser, async (req: Request, res: Response) => {
+router.delete('/:slug', isAdmin, async (req: Request, res: Response) => {
     if (!req.params.slug) return onErr(res, "No blog id provided")
 
     try {
