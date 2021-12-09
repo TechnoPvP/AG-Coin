@@ -1,8 +1,10 @@
 <script>
 	import { session } from '$app/stores';
 	import { sidebarOpen } from '$lib/stores';
+	import ProfileDropdown from './ProfileDropdown.svelte';
 
 	export let user;
+	let dropdownActive = true;
 
 	function closeSidebar() {
 		$sidebarOpen = !$sidebarOpen;
@@ -15,11 +17,21 @@
 		<img class="icon search" src="/icons/search.svg" alt="Profile Icon" />
 	</div>
 
-	<div class="profile">
+	<div
+		class="profile"
+		on:mouseleave={() => (dropdownActive = false)}
+		on:mouseenter={() => (dropdownActive = true)}
+	>
 		<img class="icon notifcations" src="/icons/notifcations.svg" alt="Profile Icon" />
-		<img class="profile__icon" src={$session.user.avatar} alt="Profile Icon" />
-		<span>{user}</span>
-		<img class="profile__dropdown" src="/icons/down_arrow.svg" alt="Down arrow icon" />
+
+		<div class="user">
+			<img class="profile__icon" src={$session.user.avatar} alt="Profile Icon" />
+			<span>{user}</span>
+			<img class="profile__dropdown" src="/icons/down_arrow.svg" alt="Down arrow icon" />
+			{#if dropdownActive}
+				<ProfileDropdown />
+			{/if}
+		</div>
 	</div>
 </section>
 
@@ -32,6 +44,15 @@
 		align-items: center;
 		justify-content: space-between;
 		padding: 1em 2em;
+	}
+	.user {
+		display: flex;
+		gap: 1em;
+		align-items: center;
+		position: relative;
+	}
+	.user:hover {
+		cursor: pointer;
 	}
 	.tools {
 		display: flex;
