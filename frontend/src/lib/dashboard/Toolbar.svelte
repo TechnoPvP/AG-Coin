@@ -1,5 +1,5 @@
 <script>
-	import Icon from '$lib/global/Icon.svelte';
+	import { session } from '$app/stores';
 	import { sidebarOpen } from '$lib/stores';
 
 	export let user;
@@ -17,7 +17,7 @@
 
 	<div class="profile">
 		<img class="icon notifcations" src="/icons/notifcations.svg" alt="Profile Icon" />
-		<img class="profile__icon" src="/images/profile_icon.png" alt="Profile Icon" />
+		<img class="profile__icon" src={$session.user.avatar} alt="Profile Icon" />
 		<span>{user}</span>
 		<img class="profile__dropdown" src="/icons/down_arrow.svg" alt="Down arrow icon" />
 	</div>
@@ -69,7 +69,9 @@
 
 	@media screen and (max-width: 768px) {
 		.profile {
-			span {display: none}
+			span {
+				display: none;
+			}
 		}
 	}
 </style>

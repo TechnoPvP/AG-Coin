@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SliderContent } from '$lib/interfaces/interfaces';
+	import type { SliderContent } from '$lib/types/interfaces';
 	import { onDestroy, onMount } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
 
@@ -41,7 +41,7 @@
 
 <section on:mouseleave={() => slideControls.play()} on:mouseenter={() => slideControls.pause()}>
 	{#key currentSlide}
-	<div transition:fade={{ duration: 350 }} class="content">
+		<div transition:fade={{ duration: 350 }} class="content">
 			<img src={content[currentSlide].imgSrc} alt="Silver coin with AGC logo" />
 			<h1 class=".title">{content[currentSlide].title}</h1>
 			<p>{content[currentSlide].desc}</p>
@@ -64,15 +64,15 @@
 	section {
 		display: flex;
 		flex-direction: column;
-        justify-content: center;
+		justify-content: center;
 		align-items: center;
 		text-align: center;
 		color: var(--c-black-s2);
 		height: 100%;
-        position: relative;
+		position: relative;
 	}
 	.content {
-        position: absolute;
+		position: absolute;
 		width: 100%;
 		max-width: 500px;
 		margin-top: -15%;
@@ -87,7 +87,7 @@
 		justify-content: center;
 		justify-items: center;
 		gap: 0.7em;
-        margin-top: auto;
+		margin-top: auto;
 
 		.circle {
 			background-color: var(--tran-s2);

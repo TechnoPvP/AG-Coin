@@ -12,6 +12,7 @@ import cors from 'cors';
 dotenv.config()
 
 const app = express();
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -42,6 +43,8 @@ app.use('/api/tags', Router.Tag);
 app.use('/api/auth', Router.Auth);
 app.use('/api/support', Router.Support);
 app.use('/api/user', Router.User);
+app.use('/api/feed', Router.Feed);
+app.use('/api/comment', Router.Comment);
 
 dbController();
 

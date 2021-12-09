@@ -1,29 +1,7 @@
-import mongoose, { PopulatedDoc, SchemaDefinition } from "mongoose"
+import mongoose, { SchemaDefinition } from "mongoose"
 import idValidtor from "mongoose-id-validator"
 import { sanitize as sanitizeUser } from "./User";
-import { Tag } from "./Tag";
-import type { User } from "./User";
-
-enum Difficulty {
-    "EASY",
-    "MEDIUM",
-    "HARD",
-}
-
-enum Status {
-    "PUBLISH",
-    "DRAFT"
-}
-
-export interface Blog {
-    title: string;
-    body: string;
-    tags: Tag[];
-    author: User;
-    difficulty: Difficulty;
-    created_at: Date;
-    status: Status;
-}
+import { Blog, SanitizeBlog } from "shared/blog"
 
 const BlogSchema = new mongoose.Schema<SchemaDefinition<Blog>>({
     title: String,
@@ -45,7 +23,7 @@ const BlogSchema = new mongoose.Schema<SchemaDefinition<Blog>>({
 
 BlogSchema.plugin( idValidtor )
 
-export const sanitize = (blog: Blog) => ({
+export const sanitize = (blog: Blog): SanitizeBlog => ({
     ...blog,
     author: sanitizeUser( blog.author )
 })

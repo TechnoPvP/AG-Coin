@@ -1,13 +1,11 @@
 import { Router, Request, Response } from "express"
-import User, { sanitize as sanitizeUser, User as UserType } from "../models/User"
+import User, { sanitize as sanitizeUser } from "../models/User"
+import { User as UserType } from "../../shared/user"
 import { Register, Login } from "../validation/Auth"
 import { hash, verify } from "argon2"
 import MongoError, { BaseMongoError } from "../validation/Mongo"
+import { onErr } from "../utils/error"
 const router = Router()
-
-const onErr = (res: Response, error: string, status = 400) => res
-    .status(status)
-    .json({ error })
 
 // /auth/register
 router.post("/register", async (req: Request<any, any, Omit<UserType, '_id'>>, res: Response) => {

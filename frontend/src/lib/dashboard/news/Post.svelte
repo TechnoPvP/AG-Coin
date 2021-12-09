@@ -1,8 +1,5 @@
 <script lang="ts">
-	import type { PostData } from '$lib/interfaces/interfaces';
-	import { overlay } from '$lib/stores';
-	import { onMount } from 'svelte';
-	import {parseDate} from '$lib/utils/dateUtils';
+	import { parseDate } from '$lib/utils/dateUtils';
 
 	export let data;
 	let date = parseDate(data.date);
