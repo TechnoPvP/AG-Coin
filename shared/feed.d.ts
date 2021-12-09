@@ -1,10 +1,10 @@
 import { Types } from 'mongoose';
 import { User } from './user';
 
-export interface FeedComment {
+export interface FeedComment<T = Types.ObjectId> {
     id: Types.ObjectId;
     postId: Types.ObjectId
-    user: Types.ObjectId
+    user: T;
     content: string
     replies: FeedComment
 }

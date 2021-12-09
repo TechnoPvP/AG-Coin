@@ -1,11 +1,13 @@
 <script>
-	import Action from './Action.svelte';
+import { AvatarLink } from '$lib/utils/stringUtils';
 
+	import Action from './Action.svelte';
 	export let data;
+
 </script>
 
 <div class="comment">
-	<img class="img-sm" src="{data.user.avatar}" alt="Person profile" />
+	<img class="img-sm" src="{AvatarLink}{data.user.avatar}" alt="Person profile" />
 
 	<div class="data">
 		<div class="data__heading">

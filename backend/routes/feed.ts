@@ -7,6 +7,7 @@ import { onErr } from "../utils/error";
 import { isValidObjectId } from "mongoose";
 import MongoError, { BaseMongoError } from "../validation/Mongo";
 import { sanatizedFeed } from '../models/Feed';
+import { sanitizeComment } from "../models/FeedComment";
 const router = Router();
 
 type FeedRequest<V extends keyof FeedPost> = Request<any, any, Pick<FeedPost, V>>;
@@ -16,15 +17,15 @@ type FeedRequest<V extends keyof FeedPost> = Request<any, any, Pick<FeedPost, V>
 router.get('/', async (req: FeedRequest<'id'>, res: Response<FeedPost | object>) => {
     const limit = Number(req.query.limit);
 
-    const result = await Feed.find().populate('user').populate({
-        path: 'comments', 
+    const result = await Feed.find().populate('user', 'first_name last_name avatar').populate({
+        path: 'comments',
         populate: {
             path: 'user',
             select: 'first_name last_name avatar'
         }
     }).limit(limit ? limit : 0).lean().exec();
 
-    return res.json(((result as unknown) as FeedPost<UserType>[]).map(sanatizedFeed))
+    return res.json(result)
 })
 
 /* TODO: Implement */

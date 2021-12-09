@@ -2,6 +2,7 @@ import { Schema, model } from 'mongoose';
 import { FeedPost, FeedComment } from 'shared/feed';
 import { User } from 'shared/user';
 import { sanitize } from '../models/User';
+import { sanitizeComment } from './FeedComment';
 
 const feedSchema = new Schema<FeedPost>({
     user: {
