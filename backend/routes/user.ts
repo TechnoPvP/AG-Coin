@@ -5,11 +5,12 @@ import MongoError, { BaseMongoError } from "../validation/Mongo"
 import { hash } from "argon2"
 import { Router, Request, Response } from "express"
 import store from "../utils/store"
-import isUser from "../middleware/isUser"
 import { SessionData } from "express-session"
 import { User as UserType } from 'shared/user'
 import { upload } from "../controller/FileController";
 import { deleteObject } from "../controller/AwsController"
+import isSelfOrAdmin from "../middleware/isSelfOrAdmin"
+import isUser from "../middleware/isUser"
 const router = Router()
 
 const onErr = (res: Response, message: string, status = 400) => res.status(status).json({
@@ -35,7 +36,7 @@ router.post('/avatar', isUser, upload.single('avatar'), async (req: Request, res
         
         if (!user) return onErr(res, 'User not found');
         
-        req.session.user = sanitize(user);
+        req.session.user = sanitize( user as UserType );
         return res.status(200).json(user)
     } catch (err) {
 

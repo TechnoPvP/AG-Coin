@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express"
 import MongoError, { BaseMongoError } from "../validation/Mongo";
 import { Blog as BlogValidation } from "../validation/Blog"
-import isUser from "../middleware/isUser";
+import isAdmin from "../middleware/isAdmin";
 import Blogs, { sanitize } from "../models/Blog"
 import { Blog } from "shared/blog" 
 const router = Router();

@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose, { SchemaDefinition } from "mongoose"
 import { User } from 'shared/user';
 import { SantizedUser } from "shared/user";
 
