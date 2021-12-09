@@ -8,6 +8,7 @@ import { isValidObjectId } from "mongoose";
 import MongoError, { BaseMongoError } from "../validation/Mongo";
 import { sanatizedFeed } from '../models/Feed';
 import { sanitizeComment } from "../models/FeedComment";
+import isUser from "../middleware/isUser";
 const router = Router();
 
 type FeedRequest<V extends keyof FeedPost> = Request<any, any, Pick<FeedPost, V>>;
@@ -17,7 +18,7 @@ type FeedRequest<V extends keyof FeedPost> = Request<any, any, Pick<FeedPost, V>
 router.get('/', async (req: FeedRequest<'id'>, res: Response<FeedPost | object>) => {
     const limit = Number(req.query.limit);
 
-    const result = await Feed.find().populate('user', 'first_name last_name avatar').populate({
+    const result = await Feed.find().populate('user').populate({
         path: 'comments',
         populate: {
             path: 'user',
@@ -25,7 +26,7 @@ router.get('/', async (req: FeedRequest<'id'>, res: Response<FeedPost | object>)
         }
     }).limit(limit ? limit : 0).lean().exec();
 
-    return res.json(result)
+    return res.json(((result as unknown) as FeedPost<UserType>[]).map(sanatizedFeed))
 })
 
 /* TODO: Implement */
@@ -56,7 +57,7 @@ router.post('/', async (req: Request<any, any, FeedPost>, res: Response<Partial<
 })
 
 /* Update Exsiting Feed Post */
-router.put('/:id', async (req: Request<any, any, FeedPost>, res: Response) => {
+router.put('/:id', isUser, async (req: Request<any, any, FeedPost>, res: Response) => {
     if (!req.params.id || !isValidObjectId(req.params.id)) return onErr(res, 'Valid feed post ID must be specified', 400);
 
     const { error } = FeedValidation.tailor('put').validate(req.body);
@@ -64,15 +65,12 @@ router.put('/:id', async (req: Request<any, any, FeedPost>, res: Response) => {
 
     const postId = req.params.id;
 
-    /* Only users with a session can edit their post. */
-    if (!req.session?.user?.id) return onErr(res, 'You must be logged in to update a post', 403);
-
     try {
         const post = await Feed.findById(postId).exec();
 
         if (!post) return onErr(res, `No post found with ID ${postId}`, 403);
 
-        if (!post.user.equals(req.session.user.id)) return onErr(res, 'You cannot edit another users post', 403);
+        if (!post.user.equals(req.session!.user!.id)) return onErr(res, 'You cannot edit another users post', 403);
 
         /* TODO: I think theres a better way to achive this */
         post.caption = req.body.caption ?? post.caption;

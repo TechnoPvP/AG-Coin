@@ -24,6 +24,7 @@ const feedSchema = new Schema<FeedPost>({
 export const sanatizedFeed = (feed: FeedPost<User>) => {
     return {
         ...feed,
+        comments: feed.comments?.map(sanitizeComment),
         user: sanitize(feed.user),
     }
 }

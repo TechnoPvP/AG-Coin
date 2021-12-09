@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { session } from '$app/stores';
-
 	import host from '$lib/utils/host';
-import { valid } from 'joi';
+	import { AvatarLink } from '$lib/utils/stringUtils';
+	import Loader from '../Loader.svelte';
 
 	let fileFormElement: HTMLFormElement;
 	let fileName;
 	let fileWarning;
 
+	let querying = false;
 	const allowedImageTypes = ['image/png', 'image/jpeg', 'image/webp'];
 
 	function handleFileChange(event: Event) {
@@ -35,14 +36,19 @@ import { valid } from 'joi';
 		if (target?.files?.length <= 0) return;
 
 		const formData = new FormData(target);
+		querying = true;
 		fetch(`${host}/user/avatar`, {
 			method: 'POST',
 			body: formData,
 			credentials: 'include'
 		})
 			.then((response) => response.json())
-			.then((result) => ($session.user.avatar = result.avatar))
-			.catch((err) => console.log(err));
+			.then((result) => {
+				$session.user.avatar = AvatarLink + result.avatar;
+				location.reload();
+			})
+			.catch((err) => console.log(err))
+			.finally(() => (querying = false));
 	}
 
 	function deleteUserAvatar() {
@@ -68,7 +74,11 @@ import { valid } from 'joi';
 			<img src={$session.user.avatar} alt="Profile" />
 		</label>
 		<span class:red={fileWarning} class:gray={fileName && !fileWarning}>
-			{fileWarning ?? fileName ?? 'No file currently selected'}
+			{#if querying}
+				<Loader />
+			{:else}
+				{fileWarning ?? fileName ?? 'No file currently selected'}
+			{/if}
 		</span>
 	</div>
 

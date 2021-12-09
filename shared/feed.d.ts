@@ -14,5 +14,5 @@ export interface FeedPost<T = Types.ObjectId> {
     user: T;
     caption: string
     thumbnail?: string;
-    comments?: Array<Types.ObjectId>
+    comments?: Array<FeedComment<T>>
 }

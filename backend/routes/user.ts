@@ -24,10 +24,8 @@ router.get("/me", (req: Request, res: Response) => {
 })
 
 /* Upload User Avatar */
-router.post('/avatar', upload.single('avatar'), async (req: Request, res: Response) => {
+router.post('/avatar', isUser, upload.single('avatar'), async (req: Request, res: Response) => {
     if (!req.file) return onErr(res, 'No file was uploaded.');
-
-    if (!req.session?.user) return onErr(res, 'You mst be logged in to do this.');
 
     const file = req.file as Express.MulterS3.File;
     const filePath = file.key.split('/');
@@ -46,11 +44,8 @@ router.post('/avatar', upload.single('avatar'), async (req: Request, res: Respon
 
 });
 
-/* TODO: Use new middlewear */
 /* Delete user avatar */
-router.delete('/avatar', async (req: Request, res, Response) => {
-    if (!req.session?.user) return onErr(res, 'You mst be logged in to do this.');
-
+router.delete('/avatar', isUser, async (req: Request, res, Response) => {
     deleteObject(`${req.session.user?.avatar}`, (err, data) => {
         if (err) {
             return res.status(500).json({ error: err })

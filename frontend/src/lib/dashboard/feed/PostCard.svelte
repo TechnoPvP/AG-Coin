@@ -60,7 +60,7 @@ import { AvatarLink } from '$lib/utils/stringUtils';
 
 <div class="card">
 	<header>
-		<img src={AvatarLink + data.user.avatar} alt="Person profile" />
+		<img src={data.user.avatar} alt="Person profile" />
 		<div class="profile-info">
 			<h4>{`${data.user.first_name}  ${data.user.last_name}`}</h4>
 			<span>{data.role}</span>
@@ -84,7 +84,7 @@ import { AvatarLink } from '$lib/utils/stringUtils';
 
 	<div class="comments-wrap">
 		<div class="add-comment">
-			<img class="img-sm" src={AvatarLink + data.user.avatar} alt="Person profile" />
+			<img class="img-sm" src={data.user.avatar} alt="Person profile" />
 			<Textarea bind:value focused={commentFocused} />
 			{#if value}
 				<Button type="button" size="small" on:click={addComment}>Submit</Button>

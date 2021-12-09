@@ -7,7 +7,7 @@ import { AvatarLink } from '$lib/utils/stringUtils';
 </script>
 
 <div class="comment">
-	<img class="img-sm" src="{AvatarLink}{data.user.avatar}" alt="Person profile" />
+	<img class="img-sm" src="{data.user.avatar}" alt="Person profile" />
 
 	<div class="data">
 		<div class="data__heading">
