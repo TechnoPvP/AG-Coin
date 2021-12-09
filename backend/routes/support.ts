@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express'
 import Support from '../models/Support';
-import validate from '../validation/supportV';
+import validate from '../validation/SupportV';
 const router = Router();
 
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {

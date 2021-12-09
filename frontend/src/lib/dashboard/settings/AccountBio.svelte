@@ -1,12 +1,20 @@
 <script>
+import { overlay } from '$lib/stores';
+
+	import ProfilePopup from './ProfilePopup.svelte';
+
 	export let name;
 	export let lastVisit;
 	export let joined;
 	export let src;
+
+	const openProfilePopup = () => {
+		$overlay = $overlay ? false : true;
+	}
 </script>
 
 <section>
-	<img class="profile-img" {src} alt="Your Profile Icon" />
+	<img on:click={openProfilePopup} {src} class="profile-img" alt="Your Profile Icon" />
 
 	<div class="bio">
 		<h1>{name}</h1>
@@ -16,17 +24,24 @@
 			<span> <img src="/icons/calendar.svg" alt="Time icon" />Joined {joined} year ago</span>
 		</div>
 	</div>
+
+	{#if $overlay}
+		<ProfilePopup />
+	{/if}
 </section>
 
 <style lang="scss">
 	section {
 		display: flex;
 		gap: var(--pd-lg);
-        margin: var(--pd-xl) 0;
+		margin: var(--pd-xl) 0;
+		position: relative;
 
 		.profile-img {
-			max-width: 100px;
+			width: 100px;
+			height: 100px;
 			border-radius: 50%;
+			object-fit: cover;
 		}
 
 		.bio {

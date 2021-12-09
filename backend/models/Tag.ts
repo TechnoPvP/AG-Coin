@@ -1,8 +1,5 @@
 import mongoose from "mongoose"
-
-export interface Tag {
-    name: string;
-}
+import { Tag } from "shared/tag"
 
 const TagSchema = new mongoose.Schema<Tag>({
     name: { type: String, unique: true, lowercase: true }

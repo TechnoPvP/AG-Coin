@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Badge from '$lib/global/Badge.svelte';
 	import Breadcrumbs from '$lib/global/Breadcrumbs.svelte';
-	import type { BlogPost } from '$lib/interfaces/interfaces';
-	import type { Layout } from '$lib/interfaces/types';
+	import type { BlogPost } from 'shared/blog';
+	import type { Layout } from '$lib/types/types';
 
 	export let data: BlogPost;
 	export let layout: Layout;
@@ -48,16 +48,15 @@
 			justify-content: space-between;
 			height: 100%;
 			padding: 1em;
-
-        }
+		}
 		.time {
 			margin-right: 5px;
 		}
 		.heading-img {
 			width: 100%;
 			min-height: 167px;
-            max-height: 167px;
-            display: block;
+			max-height: 167px;
+			display: block;
 			object-fit: cover;
 			border-radius: var(--br-md) var(--br-md) 0 0;
 		}

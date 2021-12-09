@@ -17,6 +17,7 @@ specifiers:
   prettier-plugin-svelte: ^2.4.0
   sass: ^1.44.0
   scss: ^0.2.4
+  shared: file:../shared
   svelte: ^3.44.0
   svelte-check: ^2.2.6
   svelte-preprocess: ^4.9.8
@@ -42,6 +43,7 @@ devDependencies:
   prettier: 2.5.0
   prettier-plugin-svelte: 2.5.0_prettier@2.5.0+svelte@3.44.2
   scss: 0.2.4
+  shared: link:../shared
   svelte: 3.44.2
   svelte-check: 2.2.10_sass@1.44.0+svelte@3.44.2
   svelte-preprocess: 4.9.8_ad042b75a3657988945d4012dfb6d62a

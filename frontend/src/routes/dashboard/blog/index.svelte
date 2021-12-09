@@ -2,8 +2,8 @@
 	import BlogCard from '$lib/dashboard/blog/BlogCard.svelte';
 	import Header from '$lib/dashboard/PageHeader.svelte';
 	import Badge from '$lib/global/Badge.svelte';
-	import type { BlogPost } from '$lib/interfaces/interfaces';
-	import type { Layout } from '$lib/interfaces/types';
+	import type { BlogPost } from 'shared/blog';
+	import type { Layout } from '$lib/types/types';
 	import { onDestroy, onMount } from 'svelte';
 
 	let currentLayout: Layout = 'column';

@@ -1,6 +1,10 @@
-<script>
+<script lang='ts'>
 	import HomeButton from '$lib/home/HomeButton.svelte';
 	import Navbar from '$lib/home/Navbar.svelte';
+	import type { TestingUser } from 'shared/user';
+	import type { TestFeed } from 'shared/feed/feed';
+
+	const adam: TestingUser = 'adam';
 </script>
 
 <section>
