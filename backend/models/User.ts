@@ -1,6 +1,8 @@
 import mongoose, { SchemaDefinition } from "mongoose"
 import { User } from 'shared/user';
 import { SantizedUser } from "shared/user";
+import Feed from "./Feed"
+import Comment from "./FeedComment"
 
 const UsersSchema = new mongoose.Schema<SchemaDefinition<User>>({
     email: { type: String, required: true, unique: true },
@@ -11,8 +13,17 @@ const UsersSchema = new mongoose.Schema<SchemaDefinition<User>>({
     avatar: { type: String, required: false }
 })
 
-export const sanitize = (user: User) => (
-    {
+UsersSchema.post( 'remove', async function (doc, next) {
+    const user = doc as User
+    await Promise.all([
+        Feed.deleteMany( { user: user._id } ),
+        Comment.deleteMany({ user: user._id }),
+    ])
+    
+    next()
+} )
+
+export const sanitize = (user: User) => ({
     id: user._id,
     email: user.email,
     first_name: user.first_name,

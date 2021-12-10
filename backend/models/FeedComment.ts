@@ -2,6 +2,7 @@ import { Schema, model } from 'mongoose';
 import { FeedComment } from 'shared/feed';
 import { sanitize } from './User';
 import { User } from 'shared/user';
+import Feed from './Feed'
 
 const feedComment = new Schema<FeedComment>({
     user: {
@@ -18,6 +19,15 @@ const feedComment = new Schema<FeedComment>({
         required: true
     },
 })
+
+feedComment.post( "remove", async function (doc, next) {
+    const comment = doc as FeedComment
+    await Feed.updateMany( { $pull: {
+        comments: comment._id
+    } } )
+
+    next()
+} )
 
 export const sanitizeComment = (comment: FeedComment<User>) => {
     return {

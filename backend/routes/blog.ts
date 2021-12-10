@@ -68,7 +68,7 @@ router.post('/', isAdmin, async (req: Request, res: Response) => {
 router.put('/:slug', isAdmin, async (req: Request, res: Response) => {
     if (!req.params.slug) return onErr(res, "No blog id provided")
 
-    const validate = BlogValidation.validate( { ...req.body, difficulty: req.body.difficulty.toUpperCase() ?? undefined } )
+    const validate = BlogValidation.validate( { ...req.body, difficulty: req.body.difficulty?.toUpperCase() ?? undefined } )
     if ( validate.error ) return onErr( res, validate.error.message ) 
 
     try {
