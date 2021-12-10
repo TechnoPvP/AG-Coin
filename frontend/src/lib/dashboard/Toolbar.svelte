@@ -1,10 +1,12 @@
 <script>
 	import { session } from '$app/stores';
 	import { sidebarOpen } from '$lib/stores';
-	import ProfileDropdown from './ProfileDropdown.svelte';
+	import NotifcationsDropdown from '../dropdown/NotifcationsDropdown.svelte';
+	import ProfileDropdown from '../dropdown/ProfileDropdown.svelte';
 
 	export let user;
-	let dropdownActive = true;
+	let profileDropdown = false;
+	let notifcationsDropdown = false;
 
 	function closeSidebar() {
 		$sidebarOpen = !$sidebarOpen;
@@ -17,22 +19,33 @@
 		<img class="icon search" src="/icons/search.svg" alt="Profile Icon" />
 	</div>
 
-	<div
-		class="profile"
-		on:mouseleave={() => (dropdownActive = false)}
-		on:mouseenter={() => (dropdownActive = true)}
-	>
-		<img class="icon notifcations" src="/icons/notifcations.svg" alt="Profile Icon" />
-
-		<div class="user">
-			<img class="profile__icon" src={$session.user.avatar} alt="Profile Icon" />
-			<span>{user}</span>
-			<img class="profile__dropdown" src="/icons/down_arrow.svg" alt="Down arrow icon" />
-			{#if dropdownActive}
-				<ProfileDropdown />
+	<div class="profile">
+		<div
+			class="notifcations"
+			on:mouseleave={() => (notifcationsDropdown = false)}
+			on:mouseenter={() => (notifcationsDropdown = true)}
+		>
+			<img class="icon notifcations" src="/icons/notifcations.svg" alt="Profile Icon" />
+			{#if notifcationsDropdown}
+				<NotifcationsDropdown />
 			{/if}
 		</div>
+
+		<div class="line" />
+		
+		<div
+		class="user"
+		on:mouseleave={() => (profileDropdown = false)}
+		on:mouseenter={() => (profileDropdown = true)}
+		>
+		<img class="profile__icon" src={$session.user.avatar} alt="Profile Icon" />
+		<span>{user}</span>
+		<img class="profile__dropdown" src="/icons/down_arrow.svg" alt="Down arrow icon" />
+		{#if profileDropdown}
+		<ProfileDropdown />
+		{/if}
 	</div>
+</div>
 </section>
 
 <style lang="scss">
@@ -45,14 +58,36 @@
 		justify-content: space-between;
 		padding: 1em 2em;
 	}
+	.profile {
+		display: flex;
+		align-items: center;
+		gap: 1.3em;
+		position: relative;
+
+		&__icon {
+			border-radius: 50%;
+			width: 35px;
+			height: 35px;
+		}
+	}
+	.line {
+		flex-grow: 1;
+		height: 30px;
+		width: 2px;
+		background-color: var(--tran-s1);
+	}
+	.notifcations {
+		position: relative;
+	}
 	.user {
 		display: flex;
 		gap: 1em;
 		align-items: center;
 		position: relative;
-	}
-	.user:hover {
-		cursor: pointer;
+
+		&:hover {
+			cursor: pointer;
+		}
 	}
 	.tools {
 		display: flex;
@@ -70,17 +105,6 @@
 			width: 100%;
 			min-height: 2px;
 			background-color: var(--c-gray-s1);
-		}
-	}
-	.profile {
-		display: flex;
-		align-items: center;
-		gap: 1em;
-
-		&__icon {
-			border-radius: 50%;
-			width: 35px;
-			height: 35px;
 		}
 	}
 	.icon {

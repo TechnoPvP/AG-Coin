@@ -23,4 +23,5 @@ export const UserUpdate = Joi.object({
         .message("last name must be 2 characters or more")
         .pattern(/\s/, { name: "spaces", invert: true })
         .message("last name cannot contain any whitespaces"),
+    email: Joi.string().email()
 })

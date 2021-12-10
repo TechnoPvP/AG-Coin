@@ -1,10 +1,22 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+
 	import { session } from '$app/stores';
+	import host from '$lib/utils/host';
 	import { fade, fly } from 'svelte/transition';
 
+	async function logout() {
+		await fetch(`${host}/auth/logout`, {
+			credentials: 'include'
+		});
+
+		goto('/');
+		$session.user = null;
+		location.reload()
+	}
 </script>
 
-<div class="dropdown" in:fly={{ y: -20 }} out:fade={{duration: 100}}>
+<div class="dropdown" in:fly={{ y: -20 }} out:fade={{ duration: 100 }}>
 	<div class="dropdown__section profile">
 		<div class="profile-icon">
 			<img src="/icons/profile.svg" alt="Profile icon" />
@@ -31,10 +43,10 @@
 
 	<div class="line" />
 
-	<a href="/auth/logout" class="dropdown__section">
+	<div on:click={logout} class="dropdown__section">
 		<img src="/icons/time.svg" alt="Settings icon" />
 		<span>Logout</span>
-	</a>
+	</div>
 </div>
 
 <style lang="scss">
@@ -46,14 +58,14 @@
 		border-radius: var(--br-sm);
 		display: flex;
 		flex-direction: column;
-		min-width: 160px;
+		min-width: 180px;
 		z-index: 100;
 
 		&__section {
 			display: flex;
 			align-items: center;
 			gap: var(--pd-sm);
-			padding: 1em;
+			padding: 1.2em 1.5em;
 			transition: color 0.15s linear;
 
 			img {
@@ -62,6 +74,7 @@
 			}
 
 			&.profile {
+				padding: 1.2em 0.8em;
 				position: relative;
 			}
 		}

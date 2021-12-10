@@ -84,6 +84,14 @@ p.small {
 	margin: 0 auto;
 	padding: 0 1.5em;
 }
+::-webkit-scrollbar {
+	background-color: var(--tran-s2);
+	width: 5px;
+}
+::-webkit-scrollbar-thumb {
+	background-color: var(--c-blue);
+	max-height: 10px;
+}
 
 /* Design System */
 :root {

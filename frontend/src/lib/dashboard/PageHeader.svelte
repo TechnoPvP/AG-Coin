@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Breadcrumbs from '$lib/global/Breadcrumbs.svelte';
+	import { getContext } from 'svelte';
 	export let title;
 	export let desc = null;
 	export let large = false;
