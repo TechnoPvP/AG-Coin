@@ -15,14 +15,13 @@ type FeedRequest<V extends keyof FeedPost> = Request<any, any, Pick<FeedPost, V>
 /* Get All Feed Post */
 router.get('/', async (req: FeedRequest<'_id'>, res: Response<FeedPost | object>) => {
     const limit = Number(req.query.limit);
-    const result = await Feed.find().populate('user').populate({
-        path: 'comments',
-        populate: {
-            path: 'user',
-            select: 'first_name last_name avatar'
-        }
-    }).limit(limit ? limit : 0).lean().exec();
-
+    const result = await Feed
+        .find()
+        .populate('user')
+        .limit(limit ? limit : 0)
+        .lean()
+        .exec();
+    
     return res.json(((result as unknown) as FeedPost<UserType>[]).map(sanatizedFeed))
 })
 
@@ -32,7 +31,6 @@ router.get('/:id', async (req: FeedRequest<'_id'>, res: Response<FeedPost | stri
     const { _id } = req.body;
     return res.send("a");
 })
-
 
 /* Create New Feed Post */
 router.post('/', isUser, async (req: Request<any, any, FeedPost>, res: Response<Partial<FeedPost> | object>) => {

@@ -3,23 +3,21 @@
 	import host from '$lib/utils/host';
 
 	export const load: Load = async ({ fetch, session }) => {
-		const response = await fetch(`${host}/feed`, {
+		const posts = await fetch(`${host}/feed`, {
 			method: 'GET',
 			headers: {
 				accept: 'application/json'
 			}
-		});
+		}).then( res => res.json() );
 
-		if (response.ok) {
+		if (posts.error) {
 			return {
-				props: {
-					posts: await response.json()
-				}
+				error: posts.error
 			};
 		}
 
 		return {
-			error: response.status.toString()
+			props: { posts }
 		};
 	};
 </script>

@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import { FeedComment } from 'shared/feed';
 import { sanitize } from './User';
 import { User } from 'shared/user';
-import Feed from './Feed'
+import idValidtor from "mongoose-id-validator"
 
 const feedComment = new Schema<FeedComment>({
     user: {
@@ -12,6 +12,7 @@ const feedComment = new Schema<FeedComment>({
     },
     postId: {
         type: Schema.Types.ObjectId,
+        ref: 'feed',
         required: true
     },
     content: {
@@ -20,18 +21,11 @@ const feedComment = new Schema<FeedComment>({
     },
 })
 
-feedComment.post( "remove", async function (doc, next) {
-    const comment = doc as FeedComment
-    await Feed.updateMany( { $pull: {
-        comments: comment._id
-    } } )
-
-    next()
-} )
+feedComment.plugin( idValidtor )
 
 export const sanitizeComment = (comment: FeedComment<User>) => {
     return {
-        ...feedComment,
+        ...comment,
         user: sanitize(comment.user),
     }
 }
