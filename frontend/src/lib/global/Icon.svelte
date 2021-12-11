@@ -3,10 +3,24 @@
 
 	export let icon: Icons;
 	export let active = false;
-
+	export let color = 'var(--c-gray-s2';
 	let activeColor = 'var(--c-blue)';
 	let defaultColor = 'var(--c-gray-s2)';
 </script>
+
+<!-- TODO: Allow color choice for all icons -->
+{#if icon == 'arrow'}
+	<svg
+		on:click
+		width="10"
+		height="15"
+		viewBox="0 0 10 15"
+		fill="none"
+		xmlns="http://www.w3.org/2000/svg"
+	>
+		<path d="M1.39453 1L7.84228 7.33583L1.39453 13.6717" stroke={color} stroke-width="2" />
+	</svg>
+{/if}
 
 {#if icon == 'alert'}
 	<svg viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
