@@ -13,7 +13,7 @@
 </script>
 
 <script lang="ts">
-	import ImageSlider from '$lib/auth/ImageSlider.svelte';
+	import ImageSlider from '$lib/dashboard/auth/ImageSlider.svelte';
 	import type { SliderContent } from '$lib/types/interfaces';
 	
 	const content: Array<SliderContent> = [

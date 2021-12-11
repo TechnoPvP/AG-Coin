@@ -2,8 +2,8 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 
-	import PassStrength from '$lib/auth/PassStrength.svelte';
-	import TopBar from '$lib/auth/TopBar.svelte';
+	import PassStrength from '$lib/dashboard/auth/PassStrength.svelte';
+	import TopBar from '$lib/dashboard/auth/TopBar.svelte';
 	import Loader from '$lib/dashboard/Loader.svelte';
 	import Button from '$lib/global/Button.svelte';
 	import Input from '$lib/global/Input.svelte';

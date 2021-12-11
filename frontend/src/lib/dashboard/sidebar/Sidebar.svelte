@@ -1,6 +1,6 @@
 <script>
 	import { sidebarOpen } from '$lib/stores';
-	import SidebarItem from '$lib/sidebar/SidebarItem.svelte';
+	import SidebarItem from '$lib/dashboard/sidebar/SidebarItem.svelte';
 	import SidebarGroup from './SidebarGroup.svelte';
 </script>
 

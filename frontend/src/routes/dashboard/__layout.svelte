@@ -12,7 +12,7 @@
 
 <script>
 	import Toolbar from '$lib/dashboard/Toolbar.svelte';
-	import Sidebar from '$lib/sidebar/Sidebar.svelte';
+	import Sidebar from '$lib/dashboard/sidebar/Sidebar.svelte';
 	import { overlay, sidebarOpen } from '$lib/stores';
 	import { session } from '$app/stores';
 </script>

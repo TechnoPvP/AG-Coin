@@ -1,8 +1,8 @@
 <script>
 	import { session } from '$app/stores';
 	import { sidebarOpen } from '$lib/stores';
-	import NotifcationsDropdown from '../dropdown/NotifcationsDropdown.svelte';
-	import ProfileDropdown from '../dropdown/ProfileDropdown.svelte';
+	import NotifcationsDropdown from './dropdown/NotifcationsDropdown.svelte';
+	import ProfileDropdown from './dropdown/ProfileDropdown.svelte';
 
 	export let user;
 	let profileDropdown = false;
