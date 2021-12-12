@@ -1,7 +1,4 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-
-	// export let name;
 	type Style = 'filled' | 'outlined';
 
 	const COLORS = {
@@ -56,6 +53,10 @@
             height: 11px;
             transform: rotate(45deg);
         }
+
+		&:hover {
+			cursor: pointer;
+		}
 	}
 	.selected {
 		color: var(--c-white);

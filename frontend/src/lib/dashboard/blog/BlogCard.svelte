@@ -1,10 +1,11 @@
 <script lang="ts">
 	import Badge from '$lib/global/Badge.svelte';
 	import Breadcrumbs from '$lib/global/Breadcrumbs.svelte';
-	import type { BlogPost } from 'shared/blog';
+	import type { Blog } from 'shared/blog';
 	import type { Layout } from '$lib/types/types';
+import DifficultyBadge from './DifficultyBadge.svelte';
 
-	export let data: BlogPost;
+	export let data: Blog;
 	export let layout: Layout;
 
 	const getReadingTime = (words: string, avg = 225) => {
@@ -25,8 +26,8 @@
 			</p>
 		{/if}
 		<div class="info">
-			<Badge color="green" style="outlined" value="Advanced" />
-			<span>{data.date}</span>
+			<DifficultyBadge selectable={false} difficulty='easy' />
+			<span>{data.created_at}</span>
 			<div>
 				<img class="time" src="/icons/time.svg" alt="Time icon" />{getReadingTime(data.body)}m
 			</div>

@@ -1,6 +1,10 @@
 <script lang="ts">
 	import Icon from '$lib/global/Icon.svelte';
-import { date, name, commerce, vehicle } from 'faker';
+	import { date, name, commerce, vehicle } from 'faker';
+	import Status from './Status.svelte';
+
+	export let selectable = true;
+	export let rowsPerPageOptions = [5, 10, 20, 40];
 
 	/* Data */
 	export let rows = [
@@ -22,7 +26,34 @@ import { date, name, commerce, vehicle } from 'faker';
 		});
 	}
 
-	export let rowsPerPageOptions = [5, 10, 20, 40];
+	let selected = [];
+	let selectedData = [];
+	let mainSelector: HTMLInputElement;
+
+	function selectRow(event: Event) {
+		const target = event.target as HTMLInputElement;
+		const id = Number(target.dataset.id);
+
+		/* Remove row if it already exsits */
+		if (selected.includes(id)) return (selected = selected.filter((row) => row != id));
+
+		selected = [...selected, id];
+		selectedData = [...selectedData, columns[id]];
+	}
+
+	function handleMainSelected(event) {
+		const target = event.target as HTMLInputElement;
+
+		if (!target.checked) return (selected = []);
+
+		selected = [...Array.from({ length: rowsPerPage }, (_, x) => x + start)];
+	}
+
+	/* TODO: Remove */
+	// $: console.log(selectedData);
+	$: console.log(selected);
+
+	/* Pagnation */
 	let rowsPerPage = 5;
 
 	let max = columns.length;
@@ -53,30 +84,51 @@ import { date, name, commerce, vehicle } from 'faker';
 <section>
 	<table cellspacing={0}>
 		<thead>
-			{#each rows as row}
-				<th>{row.headerName}</th>
-			{/each}
+			<tr>
+				{#if selectable}
+					<th
+						><input
+							on:change={handleMainSelected}
+							bind:this={mainSelector}
+							checked={selected.length > 0}
+							type="checkbox"
+							name="select"
+							data-id="all"
+						/></th
+					>
+				{/if}
+				{#each rows as row}
+					<th>{row.headerName}</th>
+				{/each}
+			</tr>
 		</thead>
 		<tbody>
-			{#each filteredData as column}
-				<tr>
+			{#each filteredData as column, i}
+				<tr class:selected={selected.includes(page > 0 ? i + rowsPerPage * page : i)}>
+					{#if selectable}
+						<td
+							><input
+								on:click={selectRow}
+								checked={selected.includes(page > 0 ? i + rowsPerPage * page : i)}
+								type="checkbox"
+								name="select"
+								data-id={page > 0 ? i + rowsPerPage * page : i}
+							/></td
+						>
+					{/if}
+
+					<!-- TODO: Allow for dynamic data to be placed -->
 					<td>{column.name}</td>
 					<td>{column.price}</td>
-					<td>{column.status}</td>
 					<td>{column.createdDate}</td>
+					<td><Status status={column.status} /></td>
 					<td>S P R</td>
 				</tr>
 			{/each}
 		</tbody>
-		<!-- <tfoot>
-			<tr>
-                {#each Array(rows.length - 1) as row}
-				<td />
-                {/each}
-				<td>Prev Next</td>
-			</tr>
-		</tfoot> -->
 	</table>
+
+	<!-- TODO: Seperate Controls -->
 	<div class="controls">
 		<span>Rows per page: </span>
 		<select bind:value={rowsPerPage}>
@@ -86,10 +138,10 @@ import { date, name, commerce, vehicle } from 'faker';
 		</select>
 		<span>{start} - {end} of {columns.length}</span>
 		<button class="button button--previous" on:click={handlePrevious} class:disabled={start == 0}>
-			<Icon icon='arrow'color={start == 0 ? 'var(--c-gray-s3)' : 'var(--c-gray-s1)'}/>
+			<Icon icon="arrow" color={start == 0 ? 'var(--c-gray-s3)' : 'var(--c-gray-s1)'} />
 		</button>
 		<button class="button button--next" on:click={handleNext} class:disabled={max == end}>
-			<Icon icon='arrow' color={max == end ? 'var(--c-gray-s3)' : 'var(--c-gray-s1)'}/>
+			<Icon icon="arrow" color={max == end ? 'var(--c-gray-s3)' : 'var(--c-gray-s1)'} />
 		</button>
 	</div>
 </section>
@@ -119,6 +171,18 @@ import { date, name, commerce, vehicle } from 'faker';
 		td:last-of-type {
 			text-align: right;
 		}
+		tr {
+			transition: background-color 0.1s linear;
+		}
+		tr:hover {
+			background-color: var(--tran-s2);
+		}
+		tr.selected {
+			background-color: rgb(23, 98, 255, 0.24);
+		}
+		tr.selected:hover {
+			background-color: rgb(23, 98, 255, 0.3);
+		}
 	}
 	.controls {
 		display: flex;
@@ -146,7 +210,7 @@ import { date, name, commerce, vehicle } from 'faker';
 		background-color: transparent;
 		outline: none;
 		border: none;
-		width:  40px;
+		width: 40px;
 		height: 40px;
 		border-radius: 50%;
 		display: flex;
