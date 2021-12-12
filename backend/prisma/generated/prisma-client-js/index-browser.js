@@ -91,6 +91,22 @@ exports.Prisma.UserScalarFieldEnum = makeEnum({
   role: 'role'
 });
 
+exports.Prisma.BlogScalarFieldEnum = makeEnum({
+  id: 'id',
+  title: 'title',
+  body: 'body',
+  difficulty: 'difficulty',
+  status: 'status',
+  created_at: 'created_at'
+});
+
+exports.Prisma.SessionScalarFieldEnum = makeEnum({
+  id: 'id',
+  sid: 'sid',
+  data: 'data',
+  expiresAt: 'expiresAt'
+});
+
 exports.Prisma.SortOrder = makeEnum({
   asc: 'asc',
   desc: 'desc'
@@ -105,9 +121,22 @@ exports.Role = makeEnum({
   DEFAULT: 'DEFAULT'
 });
 
+exports.Difficulty = makeEnum({
+  EASY: 'EASY',
+  MEDIUM: 'MEDIUM',
+  HARD: 'HARD'
+});
+
+exports.Status = makeEnum({
+  DRAFT: 'DRAFT',
+  PUBLISH: 'PUBLISH'
+});
+
 exports.Prisma.ModelName = makeEnum({
   Tag: 'Tag',
-  User: 'User'
+  User: 'User',
+  Blog: 'Blog',
+  Session: 'Session'
 });
 
 /**

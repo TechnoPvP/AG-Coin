@@ -2,7 +2,6 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_URL")
-  
 }
 
 generator client {
@@ -12,7 +11,8 @@ generator client {
 
 model Tag {
   id Int @id @unique @default(autoincrement())
-  name String 
+  name String @unique
+  blog Blog[]
 }
 
 enum Role {
@@ -28,4 +28,32 @@ model User {
   last_name String
   avatar String @default("https://agcoin.s3.amazonaws.com/user-avatars/default_profile_400x400.png")
   role Role @default(DEFAULT)
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum Status {
+  DRAFT
+  PUBLISH
+}
+
+model Blog {
+  id Int @id @unique @default(autoincrement())
+  title String
+  body String
+  tags Tag[]
+  difficulty Difficulty @default(EASY)
+  status Status
+  created_at DateTime @default(now())
+}
+
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String
+  expiresAt   DateTime
 }

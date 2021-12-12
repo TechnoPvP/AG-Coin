@@ -3,7 +3,6 @@ import express, { Request, Response, NextFunction } from "express"
 import path from "path"
 import cookieParser from "cookie-parser"
 import logger from "morgan"
-// import dbController from "./controller/DbController"
 import Router from "./routes/routes"
 import express_session from "express-session"
 import store from "./utils/store"
@@ -40,8 +39,8 @@ app.use(express_session({
 
 app.use('/api/user', Router.User);
 app.use('/api/auth', Router.Auth);
-// app.use('/api/blog', Router.Blog);
-// app.use('/api/tags', Router.Tag);
+app.use('/api/blog', Router.Blog);
+app.use('/api/tags', Router.Tag);
 // app.use('/api/support', Router.Support);
 // app.use('/api/feed', Router.Feed);
 // app.use('/api/comment', Router.Comment);

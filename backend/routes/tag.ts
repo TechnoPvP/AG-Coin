@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express"
 import isAdmin from "../middleware/isAdmin"
 const router = Router()
-import Tag from "../models/Tag"
+import { prisma } from "../prisma/main"
 import MongoError, { BaseMongoError } from "../validation/Mongo"
 import { Tag as TagValidation, TagUpdate as TagUpdateValidation } from "../validation/Tag"
 
@@ -11,7 +11,7 @@ const onErr = (res: Response, message: string, status = 400) => res
 
 router.get('/', async (req: Request, res: Response) => {
     try {
-        const response = await Tag.find().exec()
+        const response = await prisma.tag.findMany()
         return res
             .status(200)
             .json( response )
@@ -22,12 +22,15 @@ router.get('/', async (req: Request, res: Response) => {
 })
 
 router.post( '/:name', isAdmin, async (req: Request, res: Response) => {
-    const input = { name: req.params.name }
+    const input = { name: req.params.name?.toLowerCase() }
     const validation = TagValidation.validate( input )
     if ( validation.error ) return onErr(res, validation.error.message)
 
     try {
-        const tag = await Tag.create( input )
+        const tag = await prisma.tag.create({
+            data: { ...input }
+        })
+
         return res
             .status(200)
             .json( { 
@@ -41,20 +44,20 @@ router.post( '/:name', isAdmin, async (req: Request, res: Response) => {
 } )
 
 router.delete( '/:name', isAdmin, async (req: Request, res: Response) => {
-    const input = { name: req.params.name }
+    const input = { name: req.params.name?.toLowerCase() }
     const validation = TagValidation.validate( input )
     if ( validation.error ) return onErr(res, validation.error.message)
 
     try {
-        const tag = await Tag.findOne( input ).exec()
-        if (!tag) return onErr( res, `no tag by the name of ${input.name} can be found.` )
-        await tag.delete()
+        const tag = await prisma.tag.delete({
+            where: { ...input }
+        })
 
         return res
             .status(200)
             .json( { 
-                ok: `Delted ${input.name}`,
-                value: input.name
+                ok: `Delted ${tag.name}`,
+                value: tag.name
             } )
     } catch (error) {
         const message = MongoError( error as BaseMongoError )
@@ -73,19 +76,16 @@ router.put( '/', isAdmin, async (req: Request<any, any, PutBody>, res: Response)
     if ( validation.error ) return onErr(res, validation.error.message)
 
     try {
-        const tag = await Tag.findOne( { name: input.before } ).exec()
-        if (!tag) return onErr( res, `no tag by the name of ${input.before} can be found.` )
-        tag.name = input.after
-        await tag.save()
+        const tag = await prisma.tag.update({
+            where: { name: input.before },
+            data: { name: input.after }
+        })
 
         return res
             .status(200)
             .json( {
                 ok: `Updated ${input.before} to ${input.after}`,
-                value: {
-                    id: tag.id,
-                    value: input.after
-                }
+                value: tag
             } )
     } catch (error) {
         const message = MongoError( error as BaseMongoError )

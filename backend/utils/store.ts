@@ -1,8 +1,6 @@
-import express_session from "express-session"
-import pg_session from "connect-pg-simple"
+import { PrismaSessionStore } from "@quixo3/prisma-session-store"
+import { prisma } from "../prisma/main"
 
-const PGStore = pg_session(express_session)
-export default new PGStore({
-  tableName: 'user_sessions',
-  conString: `${process.env.DATABASE_URL}`
+export default new PrismaSessionStore(prisma, {
+  checkPeriod: 2 * 60 * 1000,
 })

@@ -16,8 +16,4 @@ export const Blog = Joi.object({
     body: Joi
         .string()
         .required(),
-    tags: Joi
-        .array()
-        .items(Joi.string())
-        .unique()
 })

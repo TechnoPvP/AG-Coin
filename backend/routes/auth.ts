@@ -26,8 +26,8 @@ router.post("/register", async (req: Request<any, any, Omit<User, '_id'>>, res: 
             }
         })
 
-        // req.session.user = sanitizeUser( user )
-        return res.status(201).json(sanitizeUser( user ))
+        req.session.user = sanitizeUser( user )
+        return res.status(201).json( req.session.user )
     } catch (err) {
         console.log(err);
         const message = MongoError(err as BaseMongoError)

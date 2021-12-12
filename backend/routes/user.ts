@@ -3,14 +3,13 @@ import { UserUpdate } from "../validation/User"
 import MongoError, { BaseMongoError } from "../validation/Mongo"
 import { hash } from "argon2"
 import { Router, Request, Response } from "express"
-import store from "../utils/store"
-import { SessionData } from "express-session"
 import { User as UserType } from 'shared/user'
 import { upload } from "../controller/FileController";
 import { deleteObject } from "../controller/AwsController"
 import { prisma } from "../prisma/main"
 import isSelfOrAdmin from "../middleware/isSelfOrAdmin"
 import isUser from "../middleware/isUser"
+import store from "../utils/store"
 const router = Router()
 
 const onErr = (res: Response, message: string, status = 400) => res.status(status).json({
@@ -25,34 +24,35 @@ router.get("/me", (req: Request, res: Response) => {
 })
 
 /* Upload User Avatar */
-// router.post('/avatar', isUser, upload.single('avatar'), async (req: Request, res: Response) => {
-//     if (!req.file) return onErr(res, 'No file was uploaded.');
+router.post('/avatar', isUser, upload.single('avatar'), async (req: Request, res: Response) => {
+    if (!req.file) return onErr(res, 'No file was uploaded.');
 
-//     const file = req.file as Express.MulterS3.File;
-//     const filePath = file.key.split('/');
-//     const fileName = filePath[filePath.length - 1];
-//     try {
-//         const user = await User.findByIdAndUpdate(req.session.user?.id, { avatar: fileName }, { returnOriginal: false }).exec();
-        
-//         if (!user) return onErr(res, 'User not found');
-        
-//         req.session.user = sanitize( user as UserType );
-//         return res.status(200).json(user)
-//     } catch (err) {
-//         return onErr(res, 'Server error occured. Please try again later', 500)
-//     }
-// });
+    const file = req.file as Express.MulterS3.File;
+    const filePath = file.key.split('/');
+    const fileName = filePath[filePath.length - 1];
+    try {
+        const user = await prisma.user.update({ 
+            where: { id: req.session.user?.id },
+            data: { avatar: fileName }
+        })
 
-// /* Delete user avatar */
-// router.delete('/avatar', isUser, async (req: Request, res, Response) => {
-//     deleteObject(`${req.session.user?.avatar}`, (err, data) => {
-//         if (err) {
-//             return res.status(500).json({ error: err })
-//         }
+        req.session.user = santizeUser( user );
+        return res.status(200).json( user )
+    } catch (err) {
+        return onErr(res, 'Server error occured. Please try again later', 500)
+    }
+});
 
-//         return res.status(200).json(req.session.user)
-//     });
-// });
+/* Delete user avatar */
+router.delete('/avatar', isUser, async (req: Request, res, Response) => {
+    deleteObject(`${req.session.user?.avatar}`, (err, data) => {
+        if (err) {
+            return res.status(500).json({ error: err })
+        }
+
+        return res.status(200).json(req.session.user)
+    });
+});
 
 // /user/:id
 router.get('/:id', async (req: Request, res: Response) => {
@@ -83,7 +83,12 @@ router.delete("/:id", isSelfOrAdmin(), async (req: Request, res: Response) => {
         })
 
         res.clearCookie("connect.sid")
-        // TODO: store.all needs to be here.
+        store.all( (err, all ) => {
+            if (!all) return
+            Object.entries( all ).forEach(([sessionID, value]) => {
+                if (value.user?.id === user.id) store.destroy( sessionID )
+            })
+        } )
 
         if ( req.session.user?.id === id ) req.session?.destroy( console.error )
         return res.status(200).json({
