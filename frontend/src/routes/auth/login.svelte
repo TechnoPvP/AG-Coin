@@ -76,7 +76,7 @@
 	/>
 
 	<div class="submit">
-		<Button type="button" size="stretch" disabled={canSubmit}>
+		<Button type="submit" size="stretch" disabled={canSubmit}>
 			{#if querying}
 				<Loader />
 			{:else}

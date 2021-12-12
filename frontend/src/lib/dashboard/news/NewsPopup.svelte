@@ -58,14 +58,6 @@
 		width: 550px;
 		margin-left: 100px;
 	}
-	::-webkit-scrollbar {
-		background-color: var(--tran-s2);
-		width: 5px;
-	}
-	::-webkit-scrollbar-thumb {
-		background-color: var(--c-blue);
-		max-height: 10px;
-	}
 	.content {
 		padding-bottom: 1em;
 		display: flex;

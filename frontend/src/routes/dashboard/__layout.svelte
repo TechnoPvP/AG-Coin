@@ -23,7 +23,7 @@
 	</div>
 
 	<div class="content">
-		<Toolbar user={`${$session.user.first_name} ${$session.user.last_name}`} />
+		<Toolbar user={`${$session.user?.first_name} ${$session.user?.last_name}`} />
 		<slot />
 		{#if $overlay}
 			<div class="overlay" on:click={() => ($overlay = !$overlay)} />

@@ -1,7 +1,7 @@
 <script lang="ts">
 	type Size = 'small' | 'regular' | 'large' | 'stretch';
 	type Style = 'filled' | 'outlined' | 'none';
-	type Type = 'button' | 'link';
+	type Type = 'button' | 'link' | 'submit';
 
 	const COLORS = {
 		blue: 'var(--c-blue)',
@@ -16,14 +16,18 @@
 	export let disabled = false;
 </script>
 
-{#if type === 'link'}
+{#if href}
 	<a on:click class="style--{style} size--{size}" style="--color:{COLORS[color]} " {href}>
 		<slot />
 	</a>
-{/if}
-
-{#if type == 'button'}
-	<button on:click class="style--{style} size--{size}" style="--color:{COLORS[color]}" {disabled}>
+{:else}
+	<button
+		on:click
+		{type}
+		class="style--{style} size--{size}"
+		style="--color:{COLORS[color]}"
+		{disabled}
+	>
 		<slot />
 	</button>
 {/if}
