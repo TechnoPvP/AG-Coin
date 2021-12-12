@@ -1,8 +1,8 @@
 import express_session from "express-session"
-import mongo_session from "connect-mongodb-session"
+import pg_session from "connect-pg-simple"
 
-const MongoDBStore = mongo_session(express_session)
-export default new MongoDBStore({
-  uri: `${process.env.MONGO}`,
-  collection: "sessions",
+const PGStore = pg_session(express_session)
+export default new PGStore({
+  tableName: 'user_sessions',
+  conString: `${process.env.DATABASE_URL}`
 })

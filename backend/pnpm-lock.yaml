@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@prisma/client': ^3.6.0
   '@types/connect-mongodb-session': ^2.4.2
   '@types/cookie': ^0.4.1
   '@types/cookie-parser': ^1.4.2
@@ -38,6 +39,7 @@ specifiers:
   typescript: ^4.5.2
 
 dependencies:
+  '@prisma/client': 3.6.0
   '@types/connect-mongodb-session': 2.4.2
   '@types/cookie-parser': 1.4.2
   '@types/cors': 2.8.12
@@ -117,6 +119,23 @@ packages:
   /@phc/format/1.0.0:
     resolution: {integrity: sha512-m7X9U6BG2+J+R1lSOdCiITLLrxm+cWlNI3HUFA92oLO77ObGNzaKdh8pMLqdZcshtkKuV84olNNXDfMc4FezBQ==}
     engines: {node: '>=10'}
+    dev: false
+
+  /@prisma/client/3.6.0:
+    resolution: {integrity: sha512-ycSGY9EZGROtje0iCNsgC5Zqi/ttX2sO7BNMYaLsUMiTlf3F69ZPH+08pRo0hrDfkZzyimXYqeXJlaoYDH1w7A==}
+    engines: {node: '>=12.6'}
+    requiresBuild: true
+    peerDependencies:
+      prisma: '*'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
+    dependencies:
+      '@prisma/engines-version': 3.6.0-24.dc520b92b1ebb2d28dc3161f9f82e875bd35d727
+    dev: false
+
+  /@prisma/engines-version/3.6.0-24.dc520b92b1ebb2d28dc3161f9f82e875bd35d727:
+    resolution: {integrity: sha512-vtoO2ys6mSfc8ONTWdcYztKN3GBU1tcKBj0aXObyjzSuGwHFcM/pEA0xF+n1W4/0TAJgfoPX2khNEit6g0jtNA==}
     dev: false
 
   /@sideway/address/4.1.2:
@@ -2118,6 +2137,7 @@ packages:
 
   /ts-node/10.4.0_36929cccfdb926da0bb85cc291f27124:
     resolution: {integrity: sha512-g0FlPvvCXSIO1JDF6S232P5jPYqBkRL9qly81ZgAOSU7rwI0stphCgd2kLiCrU9DjQCrJMWEqcNSjQL02s6d8A==}
+    hasBin: true
     peerDependencies:
       '@swc/core': '>=1.2.50'
       '@swc/wasm': '>=1.2.50'
