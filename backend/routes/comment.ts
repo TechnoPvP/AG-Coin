@@ -8,6 +8,30 @@ import type { User } from "shared/user"
 import type { FeedComment as Comment } from "shared/feed"
 const router = Router();
 
+router.get('/', async (req: Request, res: Response) => {
+    try {
+        const comments = await FeedComment
+            .find()
+            .populate('user')
+            .lean();
+
+        type SanitizedComment = ReturnType<(typeof sanitizeComment)>
+        const commentsMap = new Map<string, SanitizedComment[]>()
+        comments.forEach( comment => {
+            const mapResult = commentsMap.get( `${comment.postId}` ) ?? []
+            mapResult.push( sanitizeComment( (comment as unknown) as Comment<User> ) )
+            commentsMap.set( `${comment.postId}`, mapResult )
+        } )
+
+        return res
+            .status(200)
+            .json( Object.fromEntries( commentsMap ) )
+    } catch (error) {
+        const message = MongoError( error as BaseMongoError )
+        return onErr( res, message )
+    }
+})
+
 router.get('/:id', async (req: Request, res: Response) => {
     if (!req.params.id) return onErr(res, 'Specify a post to comment too.');
 

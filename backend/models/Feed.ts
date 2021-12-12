@@ -14,7 +14,7 @@ const feedSchema = new Schema<FeedPost>({
         required: true
     },
     thumbnail: String,
-})
+}, { timestamps: true })
 
 export const sanatizedFeed = (feed: FeedPost<User>) => {
     return {

@@ -19,7 +19,7 @@ const feedComment = new Schema<FeedComment>({
         type: String,
         required: true
     },
-})
+}, { timestamps: true })
 
 feedComment.plugin( idValidtor )
 
