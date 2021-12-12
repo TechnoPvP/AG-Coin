@@ -2,6 +2,7 @@
 	import DataTable from '$lib/dashboard/DataTable.svelte';
 	import PricePreview from '$lib/dashboard/home/PricePreview.svelte';
 	import Status from '$lib/dashboard/Status.svelte';
+import Checkbox from '$lib/global/Checkbox.svelte';
 	import { sidebarOpen } from '$lib/stores';
 	import { onMount } from 'svelte';
 
@@ -33,7 +34,7 @@
 	</div>
 
 	<DataTable />
-	
+
 </section>
 
 <style lang="scss">

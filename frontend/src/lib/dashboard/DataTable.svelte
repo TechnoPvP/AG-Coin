@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Checkbox from '$lib/global/Checkbox.svelte';
+
 	import Icon from '$lib/global/Icon.svelte';
 	import { date, name, commerce, vehicle } from 'faker';
 	import Status from './Status.svelte';
@@ -28,11 +30,13 @@
 
 	let selected = [];
 	let selectedData = [];
-	let mainSelector: HTMLInputElement;
+	let showUnselectIcon = false;
 
 	function selectRow(event: Event) {
 		const target = event.target as HTMLInputElement;
 		const id = Number(target.dataset.id);
+
+		showUnselectIcon = true;
 
 		/* Remove row if it already exsits */
 		if (selected.includes(id)) return (selected = selected.filter((row) => row != id));
@@ -44,14 +48,11 @@
 	function handleMainSelected(event) {
 		const target = event.target as HTMLInputElement;
 
+		showUnselectIcon = false;
 		if (!target.checked) return (selected = []);
 
-		selected = [...Array.from({ length: rowsPerPage }, (_, x) => x + start)];
+		selected = [...Array.from({ length: columns.length }, (v, i) => i)];
 	}
-
-	/* TODO: Remove */
-	// $: console.log(selectedData);
-	$: console.log(selected);
 
 	/* Pagnation */
 	let rowsPerPage = 5;
@@ -86,16 +87,14 @@
 		<thead>
 			<tr>
 				{#if selectable}
-					<th
-						><input
+					<th>
+						<Checkbox
 							on:change={handleMainSelected}
-							bind:this={mainSelector}
 							checked={selected.length > 0}
-							type="checkbox"
-							name="select"
-							data-id="all"
-						/></th
-					>
+							type={selected.length == max ? 'checkmark' : 'dash'}
+							id="all"
+						/>
+					</th>
 				{/if}
 				{#each rows as row}
 					<th>{row.headerName}</th>
@@ -106,15 +105,13 @@
 			{#each filteredData as column, i}
 				<tr class:selected={selected.includes(page > 0 ? i + rowsPerPage * page : i)}>
 					{#if selectable}
-						<td
-							><input
-								on:click={selectRow}
+						<td>
+							<Checkbox
+								on:change={selectRow}
+								id={page > 0 ? i + rowsPerPage * page : i}
 								checked={selected.includes(page > 0 ? i + rowsPerPage * page : i)}
-								type="checkbox"
-								name="select"
-								data-id={page > 0 ? i + rowsPerPage * page : i}
-							/></td
-						>
+							/>
+						</td>
 					{/if}
 
 					<!-- TODO: Allow for dynamic data to be placed -->
