@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { session } from '$app/stores';
 	import { fade, fly } from 'svelte/transition';
 	import NotifcationItem from './NotifcationItem.svelte';
 
@@ -38,7 +37,7 @@
 	<div class="notifcations">
 		{#each Array(2) as _}
 			<NotifcationItem title="SLV has hit 1.512." desc="Silver has hit yor price alert." active />
-			<div class="line" />
+			<hr class="line">
 		{/each}
 
 		{#each Array(3) as _}
@@ -47,7 +46,7 @@
 				desc="Silver has hit yor price alert."
 				active={false}
 			/>
-			<div class="line" />
+			<hr class="line">
 		{/each}
 	</div>
 
@@ -113,11 +112,9 @@
 		color: var(--c-blue);
 	}
 	.line {
-		width: 100%;
-		left: 0;
-		right: 0;
-		height: 1px;
-		background-color: var(--tran-s1);
+		color: var(--tran-s1);
+		margin: 0;
+		padding: 0;
 	}
 
 	@media screen and (max-width: 425px) {

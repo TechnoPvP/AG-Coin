@@ -10,9 +10,8 @@
 			credentials: 'include'
 		});
 
-		goto('/');
 		$session.user = null;
-		location.reload()
+		goto('/').catch( console.error );
 	}
 </script>
 
@@ -21,7 +20,7 @@
 		<div class="profile-icon">
 			<img src="/icons/profile.svg" alt="Profile icon" />
 		</div>
-		<h4>{$session.user.first_name}</h4>
+		<h4>{$session.user?.first_name}</h4>
 	</div>
 
 	<div class="line" />

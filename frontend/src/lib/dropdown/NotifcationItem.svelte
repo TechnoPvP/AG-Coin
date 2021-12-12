@@ -25,7 +25,6 @@
         transition: background-color 0.15s ease-out;
 
         &:hover {
-            // background-color: var(--c-black-s1);
             opacity: 0.80;
         }
 

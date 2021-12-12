@@ -38,7 +38,7 @@
 		on:mouseleave={() => (profileDropdown = false)}
 		on:mouseenter={() => (profileDropdown = true)}
 		>
-		<img class="profile__icon" src={$session.user.avatar} alt="Profile Icon" />
+		<img class="profile__icon" src={$session.user?.avatar} alt="Profile Icon" />
 		<span>{user}</span>
 		<img class="profile__dropdown" src="/icons/down_arrow.svg" alt="Down arrow icon" />
 		{#if profileDropdown}

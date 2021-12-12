@@ -23,7 +23,7 @@
 		error = undefined;
 		success = undefined;
 
-		query = fetch(`${host}/user/${$session.user.id}`, {
+		query = fetch(`${host}/user/${$session.user?.id}`, {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json'
@@ -32,11 +32,11 @@
 			body: JSON.stringify({ first_name, last_name, email })
 		})
 			.then((res) => {
-				if (!res.ok) return error ='Updating information failed... Please try again. '
+				if (!res.ok) return error = 'Updating information failed... Please try again. '
 				
 				return res.json();
 			})
-			.then((result) => {
+			.then(() => {
 				if (!error) success = 'Updated information successful. ';
 			})
 	}
