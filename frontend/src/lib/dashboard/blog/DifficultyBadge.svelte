@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Difficulty } from 'shared/blog';
+	import Icon from '@iconify/svelte';
 	type Style = 'filled' | 'outlined';
 
 	const COLORS = {
@@ -11,7 +12,7 @@
 	export let selectable;
 	export let selected = false;
 	export let difficulty: Difficulty;
-	export let selectedTags: Difficulty[] = ['easy', 'hard', 'medium'];
+	export let selectedTags: Difficulty[] = ['easy', 'hard'];
 
 	function selectBadge() {
 		if (!selectable) return;
@@ -20,7 +21,7 @@
 			selectedTags = [...selectedTags, difficulty];
 			return;
 		}
-		
+
 		selectedTags = selectedTags.filter((val) => val !== difficulty);
 	}
 
@@ -30,7 +31,13 @@
 <div class="badge" style="--color:{COLORS[difficulty]}" class:selected on:click={selectBadge}>
 	<span>{difficulty}</span>
 	{#if selectable}
-		<img src="/icons/{selected ? 'checkmark' : 'x'}.svg" alt="Checkmark" />
+		<Icon
+			icon={selected ? 'mdi:check' : 'mdi:window-close'}
+			color="inherit"
+			width="15px"
+			height="15px"
+			style={selected ? null : 'transform: rotate(45deg)'}
+		/>
 	{/if}
 </div>
 
@@ -48,19 +55,11 @@
 		color: var(--c-gray-s1);
 		border: 1px solid var(--color);
 
-		img {
-			width: 11px;
-			height: 11px;
-			transform: rotate(45deg);
-		}
+		transition: background-color 0.15s ease-out;
 	}
 	.selected {
 		color: var(--c-white);
 		background-color: var(--color);
-
-		img {
-			transform: rotate(0deg);
-		}
 	}
 	span {
 		font-size: 12px;

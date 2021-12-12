@@ -1,14 +1,13 @@
 <script lang="ts">
 	import DataTable from '$lib/dashboard/DataTable.svelte';
 	import PricePreview from '$lib/dashboard/home/PricePreview.svelte';
-import Status from '$lib/dashboard/Status.svelte';
+	import Status from '$lib/dashboard/Status.svelte';
 	import { sidebarOpen } from '$lib/stores';
 	import { onMount } from 'svelte';
 
 	onMount(async () => {
 		// const { createChart } = await import('lightweight-charts');
 		// const chatElem = document.querySelector('#chart') as HTMLElement;
-
 		// const chart = createChart(chatElem, {
 		// 	width: 800,
 		// 	height: 450,
@@ -34,6 +33,7 @@ import Status from '$lib/dashboard/Status.svelte';
 	</div>
 
 	<DataTable />
+	
 </section>
 
 <style lang="scss">
