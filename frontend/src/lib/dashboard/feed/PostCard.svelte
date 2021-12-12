@@ -4,13 +4,20 @@
 	import Button from '$lib/global/Button.svelte';
 	import Textarea from '$lib/global/Textarea.svelte';
 	import host from '$lib/utils/host';
-import { AvatarLink } from '$lib/utils/stringUtils';
 	import Action from './Action.svelte';
 	import Comment from './Comment.svelte';
 
 	export let data;
+	export let comments;
 	let value;
 	let commentFocused;
+
+	let postComments = []
+	$: {
+		comments.then(result => {
+			postComments = result[data._id] ?? []
+		})
+	}
 
 	const addComment = () => {
 		if (!value) return;
@@ -27,9 +34,8 @@ import { AvatarLink } from '$lib/utils/stringUtils';
 		})
 			.then((res) => res.json())
 			.then((response) => {
-				console.log(response);
-				data.comments = [
-					...data.comments,
+				postComments = [
+					...postComments,
 					{
 						content: value,
 						user: {
@@ -65,7 +71,7 @@ import { AvatarLink } from '$lib/utils/stringUtils';
 			<h4>{`${data.user.first_name}  ${data.user.last_name}`}</h4>
 			<span>{data.role}</span>
 		</div>
-		<span>{data.date}</span>
+		<span>{ new Date( data?.createdAt ).toLocaleDateString() }</span>
 	</header>
 
 	<div class="body">
@@ -91,8 +97,8 @@ import { AvatarLink } from '$lib/utils/stringUtils';
 			{/if}
 		</div>
 
-		{#if data?.comments?.length > 0}
-			{#each data.comments as comment}
+		{#if postComments.length > 0}
+			{#each postComments as comment}
 				<Comment data={comment} />
 			{/each}
 		{/if}

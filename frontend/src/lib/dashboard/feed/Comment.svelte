@@ -1,9 +1,6 @@
 <script>
-import { AvatarLink } from '$lib/utils/stringUtils';
-
 	import Action from './Action.svelte';
 	export let data;
-
 </script>
 
 <div class="comment">
@@ -13,7 +10,7 @@ import { AvatarLink } from '$lib/utils/stringUtils';
 		<div class="data__heading">
 			<h4>{data.user.first_name} {data.user.last_name}</h4>
 			<div class="circle" />
-			<span>{data.time}</span>
+			<span>{ new Date( data?.createdAt ).toLocaleDateString() }</span>
 		</div>
 
 		<p>{data.content}</p>

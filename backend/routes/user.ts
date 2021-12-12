@@ -39,10 +39,8 @@ router.post('/avatar', isUser, upload.single('avatar'), async (req: Request, res
         req.session.user = sanitize( user as UserType );
         return res.status(200).json(user)
     } catch (err) {
-
         return onErr(res, 'Server error occured. Please try again later', 500)
     }
-
 });
 
 /* Delete user avatar */

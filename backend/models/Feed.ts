@@ -1,8 +1,7 @@
 import { Schema, model } from 'mongoose';
-import { FeedPost, FeedComment } from 'shared/feed';
+import { FeedPost } from 'shared/feed';
 import { User } from 'shared/user';
 import { sanitize } from '../models/User';
-import { sanitizeComment } from './FeedComment';
 
 const feedSchema = new Schema<FeedPost>({
     user: {
@@ -15,16 +14,11 @@ const feedSchema = new Schema<FeedPost>({
         required: true
     },
     thumbnail: String,
-    comments: [{
-        type: Schema.Types.ObjectId,
-        ref: 'comment'
-    }]
-})
+}, { timestamps: true })
 
 export const sanatizedFeed = (feed: FeedPost<User>) => {
     return {
         ...feed,
-        comments: feed.comments?.map(sanitizeComment),
         user: sanitize(feed.user),
     }
 }

@@ -3,23 +3,24 @@
 	import host from '$lib/utils/host';
 
 	export const load: Load = async ({ fetch, session }) => {
-		const response = await fetch(`${host}/feed`, {
+		const posts = await fetch(`${host}/feed`, {
 			method: 'GET',
 			headers: {
 				accept: 'application/json'
 			}
-		});
+		}).then( res => res.json() );
 
-		if (response.ok) {
+		const comments = fetch(`${host}/comment`)
+			.then( res => res.json() ) 
+
+		if (posts.error) {
 			return {
-				props: {
-					posts: await response.json()
-				}
+				error: posts.error
 			};
 		}
 
 		return {
-			error: response.status.toString()
+			props: { posts, comments }
 		};
 	};
 </script>
@@ -27,10 +28,11 @@
 <script lang="ts">
 	import PostCard from '$lib/dashboard/feed/PostCard.svelte';
 	import PageHeader from '$lib/dashboard/PageHeader.svelte';
-	import type { FeedPost } from 'shared/feed';
+	import type { FeedPost, FeedComment } from 'shared/feed';
+	import type { SantizedUser } from "shared/user"
 
 	export let posts: FeedPost[];
-
+	export let comments: Promise<{ [postID: string]: FeedComment<SantizedUser>[] }>
 	console.log(posts);
 </script>
 
@@ -40,7 +42,7 @@
 
 <div class="posts">
 	{#each posts as post}
-		<PostCard data={post} />
+		<PostCard data={post} {comments} />
 	{/each}
 </div>
 
