@@ -19,7 +19,7 @@
 
 	export let columns = [];
 
-	for (let x of Array(40)) {
+	for (let x of Array(12)) {
 		columns.push({
 			name: name.firstName(),
 			price: commerce.price(),

@@ -32,7 +32,7 @@ import Checkbox from '$lib/global/Checkbox.svelte';
 		<PricePreview price={100.124} name="silver" />
 		<PricePreview price={100.124} name="silver" />
 	</div>
-
+	
 	<DataTable />
 
 </section>
