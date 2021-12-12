@@ -2,7 +2,7 @@ import { Router, Request, Response } from "express"
 import MongoError, { BaseMongoError } from "../validation/Mongo";
 import { Blog as BlogValidation } from "../validation/Blog"
 import isAdmin from "../middleware/isAdmin";
-import Blogs, { sanitize } from "../models/Blog"
+import Blogs from "../models/Blog"
 import { Blog } from "shared/blog" 
 const router = Router();
 
@@ -14,13 +14,12 @@ router.get('/', async (req: Request, res: Response) => {
     try {
         const blogs = await Blogs
             .find()
-            .populate('author')
             .populate('tags')
             .lean()
             .exec() as Blog[]
 
         if (!blogs) return onErr(res, "Blogs Model don't exist", 500)
-        return res.status(200).json( blogs.map( sanitize ) )
+        return res.status(200).json( blogs )
     } catch (error) {
         console.log(error);
         const message = MongoError( error as BaseMongoError )
@@ -33,7 +32,6 @@ router.get('/:slug', async (req: Request, res: Response) => {
     try {
         const blog = await Blogs
             .findOne({ _id: slug })
-            .populate('author')
             .populate('tags')
             .lean()
             .exec() as Blog;
@@ -42,7 +40,7 @@ router.get('/:slug', async (req: Request, res: Response) => {
 
         return res
             .status(200)
-            .json( sanitize( blog ) )
+            .json( blog )
     } catch (error) {
         const message = MongoError(error as BaseMongoError)
         return onErr( res, message )
@@ -52,7 +50,6 @@ router.get('/:slug', async (req: Request, res: Response) => {
 router.post('/', isAdmin, async (req: Request, res: Response) => {
     const validate = BlogValidation.validate( req.body )
     if ( validate.error ) return onErr( res, validate.error.message ) 
-    req.body.author = `${req.session.user?.id}`
 
     try {
         const blog = await Blogs.create( req.body )
@@ -71,7 +68,7 @@ router.post('/', isAdmin, async (req: Request, res: Response) => {
 router.put('/:slug', isAdmin, async (req: Request, res: Response) => {
     if (!req.params.slug) return onErr(res, "No blog id provided")
 
-    const validate = BlogValidation.validate( { ...req.body, difficulty: req.body.difficulty.toUpperCase() ?? undefined } )
+    const validate = BlogValidation.validate( { ...req.body, difficulty: req.body.difficulty?.toUpperCase() ?? undefined } )
     if ( validate.error ) return onErr( res, validate.error.message ) 
 
     try {
