@@ -2,7 +2,7 @@ import { Types } from 'mongoose';
 import { User } from './user';
 
 export interface FeedComment<T = Types.ObjectId> {
-    id: Types.ObjectId;
+    _id: Types.ObjectId;
     postId: Types.ObjectId
     user: T;
     content: string
@@ -10,7 +10,7 @@ export interface FeedComment<T = Types.ObjectId> {
 }
 
 export interface FeedPost<T = Types.ObjectId> {
-    id: Types.ObjectId
+    _id: Types.ObjectId
     user: T;
     caption: string
     thumbnail?: string;

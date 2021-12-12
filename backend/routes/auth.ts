@@ -23,7 +23,7 @@ router.post("/register", async (req: Request<any, any, Omit<UserType, '_id'>>, r
             last_name: last_name,
         });
 
-        req.session.user = sanitizeUser(user)
+        req.session.user = sanitizeUser( user as UserType )
         return res.status(201).json(req.session.user)
     } catch (err) {
         const message = MongoError(err as BaseMongoError)
@@ -31,16 +31,16 @@ router.post("/register", async (req: Request<any, any, Omit<UserType, '_id'>>, r
     }
 })
 
-type loginBody = Omit<UserType, '_id' | 'first_name' | 'last_name'>;
+type loginBody = Pick<UserType, 'email' | 'password'>;
 // /auth/login
 router.post("/login", async (req: Request<any, any, loginBody>, res: Response) => {
-    if (req.session?.user ?? false) return res.status(201).json(req.session.user)
+    if (req.session?.user ?? false) return res.status(200).json(req.session.user)
 
     let validation = Login.validate(req.body)
     if (validation.error) return onErr(res, validation.error.message)
 
     try {
-        const user = await User.findOne({ email: req.body.email }).exec()
+        let user = await User.findOne({ email: req.body.email }).lean().exec() as UserType | null
         if (!user) return onErr(res, `User not found by ${req.body.email}`, 401);
 
         const result = await verify(user.password, req.body.password);

@@ -1,5 +1,10 @@
 import { Mongoose, Types } from 'mongoose';
 
+export enum Role {
+    "ADMIN" = "ADMIN",
+    "DEFAULT" = "DEFAULT"
+}
+
 export interface User {
     _id: Types.ObjectId;
     email: string;
@@ -7,6 +12,7 @@ export interface User {
     first_name: string;
     last_name: string;
     phone?: string;
+    role: Role;
     avatar?: string;
 }
 
