@@ -28,6 +28,8 @@ model User {
   last_name String
   avatar String @default("https://agcoin.s3.amazonaws.com/user-avatars/default_profile_400x400.png")
   role Role @default(DEFAULT)
+  feeds Feed[]
+  feedComments FeedComment[]
 }
 
 enum Difficulty {
@@ -48,6 +50,26 @@ model Blog {
   tags Tag[]
   difficulty Difficulty @default(EASY)
   status Status
+  created_at DateTime @default(now())
+}
+
+model Feed {
+  id Int @id @default(autoincrement())
+  caption String
+  thumbnail String?
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+  created_at DateTime @default(now())
+  comments FeedComment[]
+}
+
+model FeedComment {
+  id Int @id @default(autoincrement())
+  content String
+  feed Feed @relation(fields: [feedId], references: [id], onDelete: Cascade)
+  feedId Int
+  user User @relation(fields: [userID], references: [id], onDelete: Cascade)
+  userID Int
   created_at DateTime @default(now())
 }
 

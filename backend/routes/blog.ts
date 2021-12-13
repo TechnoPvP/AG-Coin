@@ -72,8 +72,8 @@ router.put('/:id', isAdmin, async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
     if ( isNaN(id) ) return onErr( res, "No Blog ID provided or/and Blog ID must a number" )
 
-    // const validate = BlogValidation.validate( { ...req.body, difficulty: req.body.difficulty?.toUpperCase() ?? undefined } )
-    // if ( validate.error ) return onErr( res, validate.error.message ) 
+    const validate = BlogValidation.validate( { ...req.body, difficulty: req.body.difficulty?.toUpperCase() ?? undefined } )
+    if ( validate.error ) return onErr( res, validate.error.message ) 
 
     try {
         const blog = await prisma.blog.update({
@@ -81,14 +81,7 @@ router.put('/:id', isAdmin, async (req: Request, res: Response) => {
             data: {
                 ...req.body,
                 tags: {
-                    connectOrCreate: req.body.tags?.map( (tag: any) => ({
-                        create: {
-                            name: tag.name
-                        },
-                        where: {
-                            name: tag.name
-                        }
-                    }) ) ?? []
+                    set: req.body.tags ?? []
                 }
             },
             include: { tags: true }

@@ -1,26 +1,11 @@
-import { Schema, model } from 'mongoose';
-import { FeedPost } from 'shared/feed';
-import { User } from 'shared/user';
-import { sanitize } from '../models/User';
+import { sanitize as sanitizeUser } from '../models/User';
+import { sanitizeComment } from "./FeedComment"
+import { Feed, FeedComment, User } from "../prisma/generated/prisma-client-js"
 
-const feedSchema = new Schema<FeedPost>({
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: 'user',
-        required: true
-    },
-    caption: {
-        type: String,
-        required: true
-    },
-    thumbnail: String,
-}, { timestamps: true })
-
-export const sanatizedFeed = (feed: FeedPost<User>) => {
+export const sanatizedFeed = (feed: Feed & { user: User, comments: (FeedComment & { user: User })[] }) => {
     return {
         ...feed,
-        user: sanitize(feed.user),
+        user: sanitizeUser( feed.user ),
+        comments: feed.comments.map( sanitizeComment )
     }
 }
-
-export default model<FeedPost>('feed', feedSchema);

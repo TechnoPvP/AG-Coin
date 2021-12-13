@@ -41,9 +41,9 @@ app.use('/api/user', Router.User);
 app.use('/api/auth', Router.Auth);
 app.use('/api/blog', Router.Blog);
 app.use('/api/tags', Router.Tag);
+app.use('/api/feed', Router.Feed);
+app.use('/api/comment', Router.Comment);
 // app.use('/api/support', Router.Support);
-// app.use('/api/feed', Router.Feed);
-// app.use('/api/comment', Router.Comment);
 
 app.use(function (req: Request, res: Response, next: NextFunction) {
   next(createError(404));

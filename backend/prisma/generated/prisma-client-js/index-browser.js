@@ -100,6 +100,22 @@ exports.Prisma.BlogScalarFieldEnum = makeEnum({
   created_at: 'created_at'
 });
 
+exports.Prisma.FeedScalarFieldEnum = makeEnum({
+  id: 'id',
+  caption: 'caption',
+  thumbnail: 'thumbnail',
+  userId: 'userId',
+  created_at: 'created_at'
+});
+
+exports.Prisma.FeedCommentScalarFieldEnum = makeEnum({
+  id: 'id',
+  content: 'content',
+  feedId: 'feedId',
+  userID: 'userID',
+  created_at: 'created_at'
+});
+
 exports.Prisma.SessionScalarFieldEnum = makeEnum({
   id: 'id',
   sid: 'sid',
@@ -136,6 +152,8 @@ exports.Prisma.ModelName = makeEnum({
   Tag: 'Tag',
   User: 'User',
   Blog: 'Blog',
+  Feed: 'Feed',
+  FeedComment: 'FeedComment',
   Session: 'Session'
 });
 
