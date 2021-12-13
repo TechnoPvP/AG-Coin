@@ -1,14 +1,10 @@
 import { Router, Request, Response } from "express"
-import MongoError, { BaseMongoError } from "../validation/Mongo";
 import { Blog as BlogValidation } from "../validation/Blog"
 import isAdmin from "../middleware/isAdmin";
 import { prisma } from "shared/prisma/main";
+import { onErr, ErrorHandler } from "../utils/error"
 import { v4 } from "uuid"
 const router = Router();
-
-const onErr = (res: Response, message: string, status = 400) => res
-    .status( status )
-    .json({ error: message })
 
 router.get('/', async (req: Request, res: Response) => {
     try {
@@ -19,8 +15,7 @@ router.get('/', async (req: Request, res: Response) => {
         if (!blogs) return onErr(res, "Blogs Model don't exist", 500)
         return res.status(200).json( blogs )
     } catch (error) {
-        console.log(error);
-        const message = MongoError( error as BaseMongoError )
+        const message = ErrorHandler( error )
         return onErr( res, message )
     }
 })
@@ -43,7 +38,7 @@ router.get('/:id', async (req: Request, res: Response) => {
             .status(200)
             .json( blog )
     } catch (error) {
-        const message = MongoError(error as BaseMongoError)
+        const message = ErrorHandler(error)
         return onErr( res, message )
     }
 });
@@ -65,7 +60,7 @@ router.post('/', isAdmin, async (req: Request, res: Response) => {
             .status(200)
             .json( blog )
     } catch (err: any) {
-        const message = MongoError( err as BaseMongoError )
+        const message = ErrorHandler( err )
         return onErr( res, message )
     }
 });
@@ -93,7 +88,7 @@ router.put('/:id', isAdmin, async (req: Request, res: Response) => {
             .status( 200 )
             .json( blog )
     } catch (err) {
-        const message = MongoError( err as BaseMongoError )
+        const message = ErrorHandler( err )
         return onErr( res, message )
     }
 });
@@ -113,7 +108,7 @@ router.delete('/:id', isAdmin, async (req: Request, res: Response) => {
                 ok: `${blog.id} deleted.`
             })
     } catch (error) {
-        const message = MongoError( error as BaseMongoError )
+        const message = ErrorHandler( error )
         return onErr( res, message )
     }
 })

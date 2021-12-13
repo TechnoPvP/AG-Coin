@@ -2,8 +2,7 @@ import { Router, Request, Response } from "express"
 import { sanitize as sanitizeUser } from "../models/User"
 import { Register, Login } from "../validation/Auth"
 import { hash, verify } from "argon2"
-import MongoError, { BaseMongoError } from "../validation/Mongo"
-import { onErr } from "../utils/error"
+import { onErr, ErrorHandler } from "../utils/error"
 import { prisma } from "shared/prisma/main"
 import { User } from "shared/prisma/generated/prisma-client-js"
 const router = Router()
@@ -28,9 +27,8 @@ router.post("/register", async (req: Request<any, any, Omit<User, '_id'>>, res: 
 
         req.session.user = sanitizeUser( user )
         return res.status(201).json( req.session.user )
-    } catch (err) {
-        console.log(err);
-        const message = MongoError(err as BaseMongoError)
+    } catch (error) {
+        const message = ErrorHandler(error)
         return onErr(res, message)
     }
 })
@@ -53,8 +51,7 @@ router.post("/login", async (req: Request<any, any, loginBody>, res: Response) =
         req.session.user = sanitizeUser(user);
         return res.status(200).json(req.session.user)
     } catch (err) {
-        console.log( err );
-        const message = MongoError(err as BaseMongoError)
+        const message = ErrorHandler(err)
         return onErr(res, message)
     }
 })

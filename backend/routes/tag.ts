@@ -2,12 +2,8 @@ import { Router, Request, Response } from "express"
 import isAdmin from "../middleware/isAdmin"
 const router = Router()
 import { prisma } from "shared/prisma/main"
-import MongoError, { BaseMongoError } from "../validation/Mongo"
 import { Tag as TagValidation, TagUpdate as TagUpdateValidation } from "../validation/Tag"
-
-const onErr = (res: Response, message: string, status = 400) => res
-    .status(status)
-    .json({ error: message })
+import { onErr, ErrorHandler } from "../utils/error"
 
 router.get('/', async (req: Request, res: Response) => {
     try {
@@ -16,7 +12,7 @@ router.get('/', async (req: Request, res: Response) => {
             .status(200)
             .json( response )
     } catch (error) {
-        const message = MongoError( error as BaseMongoError )
+        const message = ErrorHandler( error )
         return onErr( res, message )
     }
 })
@@ -38,7 +34,7 @@ router.post( '/:name', isAdmin, async (req: Request, res: Response) => {
                 value: { id: tag.id, name: input.name }
             } )
     } catch (error) {
-        const message = MongoError( error as BaseMongoError )
+        const message = ErrorHandler( error )
         return onErr( res, message )
     }
 } )
@@ -60,7 +56,7 @@ router.delete( '/:name', isAdmin, async (req: Request, res: Response) => {
                 value: tag.name
             } )
     } catch (error) {
-        const message = MongoError( error as BaseMongoError )
+        const message = ErrorHandler( error )
         return onErr( res, message )
     }
 } )
@@ -88,7 +84,7 @@ router.put( '/', isAdmin, async (req: Request<any, any, PutBody>, res: Response)
                 value: tag
             } )
     } catch (error) {
-        const message = MongoError( error as BaseMongoError )
+        const message = ErrorHandler( error )
         return onErr( res, message )
     }
 } )

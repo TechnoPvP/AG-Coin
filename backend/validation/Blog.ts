@@ -11,7 +11,7 @@ export const Blog = Joi.object({
     status: Joi
         .string()
         .required()
-        .valid("PUBLISHED", "DRAFT")
+        .valid("PUBLISH", "DRAFT")
         .insensitive(),
     body: Joi
         .string()

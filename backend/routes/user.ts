@@ -1,6 +1,5 @@
 import  { sanitize as santizeUser } from "../models/User"
 import { UserUpdate } from "../validation/User"
-import MongoError, { BaseMongoError } from "../validation/Mongo"
 import { hash } from "argon2"
 import { Router, Request, Response } from "express"
 import { upload } from "../controller/FileController";
@@ -10,16 +9,12 @@ import { User } from "shared/prisma/generated/prisma-client-js"
 import isSelfOrAdmin from "../middleware/isSelfOrAdmin"
 import isUser from "../middleware/isUser"
 import store from "../utils/store"
+import { onErr, ErrorHandler } from "../utils/error"
 const router = Router()
-
-const onErr = (res: Response, message: string, status = 400) => res.status(status).json({
-    error: message
-})
 
 // /user/me
 router.get("/me", (req: Request, res: Response) => {
     if (req.session.user) return res.status(200).json(req.session.user)
-
     return onErr(res, "unauthorized", 401)
 })
 
@@ -66,8 +61,7 @@ router.get('/:id', async (req: Request, res: Response) => {
         if (!user) return onErr(res, `No User by the id of ${req.params.id}`)
         return res.status(200).json( santizeUser( user ) )
     } catch (error) {
-        console.log( error );
-        const message = MongoError(error as BaseMongoError)
+        const message = ErrorHandler( error )
         return onErr(res, message)
     }
 })
@@ -95,8 +89,7 @@ router.delete("/:id", isSelfOrAdmin(), async (req: Request, res: Response) => {
             ok: `User ${user.id} deleted`
         })
     } catch (error) {
-        console.log( error );
-        const message = MongoError(error as BaseMongoError)
+        const message = ErrorHandler( error )
         return onErr(res, message)
     }
 })
@@ -125,8 +118,7 @@ router.put("/:id", isSelfOrAdmin(), async (req: Request<any, any, Partial<Omit<U
             ok: `Succesfully updated User ${user.id}`
         })
     } catch (error) {
-        console.log( error );
-        const message = MongoError(error as BaseMongoError)
+        const message = ErrorHandler( error )
         return onErr(res, message)
     }
 })

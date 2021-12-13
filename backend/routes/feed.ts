@@ -1,7 +1,6 @@
 import { Router, Request, Response } from "express";
 import FeedValidation from "../validation/FeedV";
-import { onErr } from "../utils/error";
-import MongoError, { BaseMongoError } from "../validation/Mongo";
+import { onErr, ErrorHandler } from "../utils/error";
 import { sanatizedFeed } from '../models/Feed';
 import isUser from "../middleware/isUser";
 import { prisma } from "shared/prisma/main";
@@ -9,7 +8,6 @@ import { Feed } from "shared/prisma/generated/prisma-client-js"
 const router = Router();
 
 type FeedRequest<V extends keyof Feed> = Request<any, any, Pick<Feed, V>>;
-
 /* Get All Feed Post */
 router.get('/', async (req: FeedRequest<'id'>, res: Response<Feed | object>) => {
     const limit = Number(req.query.limit);
@@ -44,7 +42,8 @@ router.post('/', isUser, async (req: Request<any, any, Omit<Feed, "userId" | "id
         } )
         res.status(200).json( feedPost );
     } catch (err) {
-        res.status(500).json({ error: err });
+        const message = ErrorHandler( err )
+        return onErr( res, message );
     }
 
 })
@@ -78,7 +77,7 @@ router.put('/:id', isUser, async (req: Request<any, any, Feed>, res: Response) =
 
         return res.status(200).json({ result: post });
     } catch (err) {
-        const message = MongoError(err as BaseMongoError);
+        const message = ErrorHandler(err);
         return onErr(res, message);
     }
 
@@ -96,7 +95,7 @@ router.delete('/:id', async (req, res) => {
 
         res.status(200).json( response );
     } catch (error) {
-        const message = MongoError(error as BaseMongoError);
+        const message = ErrorHandler(error);
         return onErr(res, message);
     }
 });
