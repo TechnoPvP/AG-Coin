@@ -2,9 +2,6 @@
 	import PageHeader from '$lib/dashboard/PageHeader.svelte';
 	import Search from '$lib/dashboard/Search.svelte';
 	import ContactCta from '$lib/dashboard/support/ContactCta.svelte';
-	import Questions from '$lib/dashboard/support/Questions.svelte';
-	import Button from '$lib/global/Button.svelte';
-
 	let value;
 </script>
 

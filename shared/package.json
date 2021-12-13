@@ -9,6 +9,7 @@
   "author": "Adam Ghowiba",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^3.6.0",
     "mongoose": "^6.0.14"
   }
 }

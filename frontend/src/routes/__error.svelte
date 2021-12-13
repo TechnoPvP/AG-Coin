@@ -34,7 +34,6 @@
 			desc: `An error has occoured. Please return back to the dashboard.`
 		}
 	};
-	console.log(error);
 	const statusData = statusMessage[status] ?? statusMessage['fallback'];
 </script>
 

@@ -1,9 +1,8 @@
 <script context="module" lang="ts">
 	import type { Load, LoadInput } from '@sveltejs/kit';
 	import host from '$lib/utils/host';
-	import type { SessionData, User } from 'shared/user';
-	
-	type LoadI = LoadInput<Record<string, string>, Record<string, string>, SessionData>;
+	import type { User } from 'shared/prisma/generated/prisma-client-js';
+	type LoadI = LoadInput<Record<string, string>, Record<string, string>, { user?: Omit<User, 'password'> }>;
 	
 	export const load: Load<LoadI> = async ({ fetch, session }) => {
 		const response = await fetch(`${host}/user/${session.user?.id}`);

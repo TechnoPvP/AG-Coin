@@ -1,4 +1,4 @@
-import { User } from "../prisma/generated/prisma-client-js"
+import { User } from "shared/prisma/generated/prisma-client-js"
 
 export const sanitize = (user: User) => ({
     id: user.id,
@@ -6,7 +6,7 @@ export const sanitize = (user: User) => ({
     first_name: user.first_name,
     last_name: user.last_name,
     role: user.role,
-    avatar: `https://agcoin.s3.amazonaws.com/user-avatars/${user.avatar ?? 'default_profile_400x400.png'}`
+    avatar: user.avatar
 })
 
 export type SantizedUser = ReturnType< typeof sanitize >

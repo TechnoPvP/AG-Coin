@@ -1,21 +1,21 @@
 <script lang="ts">
 	import Badge from '$lib/global/Badge.svelte';
-	import Breadcrumbs from '$lib/global/Breadcrumbs.svelte';
-	import type { BlogPost } from 'shared/blog';
+	import type { Blog } from 'shared/prisma/generated/prisma-client-js';
 	import type { Layout } from '$lib/types/types';
+	import { DateTime } from "ts-luxon"
 
-	export let data: BlogPost;
+	export let data: Blog;
 	export let layout: Layout;
-
+	$: displayDate = DateTime.fromISO( data.created_at.toISOString() ).toFormat("LLL d")
+	
 	const getReadingTime = (words: string, avg = 225) => {
 		const time = Math.round(words.split(' ').length / avg);
-
 		return time || 1;
 	};
 </script>
 
 <div class="card" class:row={layout == 'row'}>
-	<img class="heading-img" src={data.imgUrl} alt={data.imgUrl} />
+	<img class="heading-img" src={data.thumbnail} alt={data.thumbnail} />
 
 	<div class="content">
 		<h4>{data.title}</h4>
@@ -26,7 +26,7 @@
 		{/if}
 		<div class="info">
 			<Badge color="green" style="outlined" value="Advanced" />
-			<span>{data.date}</span>
+			<span>{displayDate}</span>
 			<div>
 				<img class="time" src="/icons/time.svg" alt="Time icon" />{getReadingTime(data.body)}m
 			</div>

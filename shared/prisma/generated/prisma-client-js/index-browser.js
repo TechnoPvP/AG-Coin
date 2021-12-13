@@ -88,13 +88,15 @@ exports.Prisma.UserScalarFieldEnum = makeEnum({
   first_name: 'first_name',
   last_name: 'last_name',
   avatar: 'avatar',
-  role: 'role'
+  role: 'role',
+  phone: 'phone'
 });
 
 exports.Prisma.BlogScalarFieldEnum = makeEnum({
   id: 'id',
   title: 'title',
   body: 'body',
+  thumbnail: 'thumbnail',
   difficulty: 'difficulty',
   status: 'status',
   created_at: 'created_at'

@@ -33,6 +33,7 @@ export type User = {
   last_name: string
   avatar: string
   role: Role
+  phone: string | null
 }
 
 /**
@@ -43,6 +44,7 @@ export type Blog = {
   id: number
   title: string
   body: string
+  thumbnail: string
   difficulty: Difficulty
   status: Status
   created_at: Date
@@ -1988,6 +1990,7 @@ export namespace Prisma {
     last_name: string | null
     avatar: string | null
     role: Role | null
+    phone: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1998,6 +2001,7 @@ export namespace Prisma {
     last_name: string | null
     avatar: string | null
     role: Role | null
+    phone: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -2008,6 +2012,7 @@ export namespace Prisma {
     last_name: number
     avatar: number
     role: number
+    phone: number
     _all: number
   }
 
@@ -2028,6 +2033,7 @@ export namespace Prisma {
     last_name?: true
     avatar?: true
     role?: true
+    phone?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -2038,6 +2044,7 @@ export namespace Prisma {
     last_name?: true
     avatar?: true
     role?: true
+    phone?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -2048,6 +2055,7 @@ export namespace Prisma {
     last_name?: true
     avatar?: true
     role?: true
+    phone?: true
     _all?: true
   }
 
@@ -2151,6 +2159,7 @@ export namespace Prisma {
     last_name: string
     avatar: string
     role: Role
+    phone: string | null
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -2180,6 +2189,7 @@ export namespace Prisma {
     last_name?: boolean
     avatar?: boolean
     role?: boolean
+    phone?: boolean
     feeds?: boolean | FeedFindManyArgs
     feedComments?: boolean | FeedCommentFindManyArgs
     _count?: boolean | UserCountOutputTypeArgs
@@ -2899,6 +2909,7 @@ export namespace Prisma {
     id: number | null
     title: string | null
     body: string | null
+    thumbnail: string | null
     difficulty: Difficulty | null
     status: Status | null
     created_at: Date | null
@@ -2908,6 +2919,7 @@ export namespace Prisma {
     id: number | null
     title: string | null
     body: string | null
+    thumbnail: string | null
     difficulty: Difficulty | null
     status: Status | null
     created_at: Date | null
@@ -2917,6 +2929,7 @@ export namespace Prisma {
     id: number
     title: number
     body: number
+    thumbnail: number
     difficulty: number
     status: number
     created_at: number
@@ -2936,6 +2949,7 @@ export namespace Prisma {
     id?: true
     title?: true
     body?: true
+    thumbnail?: true
     difficulty?: true
     status?: true
     created_at?: true
@@ -2945,6 +2959,7 @@ export namespace Prisma {
     id?: true
     title?: true
     body?: true
+    thumbnail?: true
     difficulty?: true
     status?: true
     created_at?: true
@@ -2954,6 +2969,7 @@ export namespace Prisma {
     id?: true
     title?: true
     body?: true
+    thumbnail?: true
     difficulty?: true
     status?: true
     created_at?: true
@@ -3056,6 +3072,7 @@ export namespace Prisma {
     id: number
     title: string
     body: string
+    thumbnail: string
     difficulty: Difficulty
     status: Status
     created_at: Date
@@ -3084,6 +3101,7 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     body?: boolean
+    thumbnail?: boolean
     tags?: boolean | TagFindManyArgs
     difficulty?: boolean
     status?: boolean
@@ -6391,7 +6409,8 @@ export namespace Prisma {
     first_name: 'first_name',
     last_name: 'last_name',
     avatar: 'avatar',
-    role: 'role'
+    role: 'role',
+    phone: 'phone'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -6401,6 +6420,7 @@ export namespace Prisma {
     id: 'id',
     title: 'title',
     body: 'body',
+    thumbnail: 'thumbnail',
     difficulty: 'difficulty',
     status: 'status',
     created_at: 'created_at'
@@ -6511,6 +6531,7 @@ export namespace Prisma {
     last_name?: StringFilter | string
     avatar?: StringFilter | string
     role?: EnumRoleFilter | Role
+    phone?: StringNullableFilter | string | null
     feeds?: FeedListRelationFilter
     feedComments?: FeedCommentListRelationFilter
   }
@@ -6523,6 +6544,7 @@ export namespace Prisma {
     last_name?: SortOrder
     avatar?: SortOrder
     role?: SortOrder
+    phone?: SortOrder
     feeds?: FeedOrderByRelationAggregateInput
     feedComments?: FeedCommentOrderByRelationAggregateInput
   }
@@ -6540,6 +6562,7 @@ export namespace Prisma {
     last_name?: SortOrder
     avatar?: SortOrder
     role?: SortOrder
+    phone?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -6558,6 +6581,7 @@ export namespace Prisma {
     last_name?: StringWithAggregatesFilter | string
     avatar?: StringWithAggregatesFilter | string
     role?: EnumRoleWithAggregatesFilter | Role
+    phone?: StringNullableWithAggregatesFilter | string | null
   }
 
   export type BlogWhereInput = {
@@ -6567,6 +6591,7 @@ export namespace Prisma {
     id?: IntFilter | number
     title?: StringFilter | string
     body?: StringFilter | string
+    thumbnail?: StringFilter | string
     tags?: TagListRelationFilter
     difficulty?: EnumDifficultyFilter | Difficulty
     status?: EnumStatusFilter | Status
@@ -6577,6 +6602,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     body?: SortOrder
+    thumbnail?: SortOrder
     tags?: TagOrderByRelationAggregateInput
     difficulty?: SortOrder
     status?: SortOrder
@@ -6591,6 +6617,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     body?: SortOrder
+    thumbnail?: SortOrder
     difficulty?: SortOrder
     status?: SortOrder
     created_at?: SortOrder
@@ -6608,6 +6635,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter | number
     title?: StringWithAggregatesFilter | string
     body?: StringWithAggregatesFilter | string
+    thumbnail?: StringWithAggregatesFilter | string
     difficulty?: EnumDifficultyWithAggregatesFilter | Difficulty
     status?: EnumStatusWithAggregatesFilter | Status
     created_at?: DateTimeWithAggregatesFilter | Date | string
@@ -6798,6 +6826,7 @@ export namespace Prisma {
     last_name: string
     avatar?: string
     role?: Role
+    phone?: string | null
     feeds?: FeedCreateNestedManyWithoutUserInput
     feedComments?: FeedCommentCreateNestedManyWithoutUserInput
   }
@@ -6810,6 +6839,7 @@ export namespace Prisma {
     last_name: string
     avatar?: string
     role?: Role
+    phone?: string | null
     feeds?: FeedUncheckedCreateNestedManyWithoutUserInput
     feedComments?: FeedCommentUncheckedCreateNestedManyWithoutUserInput
   }
@@ -6821,6 +6851,7 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     avatar?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | Role
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     feeds?: FeedUpdateManyWithoutUserInput
     feedComments?: FeedCommentUpdateManyWithoutUserInput
   }
@@ -6833,6 +6864,7 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     avatar?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | Role
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     feeds?: FeedUncheckedUpdateManyWithoutUserInput
     feedComments?: FeedCommentUncheckedUpdateManyWithoutUserInput
   }
@@ -6845,6 +6877,7 @@ export namespace Prisma {
     last_name: string
     avatar?: string
     role?: Role
+    phone?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -6854,6 +6887,7 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     avatar?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | Role
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -6864,11 +6898,13 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     avatar?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | Role
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BlogCreateInput = {
     title: string
     body: string
+    thumbnail: string
     difficulty?: Difficulty
     status: Status
     created_at?: Date | string
@@ -6879,6 +6915,7 @@ export namespace Prisma {
     id?: number
     title: string
     body: string
+    thumbnail: string
     difficulty?: Difficulty
     status: Status
     created_at?: Date | string
@@ -6887,6 +6924,7 @@ export namespace Prisma {
   export type BlogUpdateInput = {
     title?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
+    thumbnail?: StringFieldUpdateOperationsInput | string
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | Difficulty
     status?: EnumStatusFieldUpdateOperationsInput | Status
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6897,6 +6935,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
+    thumbnail?: StringFieldUpdateOperationsInput | string
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | Difficulty
     status?: EnumStatusFieldUpdateOperationsInput | Status
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6906,6 +6945,7 @@ export namespace Prisma {
     id?: number
     title: string
     body: string
+    thumbnail: string
     difficulty?: Difficulty
     status: Status
     created_at?: Date | string
@@ -6914,6 +6954,7 @@ export namespace Prisma {
   export type BlogUpdateManyMutationInput = {
     title?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
+    thumbnail?: StringFieldUpdateOperationsInput | string
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | Difficulty
     status?: EnumStatusFieldUpdateOperationsInput | Status
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6923,6 +6964,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
+    thumbnail?: StringFieldUpdateOperationsInput | string
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | Difficulty
     status?: EnumStatusFieldUpdateOperationsInput | Status
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7184,6 +7226,21 @@ export namespace Prisma {
     not?: NestedEnumRoleFilter | Role
   }
 
+  export type StringNullableFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    mode?: QueryMode
+    not?: NestedStringNullableFilter | string | null
+  }
+
   export type FeedListRelationFilter = {
     every?: FeedWhereInput
     some?: FeedWhereInput
@@ -7212,6 +7269,7 @@ export namespace Prisma {
     last_name?: SortOrder
     avatar?: SortOrder
     role?: SortOrder
+    phone?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -7226,6 +7284,7 @@ export namespace Prisma {
     last_name?: SortOrder
     avatar?: SortOrder
     role?: SortOrder
+    phone?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -7236,6 +7295,7 @@ export namespace Prisma {
     last_name?: SortOrder
     avatar?: SortOrder
     role?: SortOrder
+    phone?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
@@ -7250,6 +7310,24 @@ export namespace Prisma {
     _count?: NestedIntFilter
     _min?: NestedEnumRoleFilter
     _max?: NestedEnumRoleFilter
+  }
+
+  export type StringNullableWithAggregatesFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedStringNullableFilter
+    _max?: NestedStringNullableFilter
   }
 
   export type TagListRelationFilter = {
@@ -7291,6 +7369,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     body?: SortOrder
+    thumbnail?: SortOrder
     difficulty?: SortOrder
     status?: SortOrder
     created_at?: SortOrder
@@ -7304,6 +7383,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     body?: SortOrder
+    thumbnail?: SortOrder
     difficulty?: SortOrder
     status?: SortOrder
     created_at?: SortOrder
@@ -7313,6 +7393,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     body?: SortOrder
+    thumbnail?: SortOrder
     difficulty?: SortOrder
     status?: SortOrder
     created_at?: SortOrder
@@ -7356,21 +7437,6 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter
   }
 
-  export type StringNullableFilter = {
-    equals?: string | null
-    in?: Enumerable<string> | null
-    notIn?: Enumerable<string> | null
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    mode?: QueryMode
-    not?: NestedStringNullableFilter | string | null
-  }
-
   export type UserRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
@@ -7408,24 +7474,6 @@ export namespace Prisma {
   export type FeedSumOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-  }
-
-  export type StringNullableWithAggregatesFilter = {
-    equals?: string | null
-    in?: Enumerable<string> | null
-    notIn?: Enumerable<string> | null
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter | string | null
-    _count?: NestedIntNullableFilter
-    _min?: NestedStringNullableFilter
-    _max?: NestedStringNullableFilter
   }
 
   export type FeedRelationFilter = {
@@ -7553,6 +7601,10 @@ export namespace Prisma {
     set?: Role
   }
 
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
   export type FeedUpdateManyWithoutUserInput = {
     create?: XOR<Enumerable<FeedCreateWithoutUserInput>, Enumerable<FeedUncheckedCreateWithoutUserInput>>
     connectOrCreate?: Enumerable<FeedCreateOrConnectWithoutUserInput>
@@ -7658,10 +7710,6 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<FeedCommentCreateOrConnectWithoutFeedInput>
     createMany?: FeedCommentCreateManyFeedInputEnvelope
     connect?: Enumerable<FeedCommentWhereUniqueInput>
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
   }
 
   export type UserUpdateOneRequiredWithoutFeedsInput = {
@@ -7804,6 +7852,20 @@ export namespace Prisma {
     not?: NestedEnumRoleFilter | Role
   }
 
+  export type NestedStringNullableFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableFilter | string | null
+  }
+
   export type NestedEnumRoleWithAggregatesFilter = {
     equals?: Role
     in?: Enumerable<Role>
@@ -7812,6 +7874,34 @@ export namespace Prisma {
     _count?: NestedIntFilter
     _min?: NestedEnumRoleFilter
     _max?: NestedEnumRoleFilter
+  }
+
+  export type NestedStringNullableWithAggregatesFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableWithAggregatesFilter | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedStringNullableFilter
+    _max?: NestedStringNullableFilter
+  }
+
+  export type NestedIntNullableFilter = {
+    equals?: number | null
+    in?: Enumerable<number> | null
+    notIn?: Enumerable<number> | null
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntNullableFilter | number | null
   }
 
   export type NestedEnumDifficultyFilter = {
@@ -7873,51 +7963,10 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter
   }
 
-  export type NestedStringNullableFilter = {
-    equals?: string | null
-    in?: Enumerable<string> | null
-    notIn?: Enumerable<string> | null
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringNullableFilter | string | null
-  }
-
-  export type NestedStringNullableWithAggregatesFilter = {
-    equals?: string | null
-    in?: Enumerable<string> | null
-    notIn?: Enumerable<string> | null
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringNullableWithAggregatesFilter | string | null
-    _count?: NestedIntNullableFilter
-    _min?: NestedStringNullableFilter
-    _max?: NestedStringNullableFilter
-  }
-
-  export type NestedIntNullableFilter = {
-    equals?: number | null
-    in?: Enumerable<number> | null
-    notIn?: Enumerable<number> | null
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntNullableFilter | number | null
-  }
-
   export type BlogCreateWithoutTagsInput = {
     title: string
     body: string
+    thumbnail: string
     difficulty?: Difficulty
     status: Status
     created_at?: Date | string
@@ -7927,6 +7976,7 @@ export namespace Prisma {
     id?: number
     title: string
     body: string
+    thumbnail: string
     difficulty?: Difficulty
     status: Status
     created_at?: Date | string
@@ -7960,6 +8010,7 @@ export namespace Prisma {
     id?: IntFilter | number
     title?: StringFilter | string
     body?: StringFilter | string
+    thumbnail?: StringFilter | string
     difficulty?: EnumDifficultyFilter | Difficulty
     status?: EnumStatusFilter | Status
     created_at?: DateTimeFilter | Date | string
@@ -8112,6 +8163,7 @@ export namespace Prisma {
     last_name: string
     avatar?: string
     role?: Role
+    phone?: string | null
     feedComments?: FeedCommentCreateNestedManyWithoutUserInput
   }
 
@@ -8123,6 +8175,7 @@ export namespace Prisma {
     last_name: string
     avatar?: string
     role?: Role
+    phone?: string | null
     feedComments?: FeedCommentUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -8166,6 +8219,7 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     avatar?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | Role
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     feedComments?: FeedCommentUpdateManyWithoutUserInput
   }
 
@@ -8177,6 +8231,7 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     avatar?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | Role
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     feedComments?: FeedCommentUncheckedUpdateManyWithoutUserInput
   }
 
@@ -8223,6 +8278,7 @@ export namespace Prisma {
     last_name: string
     avatar?: string
     role?: Role
+    phone?: string | null
     feeds?: FeedCreateNestedManyWithoutUserInput
   }
 
@@ -8234,6 +8290,7 @@ export namespace Prisma {
     last_name: string
     avatar?: string
     role?: Role
+    phone?: string | null
     feeds?: FeedUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -8274,6 +8331,7 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     avatar?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | Role
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     feeds?: FeedUpdateManyWithoutUserInput
   }
 
@@ -8285,12 +8343,14 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     avatar?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | Role
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     feeds?: FeedUncheckedUpdateManyWithoutUserInput
   }
 
   export type BlogUpdateWithoutTagsInput = {
     title?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
+    thumbnail?: StringFieldUpdateOperationsInput | string
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | Difficulty
     status?: EnumStatusFieldUpdateOperationsInput | Status
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8300,6 +8360,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
+    thumbnail?: StringFieldUpdateOperationsInput | string
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | Difficulty
     status?: EnumStatusFieldUpdateOperationsInput | Status
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8309,6 +8370,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
+    thumbnail?: StringFieldUpdateOperationsInput | string
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | Difficulty
     status?: EnumStatusFieldUpdateOperationsInput | Status
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string

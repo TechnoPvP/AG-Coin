@@ -10,7 +10,7 @@
 		<div class="data__heading">
 			<h4>{data.user.first_name} {data.user.last_name}</h4>
 			<div class="circle" />
-			<span>{ new Date( data?.createdAt ).toLocaleDateString() }</span>
+			<span>{ new Date( data?.created_at ).toLocaleDateString() }</span>
 		</div>
 
 		<p>{data.content}</p>

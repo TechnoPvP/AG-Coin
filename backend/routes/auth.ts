@@ -4,8 +4,8 @@ import { Register, Login } from "../validation/Auth"
 import { hash, verify } from "argon2"
 import MongoError, { BaseMongoError } from "../validation/Mongo"
 import { onErr } from "../utils/error"
-import { prisma } from "../prisma/main"
-import { User } from "../prisma/generated/prisma-client-js"
+import { prisma } from "shared/prisma/main"
+import { User } from "shared/prisma/generated/prisma-client-js"
 const router = Router()
 
 // /auth/register

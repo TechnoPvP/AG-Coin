@@ -2,7 +2,8 @@ import { Router, Request, Response } from "express"
 import MongoError, { BaseMongoError } from "../validation/Mongo";
 import { Blog as BlogValidation } from "../validation/Blog"
 import isAdmin from "../middleware/isAdmin";
-import { prisma } from "../prisma/main";
+import { prisma } from "shared/prisma/main";
+import { v4 } from "uuid"
 const router = Router();
 
 const onErr = (res: Response, message: string, status = 400) => res
@@ -55,7 +56,8 @@ router.post('/', isAdmin, async (req: Request, res: Response) => {
         const blog = await prisma.blog.create({
             data: {
                 ...req.body,
-                status: req.body.status?.toUpperCase() ?? undefined
+                status: req.body.status?.toUpperCase() ?? undefined,
+                thumbnail: req.body.thumbnail ?? `https://avatars.dicebear.com/api/identicon/${v4()}.svg?size=500`
             },
         })
         

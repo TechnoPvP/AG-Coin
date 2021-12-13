@@ -1,6 +1,6 @@
 import { sanitize as sanitizeUser } from '../models/User';
 import { sanitizeComment } from "./FeedComment"
-import { Feed, FeedComment, User } from "../prisma/generated/prisma-client-js"
+import { Feed, FeedComment, User } from "shared/prisma/generated/prisma-client-js"
 
 export const sanatizedFeed = (feed: Feed & { user: User, comments: (FeedComment & { user: User })[] }) => {
     return {

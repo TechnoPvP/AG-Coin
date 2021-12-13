@@ -3,10 +3,10 @@ import { UserUpdate } from "../validation/User"
 import MongoError, { BaseMongoError } from "../validation/Mongo"
 import { hash } from "argon2"
 import { Router, Request, Response } from "express"
-import { User as UserType } from 'shared/user'
 import { upload } from "../controller/FileController";
 import { deleteObject } from "../controller/AwsController"
-import { prisma } from "../prisma/main"
+import { prisma } from "shared/prisma/main"
+import { User } from "shared/prisma/generated/prisma-client-js"
 import isSelfOrAdmin from "../middleware/isSelfOrAdmin"
 import isUser from "../middleware/isUser"
 import store from "../utils/store"
@@ -102,7 +102,7 @@ router.delete("/:id", isSelfOrAdmin(), async (req: Request, res: Response) => {
 })
 
 // /user/:id
-router.put("/:id", isSelfOrAdmin(), async (req: Request<any, any, Partial<Omit<UserType, '_id'|'email'>>>, res: Response) => {
+router.put("/:id", isSelfOrAdmin(), async (req: Request<any, any, Partial<Omit<User, 'id'|'email'>>>, res: Response) => {
     const id = parseInt( req.params.id )
     if ( isNaN( id ) ) return onErr(res, "No User ID or User ID must be a number")
     if ( req.session.user?.id !== id ) return onErr(res, "unauthorized", 401)

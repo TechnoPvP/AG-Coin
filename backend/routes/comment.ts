@@ -4,7 +4,7 @@ import { onErr } from "../utils/error";
 import { sanitizeComment } from "../models/FeedComment";
 import isUser from "../middleware/isUser";
 import MongoError, { BaseMongoError } from "../validation/Mongo"
-import { prisma } from "../prisma/main";
+import { prisma } from "shared/prisma/main";
 const router = Router();
 
 router.get('/', async (req: Request, res: Response) => {

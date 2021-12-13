@@ -4,6 +4,7 @@ specifiers:
   '@sideway/address': ^4.1.2
   '@sveltejs/adapter-static': ^1.0.0-next.21
   '@sveltejs/kit': ^1.0.0-next.201
+  '@types/luxon': ^2.0.7
   '@typescript-eslint/eslint-plugin': ^4.31.1
   '@typescript-eslint/parser': ^4.31.1
   eslint: ^7.32.0
@@ -21,16 +22,19 @@ specifiers:
   svelte: ^3.44.0
   svelte-check: ^2.2.6
   svelte-preprocess: ^4.9.8
+  ts-luxon: ^3.0.1
   tslib: ^2.3.1
   typescript: ^4.4.3
 
 dependencies:
   '@sideway/address': 4.1.2
+  '@types/luxon': 2.0.7
   fuse.js: 6.4.6
   joi: 17.4.2
   luxon: 2.1.1
   pnpm: 6.23.3
   sass: 1.44.0
+  ts-luxon: 3.0.1
 
 devDependencies:
   '@sveltejs/adapter-static': 1.0.0-next.21
@@ -207,6 +211,10 @@ packages:
   /@types/json-schema/7.0.9:
     resolution: {integrity: sha512-qcUXuemtEu+E5wZSJHNxUXeCZhAfXKQ41D+duX+VYPde7xyEVZci+/oXKJL13tnRs9lR2pr4fod59GT6/X1/yQ==}
     dev: true
+
+  /@types/luxon/2.0.7:
+    resolution: {integrity: sha512-AxiYycfO+/M4VIH0ribSr2iPFC+APewpJIaQSydwVnzorK3mjSFXkA3HmhQidGx44MpwaatFyEkbW/WD4zdDaQ==}
+    dev: false
 
   /@types/node/16.11.11:
     resolution: {integrity: sha512-KB0sixD67CeecHC33MYn+eYARkqTheIRNuu97y2XMjR7Wu3XibO1vaY6VBV6O/a89SPI81cEUIYT87UqUWlZNw==}
@@ -1640,6 +1648,11 @@ packages:
     engines: {node: '>=8.0'}
     dependencies:
       is-number: 7.0.0
+
+  /ts-luxon/3.0.1:
+    resolution: {integrity: sha512-2dTX7YsgPFt+qxmMSDqyl1f2u7xDe/x6WkVEUn7rpfxhRg+UWSZZshIiCFse6X/60yNYK3uMxs69f4PFb3Go5Q==}
+    engines: {node: '>=13'}
+    dev: false
 
   /tslib/1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import TopBar from '$lib/auth/TopBar.svelte';
-	import AlertIcon from '$lib/global/Alert-Icon.svelte';
 	import Button from '$lib/global/Button.svelte';
 	import Input from '$lib/global/Input.svelte';
 	import InputError from '$lib/global/InputError.svelte';

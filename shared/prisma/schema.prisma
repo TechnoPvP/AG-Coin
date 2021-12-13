@@ -28,6 +28,7 @@ model User {
   last_name String
   avatar String @default("https://agcoin.s3.amazonaws.com/user-avatars/default_profile_400x400.png")
   role Role @default(DEFAULT)
+  phone String?
   feeds Feed[]
   feedComments FeedComment[]
 }
@@ -47,6 +48,7 @@ model Blog {
   id Int @id @unique @default(autoincrement())
   title String
   body String
+  thumbnail String
   tags Tag[]
   difficulty Difficulty @default(EASY)
   status Status

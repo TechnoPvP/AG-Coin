@@ -15,14 +15,14 @@
 	let postComments = []
 	$: {
 		comments.then(result => {
-			postComments = result[data._id] ?? []
+			postComments = result[data.id] ?? []
 		})
 	}
 
 	const addComment = () => {
 		if (!value) return;
 
-		fetch(`${host}/comment/${data._id}`, {
+		fetch(`${host}/comment/${data.id}`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -71,7 +71,7 @@
 			<h4>{`${data.user.first_name}  ${data.user.last_name}`}</h4>
 			<span>{data.role}</span>
 		</div>
-		<span>{ new Date( data?.createdAt ).toLocaleDateString() }</span>
+		<span>{ new Date( data?.created_at ).toLocaleDateString() }</span>
 	</header>
 
 	<div class="body">

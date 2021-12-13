@@ -1,20 +1,17 @@
 import { Router, Request, Response } from "express";
-import { FeedPost } from "shared/feed";
-
 import FeedValidation from "../validation/FeedV";
 import { onErr } from "../utils/error";
-import { isValidObjectId } from "mongoose";
 import MongoError, { BaseMongoError } from "../validation/Mongo";
 import { sanatizedFeed } from '../models/Feed';
 import isUser from "../middleware/isUser";
-import { prisma } from "../prisma/main";
-import { Feed } from "../prisma/generated/prisma-client-js"
+import { prisma } from "shared/prisma/main";
+import { Feed } from "shared/prisma/generated/prisma-client-js"
 const router = Router();
 
-type FeedRequest<V extends keyof FeedPost> = Request<any, any, Pick<FeedPost, V>>;
+type FeedRequest<V extends keyof Feed> = Request<any, any, Pick<Feed, V>>;
 
 /* Get All Feed Post */
-router.get('/', async (req: FeedRequest<'_id'>, res: Response<FeedPost | object>) => {
+router.get('/', async (req: FeedRequest<'id'>, res: Response<Feed | object>) => {
     const limit = Number(req.query.limit);
     const results = await prisma.feed.findMany({ include: { 
         user: true, 
@@ -28,8 +25,8 @@ router.get('/', async (req: FeedRequest<'_id'>, res: Response<FeedPost | object>
 
 /* TODO: Implement */
 /* Get Single Feed Post */
-router.get('/:id', async (req: FeedRequest<'_id'>, res: Response<Feed | string>) => {
-    const { _id } = req.body;
+router.get('/:id', async (req: FeedRequest<'id'>, res: Response<Feed | string>) => {
+    const { id } = req.body;
     return res.send("a");
 })
 

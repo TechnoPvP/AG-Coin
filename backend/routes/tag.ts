@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express"
 import isAdmin from "../middleware/isAdmin"
 const router = Router()
-import { prisma } from "../prisma/main"
+import { prisma } from "shared/prisma/main"
 import MongoError, { BaseMongoError } from "../validation/Mongo"
 import { Tag as TagValidation, TagUpdate as TagUpdateValidation } from "../validation/Tag"
 

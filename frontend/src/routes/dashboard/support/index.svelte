@@ -1,8 +1,7 @@
 <script lang="ts">
 	import PageHeader from '$lib/dashboard/PageHeader.svelte';
-import ContactCta from '$lib/dashboard/support/ContactCta.svelte';
+	import ContactCta from '$lib/dashboard/support/ContactCta.svelte';
 	import Questions from '$lib/dashboard/support/Questions.svelte';
-import Button from '$lib/global/Button.svelte';
 
 	let questions = [
 		'How do i create AGCoin.com alert?',
