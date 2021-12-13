@@ -1,7 +1,7 @@
 import { Router } from "express";
 import type { Request, Response } from 'express';
 import { onErr, ErrorHandler } from "../utils/error";
-import { sanitizeComment } from "../models/FeedComment";
+import { sanitizeComment } from "../sanitization/FeedComment";
 import isUser from "../middleware/isUser";
 import { prisma } from "shared/prisma/main";
 const router = Router();

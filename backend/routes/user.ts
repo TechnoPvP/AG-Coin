@@ -1,4 +1,4 @@
-import  { sanitize as santizeUser } from "../models/User"
+import  { sanitize as santizeUser } from "../sanitization/User"
 import { UserUpdate } from "../validation/User"
 import { hash } from "argon2"
 import { Router, Request, Response } from "express"

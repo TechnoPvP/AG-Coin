@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express"
-import { sanitize as sanitizeUser } from "../models/User"
+import { sanitize as sanitizeUser } from "../sanitization/User"
 import { Register, Login } from "../validation/Auth"
 import { hash, verify } from "argon2"
 import { onErr, ErrorHandler } from "../utils/error"

@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import FeedValidation from "../validation/FeedV";
 import { onErr, ErrorHandler } from "../utils/error";
-import { sanatizedFeed } from '../models/Feed';
+import { sanatizedFeed } from '../sanitization/Feed';
 import isUser from "../middleware/isUser";
 import { prisma } from "shared/prisma/main";
 import { Feed } from "shared/prisma/generated/prisma-client-js"

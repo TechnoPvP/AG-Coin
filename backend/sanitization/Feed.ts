@@ -1,4 +1,4 @@
-import { sanitize as sanitizeUser } from '../models/User';
+import { sanitize as sanitizeUser } from "../sanitization/User"
 import { sanitizeComment } from "./FeedComment"
 import { Feed, FeedComment, User } from "shared/prisma/generated/prisma-client-js"
 

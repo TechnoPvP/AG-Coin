@@ -1,5 +1,4 @@
 import { Router, Request, Response, NextFunction } from 'express'
-import Support from '../models/Support';
 import validate from '../validation/SupportV';
 const router = Router();
 
