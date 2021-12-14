@@ -1,7 +1,5 @@
 <script>
 	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
-
 	import PassStrength from '$lib/auth/PassStrength.svelte';
 	import TopBar from '$lib/auth/TopBar.svelte';
 	import Loader from '$lib/dashboard/Loader.svelte';
@@ -14,6 +12,7 @@
 
 	async function signupRequest() {
 		// querying = true;
+		console.log( "clicked" );
 		const response = await fetch('http://localhost:5000/api/auth/register', {
 			headers: {
 				Accept: 'application/json',
@@ -59,7 +58,7 @@
 	<PassStrength pass={password} />
 
 	<div class="submit">
-		<Button type="button" size="stretch">
+		<Button type="submit" size="stretch">
 			{#await querying}
 				<Loader />
 			{:then result}

@@ -28,12 +28,12 @@
 <script lang="ts">
 	import PostCard from '$lib/dashboard/feed/PostCard.svelte';
 	import PageHeader from '$lib/dashboard/PageHeader.svelte';
-	import type { FeedPost, FeedComment } from 'shared/feed';
-	import type { SantizedUser } from "shared/user"
+	import type { FeedComment, User, Feed } from 'shared/prisma/generated/prisma-client-js';
 
-	export let posts: FeedPost[];
-	export let comments: Promise<{ [postID: string]: FeedComment<SantizedUser>[] }>
-	console.log(posts);
+	type FeedCommentWithUser = FeedComment & { user: Omit<User, 'password'> }
+	type FeedWithUser = Feed & { user: Omit<User, 'password'> }
+	export let posts: FeedWithUser[];
+	export let comments: Promise<{ [postID: string]: FeedCommentWithUser[] }>
 </script>
 
 <div class="container">

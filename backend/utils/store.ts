@@ -1,8 +1,6 @@
-import express_session from "express-session"
-import mongo_session from "connect-mongodb-session"
+import { PrismaSessionStore } from "@quixo3/prisma-session-store"
+import { prisma } from "shared/prisma/main"
 
-const MongoDBStore = mongo_session(express_session)
-export default new MongoDBStore({
-  uri: `${process.env.MONGO}`,
-  collection: "sessions",
+export default new PrismaSessionStore(prisma, {
+  checkPeriod: 2 * 60 * 1000,
 })

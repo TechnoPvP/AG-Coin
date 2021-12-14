@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Button from '$lib/global/Button.svelte';
-	import { fade } from 'svelte/transition';
 	import { slugify } from '$lib/utils/stringUtils';
 
 	export let title;

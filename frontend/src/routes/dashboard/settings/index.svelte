@@ -7,7 +7,7 @@
 	import Input from '$lib/global/Input.svelte';
 	import InputError from '$lib/global/InputError.svelte';
 	import host from '$lib/utils/host';
-	import type { User } from 'shared/user';
+	import type { User } from 'shared/prisma/generated/prisma-client-js';
 	import { getContext } from 'svelte';
 
 	const user: User = getContext('user');

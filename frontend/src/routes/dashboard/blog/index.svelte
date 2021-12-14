@@ -2,48 +2,53 @@
 	import BlogCard from '$lib/dashboard/blog/BlogCard.svelte';
 	import Header from '$lib/dashboard/PageHeader.svelte';
 	import Badge from '$lib/global/Badge.svelte';
-	import type { BlogPost } from 'shared/blog';
 	import type { Layout } from '$lib/types/types';
-	import { onDestroy, onMount } from 'svelte';
+	import type { Blog, Tag } from 'shared/prisma/generated/prisma-client-js';
 
 	let currentLayout: Layout = 'column';
 	let selectedTags: Array<string> = [];
 
 	const tags = [
-		'agcoin',
-		'blockchain',
-		'ethrum',
-		'mining',
-		'investing',
-		'crypto',
-		'history',
-		'tutorials'
+		{ id: 1, name: 'agcoin' },
+		{ id: 2 , name: 'blockchain' },
+		{ id: 3, name: 'ethrum' },
+		{ id: 4, name: 'mining' },
+		{ id: 5, name: 'investing' },
+		{ id: 6, name: 'crypto' },
+		{ id: 7, name: 'history' },
+		{ id: 8, name: 'tutorials'},
 	];
 
-	const mockPost: Array<BlogPost> = [
+	const mockPost: Array<Blog & { tags: Tag[] }> = [
 		{
+			id: 1,
 			title: 'How to Create Your Own Cryptocurrency?',
-			difficulty: 'easy',
-			imgUrl: '/images/blog_img.png',
+			difficulty: 'EASY',
+			status: "PUBLISH",
+			thumbnail: '/images/blog_img.png',
 			body: 'The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It ',
-			date: 'Nov 8',
-			tags: ['agcoin', 'blockchain']
+			created_at: new Date("2016-03-20"),
+			tags: [tags[0], tags[2]],
 		},
 		{
+			id: 2,
 			title: 'What is Shiba Inu (SHIBA)',
-			difficulty: 'advanced',
-			imgUrl: '/images/blog_img2.png',
+			difficulty: "HARD",
+			status: "PUBLISH",
+			thumbnail: '/images/blog_img2.png',
 			body: 'The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It ',
-			date: 'Nov 8',
-			tags: ['crypto', 'mining']
+			created_at: new Date("2021-09-05"),
+			tags: [tags[1], tags[3]],
 		},
 		{
+			id: 3,
 			title: 'How to Create Your Own Cryptocurrency?',
-			difficulty: 'easy',
-			imgUrl: '/images/blog_img.png',
+			difficulty: 'EASY',
+			status: 'PUBLISH',
+			thumbnail: '/images/blog_img.png',
 			body: 'The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It The Ethereum Name Service (ENS) is a naming service for wallet addresses, hashes, and other machine-readable identifiers. It turns difficult to read strings of data into easily readable addresses. It ',
-			date: 'Nov 8',
-			tags: ['agcoin', 'blockchain']
+			created_at: new Date("2017-12-25"),
+			tags: [tags[7], tags[5]],
 		}
 	];
 
@@ -53,7 +58,7 @@
 
 	$: filteredPosts =
 		selectedTags.length > 0
-			? mockPost.filter((post) => post.tags.some((elem) => selectedTags.includes(elem)))
+			? mockPost.filter((post) => post.tags.some((elem) => selectedTags.includes(elem.name)))
 			: mockPost;
 </script>
 
@@ -70,7 +75,7 @@
 			<!-- Tags -->
 			<div class="tags">
 				{#each tags as tag}
-					<Badge value={tag} bind:selectedTags />
+					<Badge value={tag.name} bind:selectedTags />
 				{/each}
 			</div>
 

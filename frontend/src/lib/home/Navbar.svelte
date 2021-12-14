@@ -1,5 +1,4 @@
 <script>
-	import Button from '$lib/global/Button.svelte';
 	import HomeButton from './HomeButton.svelte';
 </script>
 

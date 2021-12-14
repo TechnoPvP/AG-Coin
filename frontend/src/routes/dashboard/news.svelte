@@ -23,7 +23,6 @@
 	import Header from '$lib/dashboard/PageHeader.svelte';
 	import NewsPopup from '$lib/dashboard/news/NewsPopup.svelte';
 	import Post from '$lib/dashboard/news/Post.svelte';
-	import Breadcrumbs from '$lib/global/Breadcrumbs.svelte';
 	import { overlay } from '$lib/stores';
 
 	export let post;
