@@ -43,7 +43,7 @@ app.use('/api/blog', Router.Blog);
 app.use('/api/tags', Router.Tag);
 app.use('/api/feed', Router.Feed);
 app.use('/api/comment', Router.Comment);
-// app.use('/api/support', Router.Support);
+app.use('/api/support', Router.Support);
 
 app.use(function (req: Request, res: Response, next: NextFunction) {
   next(createError(404));

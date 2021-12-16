@@ -75,6 +75,17 @@ export type FeedComment = {
 }
 
 /**
+ * Model Support
+ * 
+ */
+export type Support = {
+  id: string
+  title: string
+  content: string
+  topics: Topics[]
+}
+
+/**
  * Model Session
  * 
  */
@@ -116,6 +127,16 @@ export const Status: {
 };
 
 export type Status = (typeof Status)[keyof typeof Status]
+
+
+export const Topics: {
+  test1: 'test1',
+  test2: 'test2',
+  test3: 'test3',
+  test4: 'test4'
+};
+
+export type Topics = (typeof Topics)[keyof typeof Topics]
 
 
 /**
@@ -308,6 +329,16 @@ export class PrismaClient<
     * ```
     */
   get feedComment(): Prisma.FeedCommentDelegate<GlobalReject>;
+
+  /**
+   * `prisma.support`: Exposes CRUD operations for the **Support** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Supports
+    * const supports = await prisma.support.findMany()
+    * ```
+    */
+  get support(): Prisma.SupportDelegate<GlobalReject>;
 
   /**
    * `prisma.session`: Exposes CRUD operations for the **Session** model.
@@ -733,6 +764,7 @@ export namespace Prisma {
     Blog: 'Blog',
     Feed: 'Feed',
     FeedComment: 'FeedComment',
+    Support: 'Support',
     Session: 'Session'
   };
 
@@ -5596,6 +5628,794 @@ export namespace Prisma {
 
 
   /**
+   * Model Support
+   */
+
+
+  export type AggregateSupport = {
+    _count: SupportCountAggregateOutputType | null
+    _min: SupportMinAggregateOutputType | null
+    _max: SupportMaxAggregateOutputType | null
+  }
+
+  export type SupportMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    content: string | null
+  }
+
+  export type SupportMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    content: string | null
+  }
+
+  export type SupportCountAggregateOutputType = {
+    id: number
+    title: number
+    content: number
+    topics: number
+    _all: number
+  }
+
+
+  export type SupportMinAggregateInputType = {
+    id?: true
+    title?: true
+    content?: true
+  }
+
+  export type SupportMaxAggregateInputType = {
+    id?: true
+    title?: true
+    content?: true
+  }
+
+  export type SupportCountAggregateInputType = {
+    id?: true
+    title?: true
+    content?: true
+    topics?: true
+    _all?: true
+  }
+
+  export type SupportAggregateArgs = {
+    /**
+     * Filter which Support to aggregate.
+     * 
+    **/
+    where?: SupportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Supports to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<SupportOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     * 
+    **/
+    cursor?: SupportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Supports from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Supports.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Supports
+    **/
+    _count?: true | SupportCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SupportMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SupportMaxAggregateInputType
+  }
+
+  export type GetSupportAggregateType<T extends SupportAggregateArgs> = {
+        [P in keyof T & keyof AggregateSupport]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSupport[P]>
+      : GetScalarType<T[P], AggregateSupport[P]>
+  }
+
+
+
+
+  export type SupportGroupByArgs = {
+    where?: SupportWhereInput
+    orderBy?: Enumerable<SupportOrderByWithAggregationInput>
+    by: Array<SupportScalarFieldEnum>
+    having?: SupportScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SupportCountAggregateInputType | true
+    _min?: SupportMinAggregateInputType
+    _max?: SupportMaxAggregateInputType
+  }
+
+
+  export type SupportGroupByOutputType = {
+    id: string
+    title: string
+    content: string
+    topics: Topics[]
+    _count: SupportCountAggregateOutputType | null
+    _min: SupportMinAggregateOutputType | null
+    _max: SupportMaxAggregateOutputType | null
+  }
+
+  type GetSupportGroupByPayload<T extends SupportGroupByArgs> = Promise<
+    Array<
+      PickArray<SupportGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SupportGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SupportGroupByOutputType[P]>
+            : GetScalarType<T[P], SupportGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SupportSelect = {
+    id?: boolean
+    title?: boolean
+    content?: boolean
+    topics?: boolean
+  }
+
+  export type SupportGetPayload<
+    S extends boolean | null | undefined | SupportArgs,
+    U = keyof S
+      > = S extends true
+        ? Support
+    : S extends undefined
+    ? never
+    : S extends SupportArgs | SupportFindManyArgs
+    ?'include' extends U
+    ? Support 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]: P extends keyof Support ?Support [P]
+  : 
+     never
+  } 
+    : Support
+  : Support
+
+
+  type SupportCountArgs = Merge<
+    Omit<SupportFindManyArgs, 'select' | 'include'> & {
+      select?: SupportCountAggregateInputType | true
+    }
+  >
+
+  export interface SupportDelegate<GlobalRejectSettings> {
+    /**
+     * Find zero or one Support that matches the filter.
+     * @param {SupportFindUniqueArgs} args - Arguments to find a Support
+     * @example
+     * // Get one Support
+     * const support = await prisma.support.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends SupportFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, SupportFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Support'> extends True ? CheckSelect<T, Prisma__SupportClient<Support>, Prisma__SupportClient<SupportGetPayload<T>>> : CheckSelect<T, Prisma__SupportClient<Support | null >, Prisma__SupportClient<SupportGetPayload<T> | null >>
+
+    /**
+     * Find the first Support that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportFindFirstArgs} args - Arguments to find a Support
+     * @example
+     * // Get one Support
+     * const support = await prisma.support.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends SupportFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, SupportFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Support'> extends True ? CheckSelect<T, Prisma__SupportClient<Support>, Prisma__SupportClient<SupportGetPayload<T>>> : CheckSelect<T, Prisma__SupportClient<Support | null >, Prisma__SupportClient<SupportGetPayload<T> | null >>
+
+    /**
+     * Find zero or more Supports that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Supports
+     * const supports = await prisma.support.findMany()
+     * 
+     * // Get first 10 Supports
+     * const supports = await prisma.support.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const supportWithIdOnly = await prisma.support.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends SupportFindManyArgs>(
+      args?: SelectSubset<T, SupportFindManyArgs>
+    ): CheckSelect<T, PrismaPromise<Array<Support>>, PrismaPromise<Array<SupportGetPayload<T>>>>
+
+    /**
+     * Create a Support.
+     * @param {SupportCreateArgs} args - Arguments to create a Support.
+     * @example
+     * // Create one Support
+     * const Support = await prisma.support.create({
+     *   data: {
+     *     // ... data to create a Support
+     *   }
+     * })
+     * 
+    **/
+    create<T extends SupportCreateArgs>(
+      args: SelectSubset<T, SupportCreateArgs>
+    ): CheckSelect<T, Prisma__SupportClient<Support>, Prisma__SupportClient<SupportGetPayload<T>>>
+
+    /**
+     * Create many Supports.
+     *     @param {SupportCreateManyArgs} args - Arguments to create many Supports.
+     *     @example
+     *     // Create many Supports
+     *     const support = await prisma.support.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends SupportCreateManyArgs>(
+      args?: SelectSubset<T, SupportCreateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Support.
+     * @param {SupportDeleteArgs} args - Arguments to delete one Support.
+     * @example
+     * // Delete one Support
+     * const Support = await prisma.support.delete({
+     *   where: {
+     *     // ... filter to delete one Support
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends SupportDeleteArgs>(
+      args: SelectSubset<T, SupportDeleteArgs>
+    ): CheckSelect<T, Prisma__SupportClient<Support>, Prisma__SupportClient<SupportGetPayload<T>>>
+
+    /**
+     * Update one Support.
+     * @param {SupportUpdateArgs} args - Arguments to update one Support.
+     * @example
+     * // Update one Support
+     * const support = await prisma.support.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends SupportUpdateArgs>(
+      args: SelectSubset<T, SupportUpdateArgs>
+    ): CheckSelect<T, Prisma__SupportClient<Support>, Prisma__SupportClient<SupportGetPayload<T>>>
+
+    /**
+     * Delete zero or more Supports.
+     * @param {SupportDeleteManyArgs} args - Arguments to filter Supports to delete.
+     * @example
+     * // Delete a few Supports
+     * const { count } = await prisma.support.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends SupportDeleteManyArgs>(
+      args?: SelectSubset<T, SupportDeleteManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Supports.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Supports
+     * const support = await prisma.support.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends SupportUpdateManyArgs>(
+      args: SelectSubset<T, SupportUpdateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Support.
+     * @param {SupportUpsertArgs} args - Arguments to update or create a Support.
+     * @example
+     * // Update or create a Support
+     * const support = await prisma.support.upsert({
+     *   create: {
+     *     // ... data to create a Support
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Support we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends SupportUpsertArgs>(
+      args: SelectSubset<T, SupportUpsertArgs>
+    ): CheckSelect<T, Prisma__SupportClient<Support>, Prisma__SupportClient<SupportGetPayload<T>>>
+
+    /**
+     * Count the number of Supports.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportCountArgs} args - Arguments to filter Supports to count.
+     * @example
+     * // Count the number of Supports
+     * const count = await prisma.support.count({
+     *   where: {
+     *     // ... the filter for the Supports we want to count
+     *   }
+     * })
+    **/
+    count<T extends SupportCountArgs>(
+      args?: Subset<T, SupportCountArgs>,
+    ): PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SupportCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Support.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SupportAggregateArgs>(args: Subset<T, SupportAggregateArgs>): PrismaPromise<GetSupportAggregateType<T>>
+
+    /**
+     * Group by Support.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SupportGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SupportGroupByArgs['orderBy'] }
+        : { orderBy?: SupportGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SupportGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSupportGroupByPayload<T> : Promise<InputErrors>
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Support.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__SupportClient<T> implements PrismaPromise<T> {
+    [prisma]: true;
+    private readonly _dmmf;
+    private readonly _fetcher;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+  // Custom InputTypes
+
+  /**
+   * Support findUnique
+   */
+  export type SupportFindUniqueArgs = {
+    /**
+     * Select specific fields to fetch from the Support
+     * 
+    **/
+    select?: SupportSelect | null
+    /**
+     * Throw an Error if a Support can't be found
+     * 
+    **/
+    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Filter, which Support to fetch.
+     * 
+    **/
+    where: SupportWhereUniqueInput
+  }
+
+
+  /**
+   * Support findFirst
+   */
+  export type SupportFindFirstArgs = {
+    /**
+     * Select specific fields to fetch from the Support
+     * 
+    **/
+    select?: SupportSelect | null
+    /**
+     * Throw an Error if a Support can't be found
+     * 
+    **/
+    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Filter, which Support to fetch.
+     * 
+    **/
+    where?: SupportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Supports to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<SupportOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Supports.
+     * 
+    **/
+    cursor?: SupportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Supports from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Supports.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Supports.
+     * 
+    **/
+    distinct?: Enumerable<SupportScalarFieldEnum>
+  }
+
+
+  /**
+   * Support findMany
+   */
+  export type SupportFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the Support
+     * 
+    **/
+    select?: SupportSelect | null
+    /**
+     * Filter, which Supports to fetch.
+     * 
+    **/
+    where?: SupportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Supports to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<SupportOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Supports.
+     * 
+    **/
+    cursor?: SupportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Supports from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Supports.
+     * 
+    **/
+    skip?: number
+    distinct?: Enumerable<SupportScalarFieldEnum>
+  }
+
+
+  /**
+   * Support create
+   */
+  export type SupportCreateArgs = {
+    /**
+     * Select specific fields to fetch from the Support
+     * 
+    **/
+    select?: SupportSelect | null
+    /**
+     * The data needed to create a Support.
+     * 
+    **/
+    data: XOR<SupportCreateInput, SupportUncheckedCreateInput>
+  }
+
+
+  /**
+   * Support createMany
+   */
+  export type SupportCreateManyArgs = {
+    data: Enumerable<SupportCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * Support update
+   */
+  export type SupportUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the Support
+     * 
+    **/
+    select?: SupportSelect | null
+    /**
+     * The data needed to update a Support.
+     * 
+    **/
+    data: XOR<SupportUpdateInput, SupportUncheckedUpdateInput>
+    /**
+     * Choose, which Support to update.
+     * 
+    **/
+    where: SupportWhereUniqueInput
+  }
+
+
+  /**
+   * Support updateMany
+   */
+  export type SupportUpdateManyArgs = {
+    data: XOR<SupportUpdateManyMutationInput, SupportUncheckedUpdateManyInput>
+    where?: SupportWhereInput
+  }
+
+
+  /**
+   * Support upsert
+   */
+  export type SupportUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the Support
+     * 
+    **/
+    select?: SupportSelect | null
+    /**
+     * The filter to search for the Support to update in case it exists.
+     * 
+    **/
+    where: SupportWhereUniqueInput
+    /**
+     * In case the Support found by the `where` argument doesn't exist, create a new Support with this data.
+     * 
+    **/
+    create: XOR<SupportCreateInput, SupportUncheckedCreateInput>
+    /**
+     * In case the Support was found with the provided `where` argument, update it with this data.
+     * 
+    **/
+    update: XOR<SupportUpdateInput, SupportUncheckedUpdateInput>
+  }
+
+
+  /**
+   * Support delete
+   */
+  export type SupportDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the Support
+     * 
+    **/
+    select?: SupportSelect | null
+    /**
+     * Filter which Support to delete.
+     * 
+    **/
+    where: SupportWhereUniqueInput
+  }
+
+
+  /**
+   * Support deleteMany
+   */
+  export type SupportDeleteManyArgs = {
+    where?: SupportWhereInput
+  }
+
+
+  /**
+   * Support without action
+   */
+  export type SupportArgs = {
+    /**
+     * Select specific fields to fetch from the Support
+     * 
+    **/
+    select?: SupportSelect | null
+  }
+
+
+
+  /**
    * Model Session
    */
 
@@ -6451,6 +7271,16 @@ export namespace Prisma {
   export type FeedCommentScalarFieldEnum = (typeof FeedCommentScalarFieldEnum)[keyof typeof FeedCommentScalarFieldEnum]
 
 
+  export const SupportScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    content: 'content',
+    topics: 'topics'
+  };
+
+  export type SupportScalarFieldEnum = (typeof SupportScalarFieldEnum)[keyof typeof SupportScalarFieldEnum]
+
+
   export const SessionScalarFieldEnum: {
     id: 'id',
     sid: 'sid',
@@ -6741,6 +7571,48 @@ export namespace Prisma {
     feedId?: IntWithAggregatesFilter | number
     userID?: IntWithAggregatesFilter | number
     created_at?: DateTimeWithAggregatesFilter | Date | string
+  }
+
+  export type SupportWhereInput = {
+    AND?: Enumerable<SupportWhereInput>
+    OR?: Enumerable<SupportWhereInput>
+    NOT?: Enumerable<SupportWhereInput>
+    id?: StringFilter | string
+    title?: StringFilter | string
+    content?: StringFilter | string
+    topics?: EnumTopicsNullableListFilter
+  }
+
+  export type SupportOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    topics?: SortOrder
+  }
+
+  export type SupportWhereUniqueInput = {
+    id?: string
+    title_id?: SupportTitleIdCompoundUniqueInput
+  }
+
+  export type SupportOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    topics?: SortOrder
+    _count?: SupportCountOrderByAggregateInput
+    _max?: SupportMaxOrderByAggregateInput
+    _min?: SupportMinOrderByAggregateInput
+  }
+
+  export type SupportScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<SupportScalarWhereWithAggregatesInput>
+    OR?: Enumerable<SupportScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<SupportScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    title?: StringWithAggregatesFilter | string
+    content?: StringWithAggregatesFilter | string
+    topics?: EnumTopicsNullableListFilter
   }
 
   export type SessionWhereInput = {
@@ -7075,6 +7947,55 @@ export namespace Prisma {
     feedId?: IntFieldUpdateOperationsInput | number
     userID?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SupportCreateInput = {
+    id?: string
+    title: string
+    content: string
+    topics?: SupportCreatetopicsInput | Enumerable<Topics>
+  }
+
+  export type SupportUncheckedCreateInput = {
+    id?: string
+    title: string
+    content: string
+    topics?: SupportCreatetopicsInput | Enumerable<Topics>
+  }
+
+  export type SupportUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    topics?: SupportUpdatetopicsInput | Enumerable<Topics>
+  }
+
+  export type SupportUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    topics?: SupportUpdatetopicsInput | Enumerable<Topics>
+  }
+
+  export type SupportCreateManyInput = {
+    id?: string
+    title: string
+    content: string
+    topics?: SupportCreateManytopicsInput | Enumerable<Topics>
+  }
+
+  export type SupportUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    topics?: SupportUpdatetopicsInput | Enumerable<Topics>
+  }
+
+  export type SupportUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    topics?: SupportUpdatetopicsInput | Enumerable<Topics>
   }
 
   export type SessionCreateInput = {
@@ -7517,6 +8438,38 @@ export namespace Prisma {
     userID?: SortOrder
   }
 
+  export type EnumTopicsNullableListFilter = {
+    equals?: Enumerable<Topics> | null
+    has?: Topics | null
+    hasEvery?: Enumerable<Topics>
+    hasSome?: Enumerable<Topics>
+    isEmpty?: boolean
+  }
+
+  export type SupportTitleIdCompoundUniqueInput = {
+    title: string
+    id: string
+  }
+
+  export type SupportCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    topics?: SortOrder
+  }
+
+  export type SupportMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+  }
+
+  export type SupportMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+  }
+
   export type SessionCountOrderByAggregateInput = {
     id?: SortOrder
     sid?: SortOrder
@@ -7774,6 +8727,19 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutFeedCommentsInput
     connect?: UserWhereUniqueInput
     update?: XOR<UserUpdateWithoutFeedCommentsInput, UserUncheckedUpdateWithoutFeedCommentsInput>
+  }
+
+  export type SupportCreatetopicsInput = {
+    set: Enumerable<Topics>
+  }
+
+  export type SupportUpdatetopicsInput = {
+    set?: Enumerable<Topics>
+    push?: Enumerable<Topics>
+  }
+
+  export type SupportCreateManytopicsInput = {
+    set: Enumerable<Topics>
   }
 
   export type NestedIntFilter = {
