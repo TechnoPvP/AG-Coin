@@ -3,6 +3,7 @@ import { prisma } from "shared/prisma/main"
 import isAdmin from '../middleware/isAdmin';
 import SupportValidation from "../validation/supportV"
 import { ErrorHandler, onErr } from '../utils/error';
+import { Support, Topics } from 'shared/prisma/generated/prisma-client-js';
 
 const router = Router();
 
@@ -10,9 +11,39 @@ const router = Router();
 router.get("/", async (req: Request, res: Response) => {
     try {
         const supports = await prisma.support.findMany()
+        const response = new Map<Topics, Support[]>()
+        supports.forEach( item => {
+            item.topics.forEach( topic => {
+                const result = response.get( topic ) ?? []
+                result.push( item )
+                response.set( topic, result )
+            } )
+        } )
         return res
             .status( 200 )
-            .json( supports )
+            .json( Object.fromEntries( response ) )
+        
+    } catch (error) {
+        const message = ErrorHandler( error )
+        return onErr( res, message )
+    }
+})
+
+// Get a single
+router.get('/:title/:id', async (req: Request, res: Response) => {
+    if ( !req.params.title ) return onErr( res, "no Title provided" )
+    if ( !req.params.id ) return onErr( res, "no ID provided" )
+    
+    try {
+        const support = await prisma.support.findFirst({
+            where: { title: { equals: req.params.title, mode: "insensitive" }, AND: { id: req.params.id } }
+        })
+
+        if (!support) return onErr( res, `No Support found by the id of ${req.params.id} and title of ${req.params.title}` )
+
+        return res
+            .status( 200 )
+            .json( support )
     } catch (error) {
         const message = ErrorHandler( error )
         return onErr( res, message )
